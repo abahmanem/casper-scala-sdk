@@ -7,11 +7,17 @@
 
 ## How to install
 
+Install via the following SBT's command
+
+Then run one of our examples via :
+```
+sbt run
+```
 
 
 ## How to test
 
-Run the following command :
+Run the unit test using :
 
 ```
 sbt test
@@ -19,4 +25,4 @@ sbt test
 
 ## License
 
-The Casper Scala SDK is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The Casper Scala SDK is open-sourced software licensed under the [MIT license](https:sbt//opensource.org/licenses/MIT).
