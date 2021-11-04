@@ -6,14 +6,14 @@ import com.casper.sdk.core._
 import com.casper.sdk.result._
 import com.casper.sdk.core.implicits.idInstance
 
-class GetPeersTest extends AnyFunSuite {
+class StateGetAuctionInfoTest extends AnyFunSuite {
 
   val transport = new HttpTransport("http://65.21.202.120:7777/rpc",new JsonConverterByClass,100000,100000)
   val cspr = new SDK(transport)
 
   test("peers not empty") {
-    val peers : GetPeersResult = cspr.get_info_get_peers(Seq("f"))
-    assert (peers.result  != Option.empty)
-    assert (peers.error  == Option.empty)
+    val auction : StateGetAuctionInfoResult = cspr.state_get_auction_info(Seq("f"))
+    assert (auction.result  != Option.empty)
+    assert (auction.error  == Option.empty)
   }
 }

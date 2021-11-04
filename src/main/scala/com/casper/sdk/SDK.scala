@@ -23,7 +23,7 @@ class SDK[F[_]](transport: Transport[F]) (implicit me: MonadException[F]) extend
   // def chain_get_block(data: Seq[String]) :  F[GetBlockResult] = call("state_get_item", data)
   // def chain_get_block(data: Seq[String]) :  F[GetBlockResult] = call("state_get_dictionary_item", data)
   // def chain_get_block(data: Seq[String]) :  F[GetBlockResult] = call("state_get_balance", data)
-  // def chain_get_block(data: Seq[String]) :  F[GetBlockResult] = call("state_get_auction_info", data)
+  def state_get_auction_info(data: Seq[String]) :  F[StateGetAuctionInfoResult] = call("state_get_auction_info", data)
 
 
 }
