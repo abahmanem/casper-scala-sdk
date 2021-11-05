@@ -20,8 +20,8 @@ class SDK[F[_]](transport: Transport[F]) (implicit me: MonadException[F]) extend
   // def chain_get_block(data: Seq[String]) :  F[GetBlockResult] = call("chain_get_block", data)
   // def chain_get_block(data: Seq[String]) :  F[GetBlockResult] = call("chain_get_era_info_by_switch_block", data)
   // Mika
-  // def chain_get_block(data: Seq[String]) :  F[GetBlockResult] = call("state_get_item", data)
-  // def chain_get_block(data: Seq[String]) :  F[GetBlockResult] = call("state_get_dictionary_item", data)
+  def state_get_item(data: Seq[String]) :  F[StateGetItemResult] = call("state_get_item", data)
+  def state_get_dictionary_item(data: Seq[Any]) :  F[StateGetDictionaryItemResult] = call("state_get_dictionary_item", data)
   def state_get_balance(data: Seq[String]) :  F[StateGetBalanceResult] = call("state_get_balance", data)
   def state_get_auction_info(data: Seq[String]) :  F[StateGetAuctionInfoResult] = call("state_get_auction_info", data)
 

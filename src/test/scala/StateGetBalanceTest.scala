@@ -15,7 +15,6 @@ class StateGetBalanceTest extends AnyFunSuite {
     val uref : String = "uref-3b4b07f9b59db6af01f74f13deef8b00f62aa6a3905c0355d6467693bf09466f-007"
 
     val stateRootHash : GetStateRootHashResult = cspr.get_chain_get_state_root_hash(Seq("f"))
-    println(stateRootHash.result.get.state_root_hash)
     val balance : StateGetBalanceResult = cspr.state_get_balance(List(stateRootHash.result.get.state_root_hash, uref))
     assert (balance.result.get.balance_value  >= 0)
     assert (balance.error  == Option.empty)
