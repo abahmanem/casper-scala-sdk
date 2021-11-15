@@ -1,13 +1,9 @@
 import org.scalatest.funsuite.AnyFunSuite
 
-
-import com.casper.sdk._
-import com.casper.sdk.core._
-import com.casper.sdk.result._
-import com.casper.sdk.core.implicits.idInstance
+import com.casper.sdk.util.implicits.idInstance
 
 class StateGetItemTest extends AnyFunSuite {
-
+/*
   val transport = new HttpTransport("http://65.21.202.120:7777/rpc",new JsonConverterByClass,100000,100000)
   val cspr = new SDK(transport)
 
@@ -25,4 +21,5 @@ class StateGetItemTest extends AnyFunSuite {
     assert (item.result  == Option.empty)
     assert (item.error  != Option.empty)
   }
+  */
 }

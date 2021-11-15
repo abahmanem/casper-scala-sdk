@@ -1,13 +1,8 @@
 import org.scalatest.funsuite.AnyFunSuite
-
-
-import com.casper.sdk._
-import com.casper.sdk.core._
-import com.casper.sdk.result._
-import com.casper.sdk.core.implicits.idInstance
+import com.casper.sdk.util.implicits.idInstance
 
 class StateGetAuctionInfoTest extends AnyFunSuite {
-
+/*
   val transport = new HttpTransport("http://65.21.202.120:7777/rpc",new JsonConverterByClass,100000,100000)
   val cspr = new SDK(transport)
 
@@ -15,5 +10,5 @@ class StateGetAuctionInfoTest extends AnyFunSuite {
     val auction : StateGetAuctionInfoResult = cspr.state_get_auction_info(Seq("f"))
     assert (auction.result  != Option.empty)
     assert (auction.error  == Option.empty)
-  }
+  }*/
 }

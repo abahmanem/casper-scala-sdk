@@ -1,10 +1,10 @@
 import org.scalatest.funsuite.AnyFunSuite
 
-
+/*
 import com.casper.sdk._
-import com.casper.sdk.core._
-import com.casper.sdk.result._
-import com.casper.sdk.core.implicits.idInstance
+
+import com.casper.sdk.rpc.result._
+import com.casper.sdk.util.implicits.idInstance
 
 class CheckConnectionTest extends AnyFunSuite {
 
@@ -16,4 +16,5 @@ class CheckConnectionTest extends AnyFunSuite {
       val peers : GetPeersResult = cspr.get_info_get_peers(Seq("f"))
     }
   }
-}
+
+}*/
