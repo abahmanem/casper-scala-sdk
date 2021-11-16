@@ -111,8 +111,7 @@ class HttpRPCService(var url: String, var httpClient: OkHttpClient) extends RPCS
     try {
       //We have to inject type attribute in json response needed for the deserialization of RPCRESULT subtypes
       val typedJsonBody = response.body.patch(1, "\"type\":\"" + tpe + "\",", 0)
-      println("Typed Json : " + typedJsonBody)
-      JsonConverter.fromJson(response.body.patch(1, "\"type\":\"" + tpe + "\",", 0))
+      JsonConverter.fromJson(typedJsonBody)
 
     } catch {
       case e: Throwable => throw new IllegalArgumentException(s"An error occurred while parsing the JSON. Http return code=${response.code} for request=$request", e)

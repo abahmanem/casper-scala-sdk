@@ -3,7 +3,7 @@ package com.casper.sdk
 import _root_.cats.Id
 import _root_.cats.implicits.*
 import com.casper.sdk.*
-import com.casper.sdk.domain.*
+
 import com.casper.sdk.rpc.{Method, RPCCalls}
 import com.casper.sdk.rpc.result.*
 import com.casper.sdk.util.IdInstance
@@ -15,9 +15,11 @@ import scala.reflect.runtime.universe.*
 
 class CasperSdk(url: String)(implicit id: IdInstance) extends RPCCalls(url) {
 
-  def get_info_get_peers(): Peers = invokeSync[Peers](Method.INFO_GET_PEERS, Seq.empty)
+  def get_info_get_peers(): PeersResult = invokeSync[PeersResult](Method.INFO_GET_PEERS, Seq.empty)
 
-  def get_state_root_hash(blockHash: String): StateRootHash = invokeSync[StateRootHash](Method.STATE_ROOT_HASH, blockHash)
+  def get_state_root_hash(blockHash: String): StateRootHashResult = invokeSync[StateRootHashResult](Method.STATE_ROOT_HASH, blockHash)
+
+  def chain_get_block() :  BlockResult = invokeSync[BlockResult](Method.CHAIN_GET_BLOCK, Seq.empty)
 
   /*
     //Milestone #1

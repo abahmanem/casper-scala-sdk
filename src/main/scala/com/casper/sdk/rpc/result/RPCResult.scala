@@ -1,6 +1,7 @@
 package com.casper.sdk.rpc.result
 
 import com.casper.sdk.domain.*
+
 import com.casper.sdk.rpc.RPCError
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id
@@ -18,15 +19,17 @@ import scala.reflect.*
  * @tparam T Casper domaine type to be returned by the RPC request
  */
 
+
 @JsonTypeInfo(use = Id.NAME,
   include = JsonTypeInfo.As.PROPERTY,
   property = "type")
 @JsonSubTypes(Array(
-  new Type(value = classOf[PeerResult], name = "com.casper.sdk.domain.Peers"),
-  new Type(value = classOf[StateRootHashResult], name = "com.casper.sdk.domain.StateRootHash"),
-  new Type(value = classOf[AuctionState], name = "com.casper.sdk.domain.AuctionState"),
-  new Type(value = classOf[BlockResult], name = "com.casper.sdk.domain.Block"),
-))
+  new Type(value = classOf[PeerRPCResult], name = "com.casper.sdk.rpc.result.PeersResult"),
+  new Type(value = classOf[StateRootHashRPCResult], name = "com.casper.sdk.rpc.result.StateRootHashResult"),
+  new Type(value = classOf[AuctionStateRPCResult], name = "com.casper.sdk.rpc.result.AuctionStateResult"),
+  new Type(value = classOf[BlockRPCResult], name = "com.casper.sdk.rpc.result.BlockResult")
+)
+)
 case class RPCResult[T: ClassTag](
                                    jsonrpc: String,
                                    id: Long,
@@ -44,13 +47,13 @@ case class RPCResult[T: ClassTag](
  * @param result
  * @param error
  */
-@JsonTypeName("com.casper.sdk.domain.StateRootHash")
-class StateRootHashResult(
+@JsonTypeName("com.casper.sdk.rpc.result.StateRootHashResult")
+class StateRootHashRPCResult(
                            jsonrpc: String,
                            id: Long,
-                           result: Option[StateRootHash],
+                           result: Option[StateRootHashResult],
                            error: Option[RPCError] = None,
-                         ) extends RPCResult(jsonrpc, id, result, error)
+                         ) extends RPCResult[StateRootHashResult](jsonrpc, id, result, error)
 
 /**
  *
@@ -59,13 +62,13 @@ class StateRootHashResult(
  * @param result
  * @param error
  */
-@JsonTypeName("com.casper.sdk.domain.Peers")
-class PeerResult(
+@JsonTypeName("com.casper.sdk.rpc.result.PeersResult")
+class PeerRPCResult(
                   jsonrpc: String,
                   id: Long,
-                  result: Option[Peers],
+                  result: Option[PeersResult],
                   error: Option[RPCError] = None,
-                ) extends RPCResult[Peers](jsonrpc, id, result, error)
+                ) extends RPCResult[PeersResult](jsonrpc, id, result, error)
 
 /**
  *
@@ -74,31 +77,21 @@ class PeerResult(
  * @param result
  * @param error
  */
-@JsonTypeName("com.casper.sdk.domain.Block")
-class BlockResult(
+@JsonTypeName("com.casper.sdk.rpc.result.BlockResult")
+class BlockRPCResult(
                    jsonrpc: String,
                    id: Long,
-                   result: Option[Block],
+                   result: Option[BlockResult],
                    error: Option[RPCError] = None,
-                 ) extends RPCResult[Block](jsonrpc, id, result, error)
+                 ) extends RPCResult[BlockResult](jsonrpc, id, result, error)
 
-/**
- *
- * @param jsonrpc
- * @param id
- * @param result
- * @param error
- */
-@JsonTypeName("com.casper.sdk.domain.AuctionState")
-class AuctionStataInfoResult(
+@JsonTypeName("com.casper.sdk.rpc.result.AuctionStateResult")
+class AuctionStateRPCResult(
                               jsonrpc: String,
                               id: Long,
-                              result: Option[AuctionState],
+                              result: Option[AuctionStateResult],
                               error: Option[RPCError] = None,
-                            ) extends RPCResult[AuctionState](jsonrpc, id, result, error)
-
-
-//TODO add other Result Wrappers
+                            ) extends RPCResult[AuctionStateResult](jsonrpc, id, result, error)
 
 
 /**
@@ -112,11 +105,11 @@ trait ResultTypeGetter[T] {
 }
 
 object ResultGetter {
-  implicit final val peerResultGetter: ResultTypeGetter[Peers] = new ResultTypeGetter {
-    override final val root: RPCResult[Peers] = new PeerResult("2.0", 1, None, None)
+  implicit final val peerResultGetter: ResultTypeGetter[PeersResult] = new ResultTypeGetter {
+    override final val root: RPCResult[PeersResult] = new PeerRPCResult("2.0", 1, None, None)
   }
-  implicit final val StateRootHashResultGetter: ResultTypeGetter[StateRootHash] = new ResultTypeGetter {
-    override final val root: RPCResult[StateRootHash] = new StateRootHashResult("2.0", 1, None, None)
+  implicit final val StateRootHashResultGetter: ResultTypeGetter[StateRootHashResult] = new ResultTypeGetter {
+    override final val root: RPCResult[StateRootHashResult] = new StateRootHashRPCResult("2.0", 1, None, None)
   }
   // TODO All the other instances
 }

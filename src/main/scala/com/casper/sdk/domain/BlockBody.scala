@@ -1,6 +1,6 @@
 package com.casper.sdk.domain
 
-class BlockBody(proposer: String,
-                deploy_hashes: List[String],
-                transfer_hashes: List[String]
+class BlockBody1(proposer: String,
+                deploy_hashes: Seq[String],
+                transfer_hashes: Seq[String]
                )

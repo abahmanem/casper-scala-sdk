@@ -1,3 +1,3 @@
 package com.casper.sdk.domain
 
-case class DeployHash(hash: List[String])
+case class DeployHash(hash: Seq[String])
