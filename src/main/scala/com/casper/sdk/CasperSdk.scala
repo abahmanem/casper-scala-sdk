@@ -25,14 +25,14 @@ class CasperSdk(url: String)(implicit id: IdInstance) extends RPCCommand(new Htt
 
   /**
    * get peers list
-   * @return
+   * @return : List[Peer]
    */
   def getPeers(): List[Peer] = call[PeersResult](Method.INFO_GET_PEERS, Seq.empty).peers
 
   /**
    * Retrieves a state root hash at a given block
    * @param blockHash
-   * @return
+   * @return state_root_hash_String
    */
   def getStateRootHash(blockHash: String): String = call[StateRootHashResult](Method.STATE_ROOT_HASH, blockHash).state_root_hash
 
