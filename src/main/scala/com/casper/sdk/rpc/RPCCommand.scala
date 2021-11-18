@@ -1,14 +1,11 @@
 package com.casper.sdk.rpc
 
 import cats.Id
-import com.casper.sdk.rpc.Method
 import com.casper.sdk.rpc.exceptions.*
 import com.casper.sdk.rpc.http.HttpRPCService
 import com.casper.sdk.util.IdInstance
 
-import java.util.concurrent.atomic.AtomicInteger
 import scala.reflect.*
-import scala.reflect.runtime.universe.*
 
 /**
  * RPC Call

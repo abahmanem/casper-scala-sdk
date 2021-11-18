@@ -6,7 +6,6 @@ import com.casper.sdk.rpc.result.RPCResult
 import com.casper.sdk.rpc.{RPCRequest, RPCService}
 import com.casper.sdk.util.JsonConverter
 import okhttp3.*
-
 import java.net.http.{HttpClient, HttpRequest, HttpResponse}
 import java.nio.charset.StandardCharsets
 import java.time.Duration
