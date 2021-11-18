@@ -23,6 +23,10 @@ class CasperSdk(url: String)(implicit id: IdInstance) extends RPCCommand(new Htt
 
   //Milestone #1
 
+  /**
+   * get peers list
+   * @return
+   */
   def info_get_peers(): List[Peer] = call[PeersResult](Method.INFO_GET_PEERS, Seq.empty).peers
 
   /**
