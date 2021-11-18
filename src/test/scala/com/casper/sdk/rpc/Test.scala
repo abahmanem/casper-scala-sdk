@@ -20,8 +20,7 @@ object Test  extends  App {
   println(JsonConverter.toJson(new String("c6ed416a5932c1b2b7a5ebd63a8441e498b3b2c9e11ab17fad6163d22714c955")))
   println(JsonConverter.toJson(Seq("c6ed416a5932c1b2b7a5ebd63a8441e498b3b2c9e11ab17fad6163d22714c955")))
  println(client.info_get_peers())
-
-
+ println(client.state_root_hash(""))
 /*
  // println(client.chain_get_block_By_Height(31889930))
 
@@ -31,7 +30,7 @@ object Test  extends  App {
   println(client.info_get_status())
   println(client.chain_get_block_transfers("c6ed416a5932c1b2b7a5ebd63a8441e498b3b2c9e11ab17fad6163d22714c955"))
 */
-  println(client.state_get_auction_info("c6ed416a5932c1b2b7a5ebd63a8441e498b3b2c9e11ab17fad6163d22714c955"))
+  //println(client.state_get_auction_info("c6ed416a5932c1b2b7a5ebd63a8441e498b3b2c9e11ab17fad6163d22714c955"))
 
 }
 
