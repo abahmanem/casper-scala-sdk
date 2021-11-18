@@ -18,12 +18,4 @@ class PeersRPCResult(
                      id: Long,
                      result: Option[PeersResult],
                      error: Option[RPCError] = None,
-                   ) extends RPCResult[PeersResult](jsonrpc, id, result, error) {
-
-  case class PeersResult(api_version: String,
-                         peers: List[Peer]
-                        )
-
-}
-
-//extends Result(api_version)
+                   ) extends RPCResult[PeersResult](jsonrpc, id, result, error) 

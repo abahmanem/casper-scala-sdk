@@ -40,5 +40,10 @@ case class RPCResult[T: ClassTag](
                                    error: Option[RPCError] = None,
 
                                  ) {
+  /**
+   * Custom constructor with a generic Capser type and an error
+   * @param result
+   * @param err
+   */
   def this(result: T, err: RPCError) = this("2.0", 1, Some(result), Some(err))
 }

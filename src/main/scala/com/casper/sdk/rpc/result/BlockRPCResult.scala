@@ -18,11 +18,4 @@ class BlockRPCResult(
                       id: Long,
                       result: Option[BlockResult],
                       error: Option[RPCError] = None,
-                    ) extends RPCResult[BlockResult](jsonrpc, id, result, error) {
-
-  case class BlockResult
-  (api_version: String,
-   block: Block
-  ) //extends Result(api_version)
-
-}
+                    ) extends RPCResult[BlockResult](jsonrpc, id, result, error) 

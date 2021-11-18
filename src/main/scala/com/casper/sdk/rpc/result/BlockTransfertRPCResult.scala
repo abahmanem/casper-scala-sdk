@@ -18,10 +18,4 @@ class BlockTransfertRPCResult(
                                id: Long,
                                result: Option[BlockTransfertResult],
                                error: Option[RPCError] = None,
-                             ) extends RPCResult[BlockTransfertResult](jsonrpc, id, result, error) {
-  case class BlockTransfertResult(
-                                   api_version: String,
-                                   block_hash: String,
-                                   transfers: Seq[Transfer])// extends Result(api_version)
-}
-
+                             ) extends RPCResult[BlockTransfertResult](jsonrpc, id, result, error) 
