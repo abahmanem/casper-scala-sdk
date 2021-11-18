@@ -6,9 +6,9 @@
 Scala client library for interracting with CasperLabs nodes. 
 
 
-## How to install
+# How to install
 
-# SBT
+## SBT
 
 In your build.sbt, add :
 
@@ -19,7 +19,7 @@ In your build.sbt, add :
 ```
 
 
-# Maven
+## Maven
 
 In your maven pom file add :
 
@@ -35,9 +35,9 @@ In your maven pom file add :
 M.m.i is the version number , example 1.0.0
 
 
-## Usage
+# Example usage
 
-# Create a Client
+## Create a Client
 
 Pass the url of the node  to constructor 
 
@@ -52,17 +52,17 @@ val client = new CasperSdk("http://localhost:7777/rpc")
 
 ## RPC Calls
 
-# Get network peers list  
+## Get network peers list  
 
 ```
-client.info_get_peers()
+val peersList = client.info_get_peers()
 
 ```
 
-# Get State Root Hash  
+## Get State Root Hash  
 
 ```
- client.state_root_hash("")
+ val state_root_hash = client.state_root_hash("")
 
 ```
 ...
