@@ -1,5 +1,9 @@
 package com.casper.sdk.util
 
+/**
+ * Id Monad Instance
+ */
+
 import cats.{Id, Monad}
 
 import scala.annotation.tailrec
