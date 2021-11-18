@@ -27,29 +27,29 @@ class CasperSdk(url: String)(implicit id: IdInstance) extends RPCCommand(new Htt
    * get peers list
    * @return
    */
-  def info_get_peers(): List[Peer] = call[PeersResult](Method.INFO_GET_PEERS, Seq.empty).peers
+  def getPeers(): List[Peer] = call[PeersResult](Method.INFO_GET_PEERS, Seq.empty).peers
 
   /**
    * Retrieves a state root hash at a given block
    * @param blockHash
    * @return
    */
-  def state_root_hash(blockHash: String): String = call[StateRootHashResult](Method.STATE_ROOT_HASH, blockHash).state_root_hash
+  def getStateRootHash(blockHash: String): String = call[StateRootHashResult](Method.STATE_ROOT_HASH, blockHash).state_root_hash
 
   //-----------------------------------------------------------------------------------------------------------------------------//
   //Milestone #2
 
   //block_identifier = Hash
-  def chain_get_block(blockHash: String): com.casper.sdk.domain.Block = call[BlockResult](Method.CHAIN_GET_BLOCK, Map("Hash" -> blockHash)).block
+  def getBlock(blockHash: String): com.casper.sdk.domain.Block = call[BlockResult](Method.CHAIN_GET_BLOCK, Map("Hash" -> blockHash)).block
 
   //block_identifier = Height
-  def chain_get_block_By_Height(blockHeignt: BigInt): com.casper.sdk.domain.Block = call[BlockResult](Method.CHAIN_GET_BLOCK, Map("Height" -> blockHeignt)).block
+  def getBlockByHeight(blockHeignt: BigInt): com.casper.sdk.domain.Block = call[BlockResult](Method.CHAIN_GET_BLOCK, Map("Height" -> blockHeignt)).block
 
-  def info_get_status(): NodeStatus = call[NodeStatus](Method.INFO_GET_STATUS, Seq.empty)
+  def getStatus(): NodeStatus = call[NodeStatus](Method.INFO_GET_STATUS, Seq.empty)
 
-  def chain_get_block_transfers(blockHash: String): Seq[Transfer] = call[BlockTransfertResult](Method.CHAIN_GET_BLOCK_TRANSFERTS, Map("Hash" -> blockHash)).transfers
+  def getBlockTransfers(blockHash: String): Seq[Transfer] = call[BlockTransfertResult](Method.CHAIN_GET_BLOCK_TRANSFERTS, Map("Hash" -> blockHash)).transfers
 
-  def state_get_auction_info(blockHash: String): AuctionState = call[AuctionStateResult](Method.STATE_GET_AUCTION_INFO, Seq(blockHash)).auction_state
+  def getAuctionInfo(blockHash: String): AuctionState = call[AuctionStateResult](Method.STATE_GET_AUCTION_INFO, Seq(blockHash)).auction_state
 
   // def state_get_item
   // def state_get_dictionary_item
