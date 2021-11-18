@@ -14,7 +14,7 @@ import scala.reflect.ClassTag
 import scala.reflect.runtime.universe.*
 
 /**
- *
+ * Casper SDK main class
  * @param url
  * @param id
  */
