@@ -11,7 +11,7 @@ import java.io.{IOException, InputStream, OutputStream}
 import scala.reflect.ClassTag
 
 /**
- * JsonsConverter Utility Object
+ * JsonConverter Utility Object
  */
 
 object JsonConverter {
