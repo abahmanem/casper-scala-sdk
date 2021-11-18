@@ -10,6 +10,10 @@ import com.fasterxml.jackson.module.scala.{ClassTagExtensions, DefaultScalaModul
 import java.io.{IOException, InputStream, OutputStream}
 import scala.reflect.ClassTag
 
+/**
+ *
+ */
+
 object JsonConverter {
 
   val mapper = JsonMapper.builder().addModule(DefaultScalaModule).build() :: ClassTagExtensions
@@ -33,6 +37,15 @@ object JsonConverter {
   }
 
   /**
+   *
+   * @param json
+   * @param m
+   * @tparam V
+   * @return
+   */
+  def toMap[V](json: String)(implicit m: JavaTypeable[V]): Map[String, V] = fromJson[Map[String, V]](json)
+
+  /**
    * Convert a json string into a Casper type
    *
    * @param json
@@ -42,16 +55,6 @@ object JsonConverter {
   def fromJson[T: ClassTag](json: String): T = {
     mapper.readValue(json, implicitly[ClassTag[T]].runtimeClass.asInstanceOf[Class[T]])
   }
-
-  /**
-   *
-   * @param json
-   * @param m
-   * @tparam V
-   * @return
-   */
-  def toMap[V](json: String)(implicit m: JavaTypeable[V]): Map[String, V] = fromJson[Map[String, V]](json)
-
 
   /**
    * Writes a Casper type object to an  OutputStream

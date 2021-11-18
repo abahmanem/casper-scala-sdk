@@ -1,7 +1,14 @@
 package com.casper.sdk.domain
 
-case class EraReport1 (
-                       equivocators: Seq[String],
-                       rewards: Seq[Reward1],
-                       inactive_validators: Seq[String]
-                     )
+/**
+ * EraReport entity class
+ *
+ * @param equivocators
+ * @param rewards
+ * @param inactive_validators
+ */
+case class EraReport(
+                      equivocators: Seq[String],
+                      rewards: Seq[Reward],
+                      inactive_validators: Seq[String]
+                    )

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.{JsonSubTypes, JsonTypeInfo, JsonTypeNam
 import scala.reflect.*
 
 /**
- *
+ * Generic RPC Response Class, used to serialize/deserialize RPC Response payloads
  * @param jsonrpc
  * @param id
  * @param result
@@ -24,10 +24,13 @@ import scala.reflect.*
   include = JsonTypeInfo.As.PROPERTY,
   property = "type")
 @JsonSubTypes(Array(
-  new Type(value = classOf[PeerRPCResult], name = "com.casper.sdk.rpc.result.PeersResult"),
+  new Type(value = classOf[PeersRPCResult], name = "com.casper.sdk.rpc.result.PeersResult"),
   new Type(value = classOf[StateRootHashRPCResult], name = "com.casper.sdk.rpc.result.StateRootHashResult"),
   new Type(value = classOf[AuctionStateRPCResult], name = "com.casper.sdk.rpc.result.AuctionStateResult"),
-  new Type(value = classOf[BlockRPCResult], name = "com.casper.sdk.rpc.result.BlockResult")
+  new Type(value = classOf[BlockRPCResult], name = "com.casper.sdk.rpc.result.BlockResult"),
+  new Type(value = classOf[NodeStatusRPCResult], name = "com.casper.sdk.domain.NodeStatus"),
+  new Type(value = classOf[BlockTransfertRPCResult], name = "com.casper.sdk.rpc.result.BlockTransfertResult")
+
 )
 )
 case class RPCResult[T: ClassTag](
@@ -38,78 +41,4 @@ case class RPCResult[T: ClassTag](
 
                                  ) {
   def this(result: T, err: RPCError) = this("2.0", 1, Some(result), Some(err))
-}
-
-/**
- *
- * @param jsonrpc
- * @param id
- * @param result
- * @param error
- */
-@JsonTypeName("com.casper.sdk.rpc.result.StateRootHashResult")
-class StateRootHashRPCResult(
-                           jsonrpc: String,
-                           id: Long,
-                           result: Option[StateRootHashResult],
-                           error: Option[RPCError] = None,
-                         ) extends RPCResult[StateRootHashResult](jsonrpc, id, result, error)
-
-/**
- *
- * @param jsonrpc
- * @param id
- * @param result
- * @param error
- */
-@JsonTypeName("com.casper.sdk.rpc.result.PeersResult")
-class PeerRPCResult(
-                  jsonrpc: String,
-                  id: Long,
-                  result: Option[PeersResult],
-                  error: Option[RPCError] = None,
-                ) extends RPCResult[PeersResult](jsonrpc, id, result, error)
-
-/**
- *
- * @param jsonrpc
- * @param id
- * @param result
- * @param error
- */
-@JsonTypeName("com.casper.sdk.rpc.result.BlockResult")
-class BlockRPCResult(
-                   jsonrpc: String,
-                   id: Long,
-                   result: Option[BlockResult],
-                   error: Option[RPCError] = None,
-                 ) extends RPCResult[BlockResult](jsonrpc, id, result, error)
-
-@JsonTypeName("com.casper.sdk.rpc.result.AuctionStateResult")
-class AuctionStateRPCResult(
-                              jsonrpc: String,
-                              id: Long,
-                              result: Option[AuctionStateResult],
-                              error: Option[RPCError] = None,
-                            ) extends RPCResult[AuctionStateResult](jsonrpc, id, result, error)
-
-
-/**
- * RPCResult type Getter
- *
- * @tparam T : Capser Type
- */
-
-trait ResultTypeGetter[T] {
-  def root: RPCResult[T]
-}
-
-object ResultGetter {
-  implicit final val peerResultGetter: ResultTypeGetter[PeersResult] = new ResultTypeGetter {
-    override final val root: RPCResult[PeersResult] = new PeerRPCResult("2.0", 1, None, None)
-  }
-  implicit final val StateRootHashResultGetter: ResultTypeGetter[StateRootHashResult] = new ResultTypeGetter {
-    override final val root: RPCResult[StateRootHashResult] = new StateRootHashRPCResult("2.0", 1, None, None)
-  }
-  // TODO All the other instances
 }

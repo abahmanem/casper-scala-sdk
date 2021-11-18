@@ -1,5 +1,12 @@
 package com.casper.sdk.domain
 
-case class BlockProof1(public_key: String, //TODO repalce by CLPublicKey
-                      signature: String
+/**
+ * BlockProof entity class
+ *
+ * @param public_key
+ * @param signature
+ */
+case class BlockProof(
+                       public_key: String, //TODO repalce by CLPublicKey
+                       signature: String
                      )

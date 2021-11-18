@@ -8,12 +8,14 @@ import scala.concurrent.Future
 import scala.reflect.ClassTag
 
 /**
- *
+ * Trait RPCService to be used by RPCCommand to perform RPC calls, can be subclassed to use differents libraries :
+ * RPCHTTPService : using OkHttp3
+ * RPCWebClientService : using Spring Framework WebClient
  */
 trait RPCService {
 
   /**
-   * Perform a synchronous JSON-RPC request
+   * Performs a synchronous JSON-RPC request
    *
    * @param request : request to perform
    * @tparam T : Casper type  item to be returned by the request
@@ -23,7 +25,7 @@ trait RPCService {
   def send[T: ClassTag](request: RPCRequest): RPCResult[T]
 
   /**
-   * Perform a synchronous JSON-RPC request
+   * Performs a synchronous JSON-RPC request
    *
    * @param request : request to perform
    * @tparam T : Casper type  item to be returned by the request

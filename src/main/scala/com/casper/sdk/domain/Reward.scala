@@ -1,6 +1,13 @@
 package com.casper.sdk.domain
 
-case class Reward1 (
-                     validator: String,
-                     amount: Int
-                   )
+/**
+ * Reward entity class
+ *
+ * @param validator
+ * @param amount
+ */
+
+case class Reward(
+                   validator: String,
+                   amount: Int
+                 )
