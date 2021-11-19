@@ -7,6 +7,6 @@ package com.casper.sdk.domain
  * @param signature
  */
 case class BlockProof(
-                       public_key: String, //TODO repalce by CLPublicKey
+                       public_key: String, //TODO replace by CLPublicKey
                        signature: String
                      )

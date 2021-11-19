@@ -2,9 +2,9 @@ package com.casper.sdk.rpc
 
 /**
  * Class that will be used to serialize/deserialize RPC Errors
- * @param code : Error code
- * @param message : Error short message
- * @param data   : Full stack error  message
+ * @param code : RPC Error code
+ * @param message : RPC Error short message
+ * @param data   : Full stack RPC error  message
  */
 
 case class RPCError(code: Int, message: String, data: Option[String] = None) {

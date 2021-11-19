@@ -18,8 +18,6 @@ import scala.reflect.*
  * @param classTag$T$0
  * @tparam T Casper domaine type to be returned by the RPC request
  */
-
-
 @JsonTypeInfo(use = Id.NAME,
   include = JsonTypeInfo.As.PROPERTY,
   property = "type")
@@ -41,7 +39,7 @@ case class RPCResult[T: ClassTag](
 
                                  ) {
   /**
-   * Custom constructor with a generic Capser type and an error
+   * Custom constructor with a generic Capser Result type and an RCPError
    * @param result
    * @param err
    */

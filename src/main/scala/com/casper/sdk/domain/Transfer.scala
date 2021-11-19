@@ -14,10 +14,10 @@ package com.casper.sdk.domain
  */
 case class Transfer(
                      deploy_hash: String,
-                     from: String, //TODO repalce by CLAccountHash
-                     to: String, //TODO repalce by CLAccountHash
-                     source: String, //TODO repalce by CLUREF
-                     target: String, //TODO repalce by CLUREF
+                     from: String, //TODO replace by CLAccountHash
+                     to: String, //TODO replace by CLAccountHash
+                     source: String, //TODO replace by CLUREF
+                     target: String, //TODO replace by CLUREF
                      amount: BigInt,
                      gas: String,
                      id: BigInt

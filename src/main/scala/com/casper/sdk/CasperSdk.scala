@@ -1,7 +1,6 @@
 package com.casper.sdk
 
-import _root_.cats.Id
-import _root_.cats.implicits.*
+import cats.Id
 import com.casper.sdk.*
 import com.casper.sdk.domain.*
 import com.casper.sdk.rpc.http.HttpRPCService
@@ -9,9 +8,6 @@ import com.casper.sdk.rpc.result.*
 import com.casper.sdk.rpc.{Method, RPCCommand}
 import com.casper.sdk.util.IdInstance
 import com.casper.sdk.util.implicits.*
-
-import scala.reflect.ClassTag
-import scala.reflect.runtime.universe.*
 
 /**
  * Casper SDK main class

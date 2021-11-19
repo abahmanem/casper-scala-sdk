@@ -57,7 +57,7 @@ class HttpRPCService(var url: String, var httpClient: OkHttpClient) extends RPCS
     try {
       //We add type attribute in json response. It is needed for the deserialization of RPCRESULT subtypes
       val tpe = implicitly[ClassTag[T]].runtimeClass.asInstanceOf[Class[T]].getName
-      val typedJsonBody = response.body.patch(1, "\"type\":\"" + tpe + "\",", 0)
+      val typedJsonBody = response.body.patch(1,"\"type\":\"" + tpe + "\",", 0)
       JsonConverter.fromJson[RPCResult[T]](typedJsonBody)
 
     } catch {
