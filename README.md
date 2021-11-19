@@ -55,14 +55,14 @@ val client = new CasperSdk("http://localhost:7777/rpc")
 ### Get network peers list  
 
 ```
-val peersList = client.info_get_peers()
+val peersList = client.getPeers()
 
 ```
 
 ### Get State Root Hash  
 
 ```
- val state_root_hash = client.state_root_hash("")
+ val stateRootHash = client.getStateRootHash("")
 
 ```
 ...
