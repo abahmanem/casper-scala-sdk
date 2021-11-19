@@ -35,7 +35,7 @@ In your maven pom file add :
 M.m.i is the version number , example 1.0.0
 
 
-# Example usage
+# Usage examples 
 
 ## Create a Client
 
@@ -78,7 +78,7 @@ sbt test
 ```
 
 ## TODOS :
-
+-
 
 ## License
 
