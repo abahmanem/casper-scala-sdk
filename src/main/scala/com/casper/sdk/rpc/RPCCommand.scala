@@ -8,21 +8,21 @@ import com.casper.sdk.util.IdInstance
 import scala.reflect.*
 
 /**
- * RPC Call
- *
- * @param url
- * @param ex
- * @tparam F
+ * RPC Client class
+ * @param method
+ * @param params
+ * @tparam T
+ * @return
  */
 
 trait RPCCommand(rpcService: RPCService)(implicit id: IdInstance) {
 
   /**
-   * RPC Client class
+   * Performs the RPC call
    * @param method
    * @param params
    * @tparam T
-   * @return
+   * @return Casper Result Type T
    */
   def call[T: ClassTag](method: Method, params: Any*): T = {
 

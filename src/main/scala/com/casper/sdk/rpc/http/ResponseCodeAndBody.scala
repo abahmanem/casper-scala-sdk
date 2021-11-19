@@ -2,7 +2,6 @@ package com.casper.sdk.rpc.http
 
 /**
  * Case Class with http return code and body
- *
  * @param code
  * @param body
  */

@@ -1,7 +1,7 @@
 package com.casper.sdk.rpc
 
 /**
- * Enum with  RPC Capser methods
+ * Enum with Capser netowrk RPC availaible  methods
  */
 
 enum Method(val name: String) {

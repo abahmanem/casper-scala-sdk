@@ -15,7 +15,7 @@ import scala.concurrent.duration.*
 import scala.reflect.ClassTag
 
 /**
- *
+ * HttpRPCService class
  * @param url
  * @param httpClient
  */
