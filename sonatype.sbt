@@ -20,7 +20,7 @@ scmInfo := Some(
   )
 )
 developers := List(
-  Developer(id="mabahma", name="abahmane", email="elmabahma@gmail.com", url=url("https://caspercommunity.io"))
+  Developer(id="mabahma", name="abahmane", email="elmabahma@gmail.com", url=url("https://caspercommunity.io")),
     Developer(id="mikael", name="grouwet", email="elmabahma@gmail.com", url=url("https://caspercommunity.io"))
 )
 
