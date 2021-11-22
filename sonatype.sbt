@@ -6,7 +6,7 @@ sonatypeProfileName := "io.caspercommunity"
 publishMavenStyle := true
 
 // Open-source license of your choice
-licenses := Seq("APL2" -> url("http://opensource.org/licenses/MIT"))
+licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT"))
 
 // source code hosted: GitHub
 import sbt.Developer
