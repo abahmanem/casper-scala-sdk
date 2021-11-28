@@ -1,7 +1,6 @@
 package com.casper.sdk.rpc
 
 import com.casper.sdk.rpc.RPCRequest
-import com.casper.sdk.rpc.result.RPCResult
 
 import java.io.IOException
 import scala.concurrent.Future

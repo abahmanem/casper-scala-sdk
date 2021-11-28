@@ -1,15 +1,13 @@
-package com.casper.sdk.rpc.result
+package com.casper.sdk.rpc
 
 import com.casper.sdk.domain
 import com.casper.sdk.domain.Peer
-import com.casper.sdk.json.deserialize.PublicKeyDeserializer
+import com.casper.sdk.json.deserialize.{PublicKeyDeserializer, RPCResultDeserializer}
 import com.casper.sdk.rpc.RPCError
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id
-import com.fasterxml.jackson.annotation.{JsonSubTypes, JsonTypeInfo, JsonTypeName}
+import com.fasterxml.jackson.annotation.{JsonCreator, JsonSubTypes, JsonTypeInfo, JsonTypeName}
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.casper.sdk.json.deserialize.RPCResultDeserializer
 
 import scala.reflect.ClassTag
 

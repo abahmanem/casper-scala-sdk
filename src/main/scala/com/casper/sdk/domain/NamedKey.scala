@@ -1,3 +1,6 @@
 package com.casper.sdk.domain
 
-case class NamedKey()
+case class NamedKey(
+                   val name:String,
+                   val key: String
+                   )

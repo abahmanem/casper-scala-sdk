@@ -1,5 +1,5 @@
 package com.casper.sdk.types.cltypes.serialization
 
-trait CLTypeEncoder[T] {
+trait CLTypeSerializer[T] {
    def encode(value: T) :  Array[Byte]
 }

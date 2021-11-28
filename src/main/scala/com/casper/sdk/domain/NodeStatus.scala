@@ -14,7 +14,7 @@ package com.casper.sdk.domain
  * @param uptime
  */
 case class NodeStatus(
-                       api_version: String,
+                      // api_version: String,
                        chainspec_name: String,
                        starting_state_root_hash: String,
                        peers: Seq[Peer],

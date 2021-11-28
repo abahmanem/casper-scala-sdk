@@ -1,5 +1,3 @@
-package com.casper.sdk.types.cltypes.serialization
+package com.casper.sdk.types.cltypes
 
-class KeyAlgorithm {
-
-}
+case class KeyAlgorithm()

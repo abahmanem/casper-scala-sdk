@@ -27,7 +27,6 @@ trait RPCCommand(rpcService: RPCService)(implicit id: IdInstance) {
   def call[T: ClassTag](method: Method, params: Any*): T = {
 
     val res = rpcService.send[T](RPCRequest(RPCRequest.id.incrementAndGet(), method.name, params: _*))
-
     res.error match {
       case None =>
         res.result match {

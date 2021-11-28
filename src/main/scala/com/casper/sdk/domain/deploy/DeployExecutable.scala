@@ -1,5 +1,13 @@
-package com.casper.sdk.domain
+package com.casper.sdk.domain.deploy
 
-class DeployExecutable {
+//abstract
+class DeployExecutable (val args: Set[Set[DeployNamedArg]])  extends BytesSerializable {
+
+  override def  encode() : Array[Byte] ={
+    null
+  }
+  //def tag(): Int
 
 }
+
+

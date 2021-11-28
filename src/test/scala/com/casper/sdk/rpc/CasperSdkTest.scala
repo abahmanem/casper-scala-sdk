@@ -12,6 +12,8 @@ import org.scalatest.funsuite.AnyFunSuite
 //TODO : use local node : https://github.com/casper-network/casper-node/blob/release-1.4.1/client/README.md
 class CasperSdkTestSuite extends AnyFunSuite {
 
+
+
   test("RPC Call to a non existing node Throws an RPCIOException") {
     assertThrows[RPCIOException] { // Result type: Assertion
       val sdk = new CasperSdk("http://1.2.3.4:7777/rpc")

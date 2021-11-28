@@ -1,5 +1,9 @@
-package com.casper.sdk.domain
+package com.casper.sdk.domain.deploy
 
-class DeployApproval {
+import  com.casper.sdk.types.cltypes.CLPublicKey
+class DeployApproval(
+                      signer : CLPublicKey ,
+                      signature : String
+                    ) {
 
 }

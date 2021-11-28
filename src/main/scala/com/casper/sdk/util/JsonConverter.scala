@@ -1,6 +1,7 @@
 package com.casper.sdk.util
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include
+import com.fasterxml.jackson.core.`type`.TypeReference
 import com.fasterxml.jackson.core.util.{DefaultIndenter, DefaultPrettyPrinter}
 import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.databind.{DeserializationFeature, SerializationFeature}
@@ -31,9 +32,7 @@ object JsonConverter {
    * @tparam A
    * @return
    */
-  def toJson[T](t: T): String = {
-    mapper.writer(prettyPrinter).writeValueAsString(t)
-  }
+  def toJson[T](t: T): String =   mapper.writer(prettyPrinter).writeValueAsString(t)
 
   /**
    *
@@ -43,6 +42,18 @@ object JsonConverter {
    * @return
    */
   def toMap[V](json: String)(implicit m: JavaTypeable[V]): Map[String, V] = fromJson[Map[String, V]](json)
+
+
+
+  /**
+   *
+   * @param json
+   * @param m
+   * @tparam V
+   * @return
+   */
+  def toList[V : ClassTag](json: String): List[V] =
+    mapper.readValue(json)
 
   /**
    * Convert a json string into a Casper type

@@ -2,16 +2,17 @@ package com.casper.sdk.rpc.http
 
 import com.casper.sdk.rpc.exceptions.{RPCException, RPCIOException}
 import com.casper.sdk.rpc.http.ResponseCodeAndBody
-import com.casper.sdk.rpc.result.RPCResult
-import com.casper.sdk.rpc.{RPCRequest, RPCService}
+import com.casper.sdk.rpc.{RPCRequest, RPCResult, RPCService}
 import com.casper.sdk.util.JsonConverter
-import okhttp3.*
+import com.fasterxml.jackson.databind.node.ObjectNode
+
 import java.nio.charset.StandardCharsets
 import java.time.Duration
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.concurrent.duration.*
+import scala.concurrent.duration
 import scala.reflect.ClassTag
+import  okhttp3._
 
 /**
  * HttpRPCService class
@@ -54,11 +55,7 @@ class HttpRPCService(var url: String, var httpClient: OkHttpClient) extends RPCS
   def send[T: ClassTag](request: RPCRequest): RPCResult[T] = {
     val response = post(JsonConverter.toJson(request))
     try {
-      //We add type attribute in json response. It is needed for the deserialization of RPCRESULT subtypes
-      val tpe = implicitly[ClassTag[T]].runtimeClass.asInstanceOf[Class[T]].getName
-      val typedJsonBody = response.body.patch(1,"\"type\":\"" + tpe + "\",", 0)
-      JsonConverter.fromJson[RPCResult[T]](typedJsonBody)
-
+      JsonConverter.fromJson[RPCResult[T]](response.body)
     } catch {
       case e: Throwable => throw new IllegalArgumentException(s"cannot parse json. http return code=${response.code} for request=$request", e)
     }

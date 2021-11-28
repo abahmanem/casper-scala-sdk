@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger
  * @param jsonrpc
  */
 case class RPCRequest(
-                       id: Long,
+                      id: Long,
                       method: String,
                       params: Seq[Any],
                       jsonrpc: String = "2.0")

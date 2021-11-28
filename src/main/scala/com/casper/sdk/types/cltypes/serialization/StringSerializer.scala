@@ -1,5 +1,10 @@
 package com.casper.sdk.types.cltypes.serialization
 
-class StringSerializer {
+class StringSerializer extends CLTypeSerializer[String] {
+
+
+  override def  encode(value: String) :  Array[Byte] ={
+   null
+  }
 
 }

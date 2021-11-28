@@ -1,5 +1,3 @@
 package com.casper.sdk.types.cltypes
 
-class CLTypeInfo {
-
-}
+case class CLTypeInfo (val cl_Type: CLType) 
