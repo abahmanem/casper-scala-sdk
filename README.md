@@ -9,7 +9,8 @@ Scala client library for interracting with CasperLabs nodes.
 # How to install
 
 ## SBT
-(There is no artefact published yet, we will publish one as soon as possible)
+(There is no artefact published yet, we will publish one soon)
+
 In your build.sbt, add :
 
 
