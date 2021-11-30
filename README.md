@@ -69,9 +69,31 @@ val peersList = client.getPeers()
 
 ## How to test
 
+### Requirments:
+
+Make sure you have the Java 8 JDK (also known as 1.8)
+
+If you don’t have version 1.8 or higher, install the JDK
+
+### install sbt
+
+Mac :  https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Mac.html
+
+Windows :  https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
+
+Linux : https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
+
+
+### clone the project 
+
+```
+git clone https://github.com/caspercommunityio/casper-scala-sdk
+```
+
 Run the unit tests :
 
 ```
+cd casper-scala-sdk
 
 sbt test
 
