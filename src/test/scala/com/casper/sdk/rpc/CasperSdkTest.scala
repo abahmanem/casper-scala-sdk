@@ -25,17 +25,21 @@ class CasperSdkTestSuite extends AnyFunSuite {
 
   test("Testnet Network Peers list is not empty") {
     val peers = client.getPeers()
+    info("Peers List : "+peers)
+    info("Peers List size : "+peers)
     assert(!peers.isEmpty)
   }
 
   test("Get state root hash with no blockHash paramter, state root hash is not empty and is 64 characters long") {
     val stateRootHash = client.getStateRootHash("")
+    info("state root hash : "+stateRootHash)
     assert(!stateRootHash.isEmpty)
     assert(stateRootHash.length == 64)
   }
 
   test("Get state root hash with a blockHash parameter ,state root hash is not empty and is 64 character  long") {
     val stateRootHash = client.getStateRootHash("7ed13ec0f9b1955069fe96e6441fff700e6baed36e8cb99400da0449fae6c95c")
+    info("state root hash : "+stateRootHash)
     assert(!stateRootHash.isEmpty)
     assert(stateRootHash.length == 64)
   }
