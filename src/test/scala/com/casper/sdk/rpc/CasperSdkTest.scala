@@ -26,7 +26,7 @@ class CasperSdkTestSuite extends AnyFunSuite {
   test("Testnet Network Peers list is not empty") {
     val peers = client.getPeers()
     info("Peers List : "+peers)
-    info("Peers List size : "+peers)
+    info("Peers List size : "+peers.size)
     assert(!peers.isEmpty)
   }
 
