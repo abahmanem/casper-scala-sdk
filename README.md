@@ -72,12 +72,12 @@ val peersList = client.getPeers()
 
 ### Requirements:
 
-#### Java
+#### JAVA
 Make sure you have the Java 8 JDK (also known as 1.8)
 
 If you don’t have version 1.8 or higher, install the JDK
 
-#### sbt
+#### SBT
 
 Install sbt (version 1.5.2 or higher): 
 
@@ -88,7 +88,7 @@ Windows :  https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
 Linux : https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
 
 
-### clone the project 
+### Clone the project 
 
 ```
 git clone https://github.com/caspercommunityio/casper-scala-sdk

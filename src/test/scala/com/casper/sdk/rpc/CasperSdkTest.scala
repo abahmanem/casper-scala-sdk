@@ -13,13 +13,13 @@ import org.scalatest.funsuite.AnyFunSuite
 class CasperSdkTestSuite extends AnyFunSuite {
 
 
-
   test("RPC Call to a non existing node Throws an RPCIOException") {
     assertThrows[RPCIOException] { // Result type: Assertion
       val sdk = new CasperSdk("http://1.2.3.4:7777/rpc")
       val peers = sdk.getPeers()
     }
   }
+
 
   val client = new CasperSdk("http://65.21.227.180:7777/rpc")
 

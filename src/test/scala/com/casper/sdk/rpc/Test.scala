@@ -11,7 +11,15 @@ import scodec.bits.hex
 import com.casper.sdk.types.cltypes.CLValue
 object Test  extends  App {
 
+
   val client = new CasperSdk("http://65.21.202.120:7777/rpc")
+
+    val stateRootHash = client.getStateRootHash("7ededrtzg9fffff700e6baed36e8cb99400da0449fae6c95c")
+  println(stateRootHash)
+
+
+
+  //val client = new CasperSdk("http://65.21.202.120:7777/rpc")
 
   println(client.getPeers())
   println(client.getStateRootHash(""))
