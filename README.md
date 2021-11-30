@@ -69,7 +69,7 @@ val peersList = client.getPeers()
 
 ## How to test
 
-### Requirments:
+### Requirements:
 
 Make sure you have the Java 8 JDK (also known as 1.8)
 
