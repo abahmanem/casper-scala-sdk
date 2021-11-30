@@ -68,7 +68,7 @@ val peersList = client.getPeers()
 ```
 ...
 
-## How to test
+## Running unit tests
 
 ### Requirements:
 
