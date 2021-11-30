@@ -81,7 +81,9 @@ If you don’t have version 1.8 or higher, install the JDK
 Install sbt: 
 
 Mac :  https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Mac.html
+
 Windows :  https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
+
 Linux : https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
 
 
