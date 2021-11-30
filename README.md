@@ -78,7 +78,7 @@ If you don’t have version 1.8 or higher, install the JDK
 
 #### sbt
 
-Install sbt: 
+Install sbt (version 1.5.2 or higher): 
 
 Mac :  https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Mac.html
 
