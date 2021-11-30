@@ -71,16 +71,17 @@ val peersList = client.getPeers()
 
 ### Requirements:
 
+#### Java
 Make sure you have the Java 8 JDK (also known as 1.8)
 
 If you don’t have version 1.8 or higher, install the JDK
 
-### install sbt
+#### sbt
+
+Install sbt: 
 
 Mac :  https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Mac.html
-
 Windows :  https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html
-
 Linux : https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
 
 
