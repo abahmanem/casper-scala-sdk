@@ -9,9 +9,6 @@ publishMavenStyle := true
 licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT"))
 
 // source code hosted: GitHub
-import sbt.Developer
-import xerial.sbt.Sonatype._
-
 homepage := Some(url("https://caspercommunity.io"))
 scmInfo := Some(
   ScmInfo(
