@@ -102,9 +102,18 @@ cd casper-scala-sdk
 sbt test
 
 ```
+### Generate project artefact
+
+```
+sbt package
+```
+
+This will generate : casper-scala-sdk_${scala.version}{version}.jar. 
+
 
 ## TODOS :
--
+
+-  
 
 ## License
 
