@@ -56,8 +56,6 @@ class CasperSdk(url: String)(implicit id: IdInstance) extends RPCCommand(new Htt
   //chain_get_era_info_by_switch_block
   def getEraInfoBySwitchBlock(blockHash: String) : EraSummary = call[EraSummary](Method.CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK, Map("Hash" -> blockHash))
 
-//getAccount(string $blockHash, CLPublicKey $publicKey): Account
-// getAccountBalance(string $stateRootHash, CLURef $balanceUref): \GMP
 //state_get_item
 //state_get_dictionary_item
 //state_get_balance
