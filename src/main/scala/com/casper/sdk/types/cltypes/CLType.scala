@@ -1,9 +1,13 @@
 package com.casper.sdk.types.cltypes
 
+import com.casper.sdk.json.deserialize.CLTypeDeserialiser
 import com.casper.sdk.types.cltypes
-import com.fasterxml.jackson.core.TreeNode
-import com.fasterxml.jackson.databind.node.TextNode
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 
+/**
+ * Enum of CLType with data bytes array
+ */
+@JsonDeserialize(`using` = classOf[CLTypeDeserialiser])
 enum CLType(val clType: Int) {
 
   case Bool extends CLType(0)
@@ -76,13 +80,21 @@ enum CLType(val clType: Int) {
 
   /** Public key */
   case Default extends CLType(23)
-}
 
+}
 object CLType{
+  /**
+   * checks if CLType is numeric
+   * @param cltype
+   * @return
+   */
   def isNumeric(cltype : CLType) : Boolean = {
     cltype match {
       case I32 | I64 | U8 | U32 | U64 | U128 | U512 | U256 => true
       case _ => false
     }
   }
+
+
+
 }

@@ -1,7 +1,7 @@
 package com.casper.sdk.domain
 
 /**
- *
+ * SeigniorageAllocation
  * @param Delegator
  * @param Validator
  * https://docs.rs/casper-types/1.4.4/casper_types/system/auction/enum.SeigniorageAllocation.html#

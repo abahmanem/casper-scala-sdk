@@ -1,5 +1,7 @@
 package com.casper.sdk.domain
 
+import com.casper.sdk.types.cltypes.URef
+
 /**
  * Delegator entity class
  *
@@ -11,6 +13,6 @@ package com.casper.sdk.domain
 case class Delegator(
                       public_key: String,
                       staked_amount: BigInt,
-                      bonding_purse: String, //Uref
+                      bonding_purse: URef, 
                       delegatee: String
                     )

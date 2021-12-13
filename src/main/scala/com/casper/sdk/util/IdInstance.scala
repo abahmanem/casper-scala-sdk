@@ -8,7 +8,7 @@ import cats.{Id, Monad}
 
 import scala.annotation.tailrec
 
-class IdInstance extends Monad[Id] {
+class IdInstance extends Monad[Id]  {
   def throwError[X](e: Throwable): Id[X] = throw e
 
   override def map[X, Y](fa: Id[X])(f: X => Y): Id[Y] = f(fa)

@@ -13,4 +13,12 @@ enum Method(val name: String) {
   case INFO_GET_DEPLOY extends Method("info_get_deploy")
   case STATE_GET_AUCTION_INFO extends Method("state_get_auction_info")
   case CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK extends Method("chain_get_era_info_by_switch_block")
-}
+  case STATE_GET_ITEM extends Method("state_get_item")
+  case STATE_GET_BALANCE extends Method("state_get_balance")
+  case STATE_GET_DICTIONARY_ITEM extends Method("state_get_dictionary_item")
+  case RPC_SCHEMA extends Method("rpc.discover")
+
+  
+  
+  
+ }

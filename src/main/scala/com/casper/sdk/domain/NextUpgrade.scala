@@ -2,7 +2,6 @@ package com.casper.sdk.domain
 
 /**
  * NextUpgrade entity class
- *
  * @param next_upgrade
  * @param build_version
  */

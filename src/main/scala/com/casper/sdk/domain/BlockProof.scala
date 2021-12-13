@@ -1,5 +1,7 @@
 package com.casper.sdk.domain
 
+import com.casper.sdk.types.cltypes.CLPublicKey
+
 /**
  * BlockProof entity class
  *
@@ -7,6 +9,6 @@ package com.casper.sdk.domain
  * @param signature
  */
 case class BlockProof(
-                       public_key: String, //TODO replace by CLPublicKey
+                       public_key: CLPublicKey, 
                        signature: String
                      )

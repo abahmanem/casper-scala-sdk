@@ -1,3 +1,17 @@
 package com.casper.sdk.domain
 
-case class ContractPackage()
+import com.casper.sdk.types.cltypes.URef
+
+/**
+ * ContractPackage entity class
+ * @param accessKey
+ * @param contractVersions
+ * @param disabledVersions
+ * @param groups
+ */
+case class ContractPackage(
+                            accessKey : URef,
+                            contractVersions : Seq[String],
+                            disabledVersions : Seq[String],
+                            groups:Seq[Group]
+                          )

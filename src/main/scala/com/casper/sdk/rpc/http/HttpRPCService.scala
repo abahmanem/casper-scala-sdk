@@ -53,9 +53,12 @@ class HttpRPCService(var url: String, var httpClient: OkHttpClient) extends RPCS
    * @return :Deserialized JSON-RPC response
    */
   def send[T: ClassTag](request: RPCRequest): RPCResult[T] = {
-    val response = post(JsonConverter.toJson(request))
+   val response = post(JsonConverter.toJson(request))
     try {
-      JsonConverter.fromJson[RPCResult[T]](response.body)
+      //We add rpc_call attribute in json response. It is needed for the deserialization of RPCRESULT subtypes
+      val tpe = implicitly[ClassTag[T]].runtimeClass.asInstanceOf[Class[T]].getName
+      val typedJsonBody = response.body.patch(1,"\"rpc_call\":\"" + request.method + "\",", 0)
+      JsonConverter.fromJson[RPCResult[T]](typedJsonBody)
     } catch {
       case e: Throwable => throw new IllegalArgumentException(s"cannot parse json. http return code=${response.code} for request=$request", e)
     }

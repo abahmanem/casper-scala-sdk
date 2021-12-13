@@ -2,7 +2,7 @@ package com.casper.sdk.rpc
 
 import com.casper.sdk.domain
 import com.casper.sdk.domain.Peer
-import com.casper.sdk.json.deserialize.{PublicKeyDeserializer, RPCResultDeserializer}
+import com.casper.sdk.json.deserialize.{CLPublicKeyDeserializer, RPCResultDeserializer}
 import com.casper.sdk.rpc.RPCError
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id

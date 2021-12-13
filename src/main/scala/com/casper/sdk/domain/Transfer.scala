@@ -1,5 +1,8 @@
 package com.casper.sdk.domain
 
+import com.casper.sdk.types.cltypes._
+
+
 /**
  * Transfer entity class
  *
@@ -14,10 +17,10 @@ package com.casper.sdk.domain
  */
 case class Transfer(
                      deploy_hash: String,
-                     from: String, //TODO replace by CLAccountHash
-                     to: String, //TODO replace by CLAccountHash
-                     source: String, //TODO replace by CLUREF
-                     target: String, //TODO replace by CLUREF
+                     from: AccountHash,
+                     to: AccountHash,
+                     source: URef,
+                     target: URef,
                      amount: BigInt,
                      gas: String,
                      id: BigInt

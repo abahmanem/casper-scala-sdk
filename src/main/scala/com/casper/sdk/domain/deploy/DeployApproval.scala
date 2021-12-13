@@ -4,6 +4,4 @@ import  com.casper.sdk.types.cltypes.CLPublicKey
 class DeployApproval(
                       signer : CLPublicKey ,
                       signature : String
-                    ) {
-
-}
+                    )

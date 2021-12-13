@@ -17,6 +17,7 @@ import scala.reflect.*
 
 trait RPCCommand(rpcService: RPCService)(implicit id: IdInstance) {
 
+
   /**
    * Performs the RPC call
    * @param method

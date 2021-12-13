@@ -3,7 +3,8 @@ package com.casper.sdk.util
 import org.apache.commons.codec.DecoderException
 import org.apache.commons.codec.binary.Hex
 
-object ByteUtils {
+object HexUtils {
+
   /**
    * convert a hexString into a byte array
    *
@@ -32,5 +33,6 @@ object ByteUtils {
   def hextoT[T](hex: String, f: BigInt => T) = f(BigInt(hex.drop(2), 16))
 
   def hex2Bytes(hex: String): Array[Byte] = hextoT(hex, _.toByteArray)
+
 
 }

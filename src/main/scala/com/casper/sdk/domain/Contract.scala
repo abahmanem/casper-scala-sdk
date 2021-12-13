@@ -10,7 +10,16 @@ package com.casper.sdk.domain
   |    ]
   |} """.stripMargin
 */
-class Contract (
+
+/**
+ * Contract entity class
+ * @param contract_package_hash
+ * @param contract_wasm_hash
+ * @param protocol_version
+ * @param entry_points
+ * @param named_keys
+ */
+case class Contract (
                 val contract_package_hash : String,
                 val contract_wasm_hash : String,
                 val protocol_version : String,

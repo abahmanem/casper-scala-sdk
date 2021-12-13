@@ -1,3 +1,9 @@
 package com.casper.sdk.domain
 
-case class EraInfo(val seigniorage_allocations : Set[SeigniorageAllocation])
+/**
+ * EraInfa entity class
+ * @param seigniorage_allocations
+ */
+case class EraInfo(
+                    val seigniorage_allocations : Set[SeigniorageAllocation]
+                  )
