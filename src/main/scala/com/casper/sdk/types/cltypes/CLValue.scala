@@ -1,6 +1,7 @@
 package com.casper.sdk.types.cltypes
 
 import com.casper.sdk.json.deserialize.CLValueSerializer
+import com.casper.sdk.util.HexUtils
 import com.fasterxml.jackson.core.TreeNode
 
 import java.nio.ByteBuffer
@@ -16,7 +17,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 @JsonDeserialize(`using` = classOf[CLValueSerializer])
 class CLValue(
                val bytes: Array[Byte],
-               val cl_type: CLTypeInfo,
+               val cl_infoType: CLTypeInfo,
                val parsed: Any
              ) {
 
@@ -35,6 +36,6 @@ class CLValue(
    * @param clType
    * @param parsed
    */
-  def this(hexBytes: String, clType: CLTypeInfo, parsed: Any) = this(hexBytes.getBytes, clType, parsed)
+  def this(hexBytes: String, clType: CLTypeInfo, parsed: Any) = this(HexUtils.hex2Bytes(hexBytes), clType, parsed)
 
 }
