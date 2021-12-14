@@ -37,13 +37,13 @@ class CLPublicKey(
    */
 
 
-  def this(hexKey: String) = this(dropAlgorithmBytes(HexUtils.hexToBytes(hexKey)),KeyAlgorithm.fromId(hexKey.charAt(1)))
+  def this(hexKey: String) = this(dropAlgorithmBytes(HexUtils.fromHex(hexKey)),KeyAlgorithm.fromId(hexKey.charAt(1)))
 
   /**
    * format to Hex account , ie : 0106cA7c39cD272DbF21a86EeB3B36B7c26E2e9b94af64292419f7862936bcA2cA, 01 being tag bytes
    * @return
    */
-  def formatAsHexAccount : String = HexUtils.bytesToHex(
+  def formatAsHexAccount : String = HexUtils.toHex(
   //Array.concat[Byte](
     Array[Byte]{keyAlgorithm.bits.toByte}.concat(bytes)
   )

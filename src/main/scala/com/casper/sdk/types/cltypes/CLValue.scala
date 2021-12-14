@@ -36,6 +36,6 @@ class CLValue(
    * @param clType
    * @param parsed
    */
-  def this(hexBytes: String, clType: CLTypeInfo, parsed: Any) = this(HexUtils.hexToBytes(hexBytes), clType, parsed)
+  def this(hexBytes: String, clType: CLTypeInfo, parsed: Any) = this(HexUtils.fromHex(hexBytes), clType, parsed)
 
 }

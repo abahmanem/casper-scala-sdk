@@ -17,7 +17,7 @@ class AccountHash(override val bytes: Array[Byte]) extends CLValue(bytes, CLType
    *
    * @return
    */
-  def format: String = String.format(AccountHash.ACCOUNT_PREFIX + "%s", HexUtils.bytesToHex(bytes))
+  def format: String = String.format(AccountHash.ACCOUNT_PREFIX + "%s", HexUtils.toHex(bytes).drop(2))
 
   /**
    * Constructor using s String Uref value
@@ -35,7 +35,7 @@ object AccountHash {
   def parseAccount(account: String): Array[Byte] = {
     val prefix = account.substring(0, 13)
     prefix match {
-      case ACCOUNT_PREFIX => HexUtils.hexToBytes(account.replace(prefix, ""))
+      case ACCOUNT_PREFIX => HexUtils.fromHex(account.replace(prefix, ""))
       case _ => throw new IllegalArgumentException(account + " is not a valid account")
     }
   }

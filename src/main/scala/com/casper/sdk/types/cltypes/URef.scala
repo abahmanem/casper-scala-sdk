@@ -32,7 +32,7 @@ class URef(override val bytes: Array[Byte]) extends CLValue(bytes, CLType.URef) 
    * format Uref objet into : uref-51215724cc359a60797f64d88543002a069176f3ea92d4c37d31304e2849ef13-004
    * @return
    */
-  def format: String = String.format(URef.UREF_PREFIX+"-%s-%03d", HexUtils.bytesToHex(bytes), accessRights.bits)
+  def format: String = String.format(URef.UREF_PREFIX+"-%s-%03d", HexUtils.toHex(bytes).drop(2), accessRights.bits)
 
 }
 
@@ -62,7 +62,7 @@ object URef {
   private def parseUref(uref: String): Array[Byte] = {
     val opt = uref.split("-")
     opt(0) match {
-      case UREF_PREFIX => HexUtils.hexToBytes(opt(1))
+      case UREF_PREFIX => HexUtils.fromHex(opt(1))
       case _ => throw new IllegalArgumentException(uref + " is not a valid uref")
     }
   }
