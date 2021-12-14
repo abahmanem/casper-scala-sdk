@@ -134,7 +134,7 @@ call parameters :
 val auctionInfo = client.getAuctionInfo("3a4EfA0AA223bF713bEDB5fa8D6dEc29a008C923aec0ACB02A3e4e449b9E01a8")
 ```
 
-can be also called without parameters : 
+can also be called without parameters : 
 
 ```
 val auctionInfo = client.getAuctionInfo("")
