@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
  * @param bytes
  */
 @JsonDeserialize(`using` = classOf[URefDeserializer])
-case class URef(override val bytes: Array[Byte]) extends CLValue(bytes, CLType.URef) {
+class URef(override val bytes: Array[Byte]) extends CLValue(bytes, CLType.URef) {
   var accessRights: AccessRight = null
 
   /**

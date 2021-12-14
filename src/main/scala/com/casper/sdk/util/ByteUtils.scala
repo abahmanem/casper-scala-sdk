@@ -33,4 +33,11 @@ object ByteUtils {
 
   def hex2Bytes(hex: String): Array[Byte] = hextoT(hex, _.toByteArray)
 
+
+  def join(parts : Array[Byte]*) : Array[Byte] ={
+   //Array.concat(parts)
+    null
+  }
+
+
 }

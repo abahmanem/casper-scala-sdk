@@ -12,7 +12,7 @@ object HexUtils {
    * @return
    */
   def hexToBytes(hexString: String): Array[Byte] = try {
-    Hex.decodeHex(hexString.toCharArray())
+    Hex.decodeHex(hexString)
   }
   catch {
     case x: DecoderException => throw new IllegalArgumentException("Unable to decode: " + hexString, x)

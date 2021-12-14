@@ -5,18 +5,16 @@ import org.scalatest.funsuite.AnyFunSuite
 import com.casper.sdk.types.cltypes.CLPublicKey
 
 class CLPublicKeyDeserializerTest  extends AnyFunSuite {
-
-
-  val key = "\"01c6d11a0fa563f8cc3ed5e967d5901c80004bdcde6250ddea18af2b4eae0a902d\""
-
+  
   /**
    * Test  Deserialize CLPublicKey
    */
-
   test("Deserialize CLPublicKey") {
+    val key =""" "017d96b9A63ABCB61C870a4f55187A0a7AC24096Bdb5Fc585c12a686a4D892009e" """
     val pubKey = JsonConverter.fromJson[CLPublicKey](key)
-    info("key is not null")
+    info("PublicKey is not null")
     assert(pubKey!=null)
-   // assert(key.bytes == new CLPublicKey(JSON).bytes)
+    info("pubKey.bytes  is the same as new CLPublicKey(\"017d96b9A63ABCB61C870a4f55187A0a7AC24096Bdb5Fc585c12a686a4D892009e\").bytes")
+    assert(pubKey.bytes.sameElements(new CLPublicKey("017d96b9A63ABCB61C870a4f55187A0a7AC24096Bdb5Fc585c12a686a4D892009e").bytes))
   }
 }

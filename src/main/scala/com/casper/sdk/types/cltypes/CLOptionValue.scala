@@ -1,7 +1,10 @@
 package com.casper.sdk.types.cltypes
 
+import com.casper.sdk.util.HexUtils
+
 /**
  * CLOptionValue
+ *
  * @param bytes
  * @param clTypeOption
  * @param parsed
@@ -19,5 +22,5 @@ class CLOptionValue(
    * @param clTypeOption
    * @param parsed
    */
-  def this(hexBytes : String, clTypeOption: CLTypeInfo , parsed : Any) =   this(hexBytes.getBytes(), clTypeOption, parsed)
+  def this(hexBytes : String, clTypeOption: CLTypeInfo , parsed : Any) =   this(HexUtils.hexToBytes(hexBytes), clTypeOption, parsed)
 }
