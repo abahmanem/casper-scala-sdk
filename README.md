@@ -98,7 +98,7 @@ val block = client.getBlockByHeight(371608)
 Retrieves a Deploy object.
 
 call parameters :
--deploy hash
+- deploy hash
 
 ```
 val deploy = getDeploy("5545207665f6837F44a6BCC274319280B73a6f0997F957A993e60f878A736678")
@@ -117,7 +117,7 @@ Retrieves a NodeStatus object.
 Retrieves Transfert List within a block.
 
 call parameters :
--block hash 
+- block hash
 
 ```
 val transfers = client.getBlockTransfers("a623841478381D78C769636582305ef724f561d7314B4daED19A3EA6373Dd778")
