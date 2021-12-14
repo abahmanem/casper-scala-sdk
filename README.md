@@ -77,7 +77,7 @@ Retrieves a Block object.
    #### using block hash : 
 
 call parameters :
--block hash
+- block hash
 
 ```
 val block = client.getBlock("74dce8911A3EDf0f872dC11F0a63Ca9fE1b55b7188a9Feaaf431518bF9c508B4")
@@ -86,7 +86,8 @@ val block = client.getBlock("74dce8911A3EDf0f872dC11F0a63Ca9fE1b55b7188a9Feaaf43
    #### using block height : 
 
 call parameters :
--block height
+- block height
+
 
 ```
 val block = client.getBlockByHeight(371608)
