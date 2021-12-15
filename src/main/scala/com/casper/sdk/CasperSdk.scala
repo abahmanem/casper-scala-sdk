@@ -16,7 +16,6 @@ import com.casper.sdk.util.{IdInstance, implicits}
  */
 
 class CasperSdk(url: String)(implicit id: IdInstance) extends RPCCommand(new HttpRPCService(url)) {
-  //Milestone #1
 
   /**
    * get peers list
@@ -57,7 +56,6 @@ class CasperSdk(url: String)(implicit id: IdInstance) extends RPCCommand(new Htt
    */
   def getStatus(): NodeStatus = call[NodeStatus](Method.INFO_GET_STATUS, Seq.empty)
 
-  //chain_get_block_transfers
 
   /**
    * getBlockTransfers
@@ -125,7 +123,7 @@ class CasperSdk(url: String)(implicit id: IdInstance) extends RPCCommand(new Htt
    */
   def getRpcSchema(): String = call[String](Method.RPC_SCHEMA, Seq.empty)
 
-  //Milestone #3
+
   // def put_deploy
 
 }

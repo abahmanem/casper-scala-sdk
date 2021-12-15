@@ -15,31 +15,15 @@ object MainnetTester  extends  App {
 
   val client = new CasperSdk("http://65.21.202.120:7777/rpc")
 
-
-  val m =  Map("Height" -> "blockHeight")
-
- println( JsonConverter.toJson(m))
-
-
    val stateRootHash = client.getStateRootHash("7ededrtzg9fffff700e6baed36e8cb99400da0449fae6c95c")
-
-
   println(client.getPeers())
   println(client.getStateRootHash(""))
   println(client.getBlock("995ea06c3569bd8cba2759c45db7f2f0d5d7d9ceb11adfa41260d39c2af15ccd"))
   println(client.getAuctionInfo("995ea06c3569bd8cba2759c45db7f2f0d5d7d9ceb11adfa41260d39c2af15ccd"))
   println(client.getDeploy("17a68cdf2b6829bcf41ee53e73d086b43315c67a5afaa30044fdf3c5000ad186"))
-//  println(client.getEraInfoBySwitchBlock("e47cbf904abc1258399699d67d85030d5e987324955c775b3fbb633abd4fd43f"))
-
   client.getBlock("fr85r8745F6aCe634eD82aC54545488e597d55920Ff1dE8e5dfffdfd9558736EF570d")
-
- // 2aCa74CF33F6aCe634eD82aC88e597d55920Ff1dE8e5dfffdfd9558736EF570d
-
-
   println(JsonConverter.toJson(Map("Uref" -> Map("dictionary_item_key" -> "dgfg" , "seed_uref"->"xcgfdgf"))))
-
-
-  //Account
+ //Account
   val SS = client.getStateItem("967d608f02a2710bf550878ba28774c87c448a3618aee5900d2cdbf28162366d","account-hash-85148dcd6c54b77e462a9acf387fb05aca953a83011db2c601716de0af1cf47c"
     ,Seq.empty)
 

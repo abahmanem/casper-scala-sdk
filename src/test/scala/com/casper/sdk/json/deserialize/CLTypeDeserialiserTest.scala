@@ -12,8 +12,8 @@ class CLTypeDeserialiserTest  extends AnyFunSuite {
 
   test("Deserialize  U512 CLType") {
      val u512 = """"U512""""
-    val cltype = JsonConverter.fromJson[CLType](u512)
-    assert(cltype == CLType.U512)
+     val cltype = JsonConverter.fromJson[CLType](u512)
+     assert(cltype == CLType.U512)
    }
 
   /**
@@ -22,7 +22,7 @@ class CLTypeDeserialiserTest  extends AnyFunSuite {
 
   test("Deserialize  ByteArray CLType") {
     val byteArray = """{
-                      |                                    "ByteArray": 32
+                      |                               "ByteArray": 32
                       |                                }""".stripMargin
     val cltype = JsonConverter.fromJson[CLType](byteArray)
     assert(cltype == CLType.ByteArray)
@@ -32,18 +32,12 @@ class CLTypeDeserialiserTest  extends AnyFunSuite {
    * Test  Deserialize Option CLType
    */
 
-
   test("Deserialize  Option CLType") {
     val option = """{
-                      |                                    "Option": "U64"
+                      |                               "Option": "U64"
                       |                                }""".stripMargin
     val cltype = JsonConverter.fromJson[CLType](option)
     assert(cltype == CLType.Option)
   }
-
-
-{
-
-}
 
 }
