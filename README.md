@@ -202,7 +202,7 @@ call parameters :
 
 - state root hash
 - item key
-- seed uref hahs
+- seed uref hash
 
 ```
 val storedVvalue = client.getDictionaryItem("8180307A39A8583a4a164154C360FB9Ab9B15A5B626295635A62DFc7A82e66a3",
