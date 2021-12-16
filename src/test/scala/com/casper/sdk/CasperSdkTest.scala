@@ -118,8 +118,12 @@ class CasperSdkTest extends AnyFunSuite {
    */
   test("Get Deploy using a Deploy hash parameter") {
     val deploy = client.getDeploy("5545207665f6837F44a6BCC274319280B73a6f0997F957A993e60f878A736678")
-    info("deploy  hash : "+deploy.hash)
+    info("deploy  header is not null")
     assert(deploy.header != null)
+    info("This deploy  has a ModuleBypes paiement " )
+    assert(deploy.payment.getClass.getSimpleName == "ModuleBytes")
+    info("This deploy  has a StoredContractByHash as session" )
+    assert(deploy.session.getClass.getSimpleName == "StoredContractByHash")
   }
   /**
    * Test Get Deploy using an empty Deploy hash parameter
@@ -275,7 +279,6 @@ class CasperSdkTest extends AnyFunSuite {
    //TODO
   }
 
-
   /**
    * Test getStateItem with with wrong parameters
    */
@@ -287,7 +290,6 @@ class CasperSdkTest extends AnyFunSuite {
     assert(caught.getMessage == "An error occured when invoking RPC method: state_get_item with params: ArraySeq(808ad642fefe6a0d3cadfb151a39aecb37183121ae20565ab32f5c04db20513e, hash-1c1545ab3bdbe0df3823a53c8160fc1960847cd3008376701f73e5e3ff13bbc9, List()). RPC error code: -32003 , RPC error message: state query failed: ValueNotFound(\"Failed to find base key at path: Key::Hash(1c1545AB3bdbe0DF3823A53C8160fc1960847cD3008376701f73E5E3fF13BbC9)\")")
 
   }
-
 
   /**
    * Test getStateItem with with wrong parameters

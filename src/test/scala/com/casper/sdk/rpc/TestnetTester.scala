@@ -2,7 +2,7 @@ package com.casper.sdk.rpc
 
 import com.casper.sdk.domain
 import com.casper.sdk.CasperSdk
-import com.casper.sdk.domain.deploy.{DeployNamedArg, DeployTransfer}
+import com.casper.sdk.domain.deploy.{DeployApproval, DeployNamedArg, DeployTransfer, ModuleBytes}
 import com.casper.sdk.domain.deploy
 import com.casper.sdk.util.{ByteUtils, HexUtils, JsonConverter}
 import com.casper.sdk.util.implicits.idInstance
@@ -14,7 +14,21 @@ object TestnetTester  extends  App {
 
 
 
-  val client = new CasperSdk("http://65.21.227.180:7777/rpc")
+ val client = new CasperSdk("http://65.21.227.180:7777/rpc")
+
+  val deploy = client.getDeploy("5545207665f6837F44a6BCC274319280B73a6f0997F957A993e60f878A736678")
+
+  println("sd "+deploy.payment.getClass)
+  println("de "+deploy)
+
+  val str = """[["amount",{"cl_type":"U512","bytes":"04005670E3","parsed":"3815790080"}]] """
+
+ val l= JsonConverter.fromJson[Seq[Seq[DeployNamedArg]]](str)
+
+
+  println(l)
+
+
   val storedValue = client.getStateItem("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956","account-hash-46dE97966cfc2F00C326e654baD000AB7a5E26bEBc316EF4D74715335cF32A88",Seq.empty)
   client.getBalance("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956",new URef("uref-9cC6877ft07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007"))
 

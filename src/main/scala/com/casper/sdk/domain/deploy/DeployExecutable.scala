@@ -1,7 +1,11 @@
 package com.casper.sdk.domain.deploy
 
+import com.casper.sdk.json.deserialize.DeployExecutableDeserializer
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+
 //abstract
-class DeployExecutable (val args: Set[Set[DeployNamedArg]])  extends BytesSerializable {
+@JsonDeserialize(`using` = classOf[DeployExecutableDeserializer])
+abstract class DeployExecutable (val args: Seq[Seq[DeployNamedArg]])  extends BytesSerializable {
 
   override def  encode() : Array[Byte] ={
     null

@@ -1,8 +1,9 @@
 package com.casper.sdk.domain.deploy
 
 class DeployTransfer (
-                       hash:String, entry_point:String,
-                       override  val args: Set[Set[DeployNamedArg]]
+                      // hash:String,
+                      // entry_point:String,
+                       override  val args: Seq[Seq[DeployNamedArg]]
                      )  extends DeployExecutable(args) {
 
 

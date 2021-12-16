@@ -5,5 +5,6 @@ import com.casper.sdk.types.cltypes.CLValue
  *
  */
 case class DeployNamedArg(
-                          name:String,value:CLValue
+                          name:String,
+                          value:CLValue
                          )
