@@ -1,8 +1,9 @@
 package com.casper.sdk.util
 
-import org.apache.commons.codec.DecoderException
-import org.apache.commons.codec.binary.Hex
 
+/**
+ * Bytes utility object
+ */
 object ByteUtils {
   /**
    * concat byte arrays

@@ -1,9 +1,8 @@
 package com.casper.sdk.util
 
-import org.apache.commons.codec.DecoderException
-import org.apache.commons.codec.binary.Hex
-import scala.language.postfixOps
-
+/**
+ * Hex utility object
+ */
 object HexUtils {
 
   /**

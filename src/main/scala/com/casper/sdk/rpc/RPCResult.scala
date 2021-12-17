@@ -38,7 +38,7 @@ class RPCResult[T: ClassTag](
 
 
   /**
-   * * Custom constructor with a generic Capser Result type 
+   * * Custom constructor with a generic Capser Result type
    * @param result
    */
   def this(result: T) = this("2.0", 1, Some(result), None)
