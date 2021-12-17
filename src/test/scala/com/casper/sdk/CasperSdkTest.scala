@@ -120,7 +120,7 @@ class CasperSdkTest extends AnyFunSuite {
     val deploy = client.getDeploy("5545207665f6837F44a6BCC274319280B73a6f0997F957A993e60f878A736678")
     info("deploy  header is not null")
     assert(deploy.header != null)
-    info("This deploy  has a ModuleBypes paiement " )
+    info("This deploy  has a ModuleBytes paiement " )
     assert(deploy.payment.getClass.getSimpleName == "ModuleBytes")
     info("This deploy  has a StoredContractByHash as session" )
     assert(deploy.session.getClass.getSimpleName == "StoredContractByHash")
@@ -263,7 +263,7 @@ class CasperSdkTest extends AnyFunSuite {
    */
   test("getStateItem   retrieving Account") {
     val storedValue = client.getStateItem("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956","account-hash-46dE97966cfc2F00C326e654baD000AB7a5E26bEBc316EF4D74715335cF32A88",Seq.empty)
-    info("assert contract is  not null ")
+    info("assert contract is  null ")
     assert(storedValue.Contract == null)
     info("assert account is not null ")
     assert(storedValue.Account != null)

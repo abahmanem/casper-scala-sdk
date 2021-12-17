@@ -8,13 +8,9 @@ import com.casper.sdk.util.IdInstance
 import scala.reflect.*
 
 /**
- * RPC Client class
- * @param method
- * @param params
- * @tparam T
- * @return
+ * RPC client class
+ *
  */
-
 trait RPCCommand(rpcService: RPCService)(implicit id: IdInstance) {
 
 

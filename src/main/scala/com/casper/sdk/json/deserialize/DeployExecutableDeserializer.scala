@@ -45,7 +45,7 @@ class DeployExecutableDeserializer extends JsonDeserializer[DeployExecutable] {
       it.next() match {
         case "ModuleBytes" => {
 
-          deployexe = new ModuleBytes(treeNode.get("ModuleBytes").get("module_bytes").toString, getArgs("ModuleBytes", treeNode))
+          deployexe = new ModuleBytes(treeNode.get("ModuleBytes").get("module_bytes").toString.getBytes, getArgs("ModuleBytes", treeNode))
         }
         case "StoredContractByHash" => {
           deployexe = new StoredContractByHash(treeNode.get("StoredContractByHash").get("hash").toString, treeNode.get("StoredContractByHash").get("entry_point").toString,
