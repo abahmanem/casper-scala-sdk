@@ -56,7 +56,6 @@ class HttpRPCService(var url: String, var httpClient: OkHttpClient) extends RPCS
    val response = post(JsonConverter.toJson(request))
     try {
       //We add rpc_call attribute in json response. It is needed for the deserialization of RPCRESULT subtypes
-      val tpe = implicitly[ClassTag[T]].runtimeClass.asInstanceOf[Class[T]].getName
       val typedJsonBody = response.body.patch(1,"\"rpc_call\":\"" + request.method + "\",", 0)
       JsonConverter.fromJson[RPCResult[T]](typedJsonBody)
     } catch {
@@ -91,9 +90,8 @@ class HttpRPCService(var url: String, var httpClient: OkHttpClient) extends RPCS
     val JSON: MediaType = HttpRPCService.JSON_MEDIA_TYPE
     val bytes = request.getBytes(StandardCharsets.UTF_8)
     val body = RequestBody.create(bytes, JSON)
-    val httpRequest: Request = new Request.Builder().url(url).post(body).build()
-    httpRequest
-  }
+    new Request.Builder().url(url).post(body).build()
+    }
 }
 
 /**
