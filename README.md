@@ -166,7 +166,7 @@ call parameters :
 
 ````
 val storedValue = client.getStateItem("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956","hash-4dd10a0b2a7672e8ec964144634ddabb91504fe50b8461bac23584423318887d",Seq.empty)
-val contratc = storedValue.Contract
+val contract = storedValue.Contract
 ````
 
   #### An account  :
