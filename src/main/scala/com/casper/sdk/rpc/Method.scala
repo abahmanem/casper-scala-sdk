@@ -1,7 +1,7 @@
 package com.casper.sdk.rpc
 
 /**
- * Enum with Capser netowrk RPC availaible  methods
+ * Enum with Capser netowrk RPC available  methods
  */
 
 enum Method(val name: String) {
@@ -17,8 +17,4 @@ enum Method(val name: String) {
   case STATE_GET_BALANCE extends Method("state_get_balance")
   case STATE_GET_DICTIONARY_ITEM extends Method("state_get_dictionary_item")
   case RPC_SCHEMA extends Method("rpc.discover")
-
-  
-  
-  
  }

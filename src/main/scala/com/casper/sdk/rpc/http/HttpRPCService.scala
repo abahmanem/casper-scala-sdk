@@ -23,7 +23,7 @@ import  okhttp3._
 class HttpRPCService(var url: String, var httpClient: OkHttpClient) extends RPCService {
 
   /**
-   * Construcotr with URL parameter
+   * Constructor with URL parameter
    *
    * @param url
    */
