@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
  * @param bytes
  */
 @JsonDeserialize(`using` = classOf[AccountHashDeserializer])
-class AccountHash(override val bytes: Array[Byte]) extends CLValue(bytes, CLType.Default) {
+class AccountHash(val bytes: Array[Byte]){ //extends CLValue(bytes, CLType. .Default) {
 
   /**
    * format AccountHash objet into : account-hash-85148dcd6c54b77e462a9acf387fb05aca953a83011db2c601716de0af1cf47c

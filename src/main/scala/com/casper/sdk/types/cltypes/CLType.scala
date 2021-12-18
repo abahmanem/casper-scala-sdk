@@ -77,10 +77,6 @@ enum CLType(val clType: Int) {
 
   /** Public key */
   case PublicKey extends CLType(22)
-
-  /** Public key */
-  case Default extends CLType(23)
-
 }
 object CLType{
   /**
