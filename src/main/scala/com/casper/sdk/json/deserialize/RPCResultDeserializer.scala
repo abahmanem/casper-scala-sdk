@@ -45,6 +45,7 @@ class RPCResultDeserializer extends JsonDeserializer[RPCResult[?]] {
           case Method.STATE_GET_AUCTION_INFO => new RPCResult(JsonConverter.fromJson[AuctionState](node.findValue("auction_state").toString))
           case Method.STATE_GET_ITEM | Method.STATE_GET_DICTIONARY_ITEM => new RPCResult(JsonConverter.fromJson[StoredValue](node.findValue("stored_value").toString))
           case Method.RPC_SCHEMA => new RPCResult(node.toString.patch(1, "", 26)) //wipe out the rpc_call attribute
+          case null => throw IllegalArgumentException("RPCResultDeserializer received a non valid RPC call")
         }
       }
     }

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
 import java.io.IOException
 
 /**
- *
+ * Custom Deserializer for DeployExecutable
  */
 class DeployExecutableDeserializer extends JsonDeserializer[DeployExecutable] {
   @throws[IOException]

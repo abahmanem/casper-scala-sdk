@@ -23,4 +23,6 @@ class CLOptionValue(
    * @param parsed
    */
   def this(hexBytes : String, clTypeOption: CLTypeInfo , parsed : Any) =   this(HexUtils.fromHex(hexBytes), clTypeOption, parsed)
+
+
 }
