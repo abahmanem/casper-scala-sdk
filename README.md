@@ -14,7 +14,8 @@ In your build.sbt, add :
 
 
 ```
- libraryDependencies +=  "network.casper" %% "casper-scala-sdk" % "1.0.0"
+
+ libraryDependencies += "io.caspercommunity" %% "casper-scala-sdk" % "1.0.0"
  
 ```
 
@@ -25,7 +26,7 @@ In your maven pom file add :
 
 ```
 <dependency>
-  <groupId>network.casper</groupId>
+  <groupId>io.caspercommunity</groupId>
   <artifactId>casper-scala-sdk_${scala.version}</artifactId>
   <version>M.m.i</version>
 </dependency>  
