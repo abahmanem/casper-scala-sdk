@@ -9,13 +9,12 @@ Scala client library for interracting with CasperLabs nodes.
 # How to install
 
 ## SBT
-(There is no artefact published yet, we will publish one soon)
 
 In your build.sbt, add :
 
 
 ```
- libraryDependencies +=  "network.casper" %% "casper-scala-sdk" % "M.m.i"
+ libraryDependencies +=  "network.casper" %% "casper-scala-sdk" % "1.0.0"
  
 ```
 
