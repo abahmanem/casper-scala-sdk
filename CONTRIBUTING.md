@@ -4,13 +4,13 @@ The following is a set of rules and guidelines for contributing to this repo. Pl
 
 ## Submitting issues
 
-If you have questions about how to use Casper scala SDK, please direct these to the related discord channels:
+If you have questions about how to use Casper scala SDK, please send an email to : hello@caspercommunity.io.
 
-* [#smart-contracts](https://discord.gg/casperblockchain)
-* [#sdk-development](https://discord.gg/casperblockchain)
 
 ### Guidelines
+
 * Please search the existing issues first, it's likely that your issue was already reported or even fixed.
+
 - Go to the main page of the repository, click "issues" and type any word in the top search/command bar.
 - You can also filter by appending e. g. "state:open" to the search string.
 -  More info on search syntax within GitHub
@@ -33,7 +33,7 @@ We use the Developer Certificate of Origin (DCO) as a additional safeguard
 for the Casper Scala SDK project. This is a well established and widely used
 mechanism to assure contributors have confirmed their right to license
 their contribution under the project's license.
-Please read [developer-certificate-of-origin](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/.github/developer-certificate-of-origin.
+Please read [developer-certificate-of-origin] (https://github.com/caspercommunityio/casper-scala-sdk/blob/master/.github/developer-certificate-of-origin
 If you can certify it, then just add a line to every git commit message:
 
 ````
