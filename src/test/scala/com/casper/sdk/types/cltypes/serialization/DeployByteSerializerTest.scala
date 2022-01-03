@@ -61,6 +61,6 @@ class DeployByteSerializerTest extends AnyFunSuite {
                 |    ]
                 |}""".stripMargin
 
-  assert(serializedDeploy== HexUtils.toHex(deployApprovalByteSerializer.toBytes(JsonConverter.fromJson[Deploy](jsondeploy))))
+    assert(serializedDeploy== HexUtils.toHex(deployApprovalByteSerializer.toBytes(JsonConverter.fromJson[Deploy](jsondeploy))))
    }
 }
