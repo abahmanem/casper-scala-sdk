@@ -6,9 +6,5 @@ class StoredVersionedContractByName (
                                      entry_point:String,
                                      override  val args: Seq[Seq[DeployNamedArg]]
                                     )  extends DeployExecutable(args) {
-
-
-  override def  encode() : Array[Byte] ={
-    null
-  }
+  def tag=4
 }

@@ -5,7 +5,7 @@ import com.casper.sdk.rpc.Method
 /**
  * Uref Access rights Enum
  */
-enum AccessRight(val bits:Int) extends App{
+enum AccessRight(val bits:Byte) extends App{
   /* No permissions 0b00*/
   case ACCESS_NONE extends AccessRight(0)
   /* Permission to read the value under the associated [[URef]] 0b001*/
@@ -23,7 +23,7 @@ enum AccessRight(val bits:Int) extends App{
   /* Permission to read, add to, or write the value under the associated [[URef]]  0b111*/
   case ACCESS_READ_ADD_WRITE extends AccessRight(7 )
 
-  def  get(bits: Int) : AccessRight ={
+  def  get(bits: Byte) : AccessRight ={
     AccessRight.values.find(_.bits == bits).get
   }
 

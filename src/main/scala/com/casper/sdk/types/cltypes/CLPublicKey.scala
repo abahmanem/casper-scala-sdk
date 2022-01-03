@@ -3,7 +3,7 @@ package com.casper.sdk.types.cltypes
 import com.casper.sdk.json.deserialize.CLPublicKeyDeserializer
 import com.casper.sdk.types.cltypes
 import com.casper.sdk.types.cltypes.CLPublicKey.dropAlgorithmBytes
-import com.casper.sdk.util.HexUtils
+import com.casper.sdk.util.{ByteUtils, HexUtils}
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.casper.sdk.types.cltypes.KeyAlgorithm
 /**
@@ -14,7 +14,7 @@ import com.casper.sdk.types.cltypes.KeyAlgorithm
 @JsonDeserialize(`using` = classOf[CLPublicKeyDeserializer])
 class CLPublicKey(
                    override val bytes: Array[Byte]
-                 ) extends CLValue(bytes, CLType.PublicKey) {
+                 ) extends CLValue(bytes, CLType.PublicKey) with Tag {
 
   var keyAlgorithm: KeyAlgorithm = null
 
@@ -24,10 +24,10 @@ class CLPublicKey(
    * @param key
    * @param algo
    */
-  def this(key: Array[Byte], keyAlgo: KeyAlgorithm) = {
-    this(key)
+  def this(bytes: Array[Byte], keyAlgo: KeyAlgorithm) = {
+    this(bytes)
     keyAlgorithm = keyAlgo
-    assert(key!=null)
+    assert(bytes!=null)
     assert(keyAlgo!=null)
   }
 
@@ -43,11 +43,16 @@ class CLPublicKey(
    * format to Hex account , ie : 0106cA7c39cD272DbF21a86EeB3B36B7c26E2e9b94af64292419f7862936bcA2cA, 01 being tag bytes
    * @return
    */
-  def formatAsHexAccount : String = HexUtils.toHex(
-  //Array.concat[Byte](
-    Array[Byte]{keyAlgorithm.bits.toByte}.concat(bytes)
-  )
+  def formatAsHexAccount : String = HexUtils.toHex(formatAsByteAccount)
+  
 
+  /**
+   * format to Byte array with algorithm
+   * @return
+   */
+  def formatAsByteAccount : Array[Byte] = ByteUtils.join(Array.fill(1)(keyAlgorithm.bits.toByte), bytes)
+
+  override  def tag=1
 }
 
 /**
@@ -60,6 +65,7 @@ object CLPublicKey {
    * @return
    */
   def dropAlgorithmBytes(key: Array[Byte]): Array[Byte] = {
-    key.drop(2)
+    key.drop(1)
   }
+
 }

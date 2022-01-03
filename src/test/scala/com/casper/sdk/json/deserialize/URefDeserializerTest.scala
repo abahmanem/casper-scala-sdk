@@ -3,6 +3,4 @@ import org.scalatest.funsuite.AnyFunSuite
 class URefDeserializerTest  extends AnyFunSuite {
 
   
-  
-  
 }

@@ -3,7 +3,7 @@ name := "casper-scala-sdk"
 version := "1.0.0"
 
 scalaVersion := "3.0.2"
-
+//scalaVersion := "2.13.7"
 
 //ScalaTest framework
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.10"
@@ -24,4 +24,46 @@ libraryDependencies += "com.squareup.okhttp3" % "okhttp" % "4.9.2"
 
 libraryDependencies += "org.scodec" %% "scodec-bits" % "1.1.29"
 
+libraryDependencies += "commons-codec" % "commons-codec" % "1.15"
 
+
+
+//publish
+
+ThisBuild / organization := "io.caspercommunity"
+ThisBuild / organizationName := "caspercommunity"
+ThisBuild / organizationHomepage := Some(url("https://caspercommunity.io/"))
+
+ThisBuild / scmInfo := Some(
+  ScmInfo(
+    url("https://github.com/caspercommunity/casper-scala-sdk"),
+    "scm:git@github.com:caspercommunityio/casper-scala-sdk"
+  )
+)
+ThisBuild / developers := List(
+  Developer(
+    id    = "mabahma",
+    name  = "mabahma",
+    email = "elmabahma@gmail.com",
+    url   = url("https://caspercommunity.io")
+  )
+)
+
+ThisBuild / description := "casper scala sdk"
+ThisBuild / licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT"))
+ThisBuild / homepage := Some(url("https://caspercommunity.io"))
+
+// Remove all additional repository other than Maven Central from POM
+ThisBuild / pomIncludeRepository := { _ => false }
+
+sonatypeCredentialHost := "s01.oss.sonatype.org"
+sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
+
+
+
+ThisBuild / publishTo := {
+  val nexus = "https://s01.oss.sonatype.org/"
+  if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
+  else Some("releases" at nexus + "service/local/staging/deploy/maven2")
+}
+ThisBuild / publishMavenStyle := true

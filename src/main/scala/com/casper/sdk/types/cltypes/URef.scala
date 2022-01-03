@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
  * @param bytes
  */
 @JsonDeserialize(`using` = classOf[URefDeserializer])
-class URef(override val bytes: Array[Byte]) extends CLValue(bytes, CLType.URef) {
+class URef(override val bytes: Array[Byte]) extends CLValue(bytes, CLType.URef)   with Tag {
   var accessRights: AccessRight = null
 
   /**
@@ -32,8 +32,8 @@ class URef(override val bytes: Array[Byte]) extends CLValue(bytes, CLType.URef) 
    * format Uref objet into : uref-51215724cc359a60797f64d88543002a069176f3ea92d4c37d31304e2849ef13-004
    * @return
    */
-  def format: String = String.format(URef.UREF_PREFIX+"-%s-%03d", HexUtils.toHex(bytes).drop(2), accessRights.bits)
-
+  def format: String = String.format(URef.UREF_PREFIX+"-%s-%03d", HexUtils.toHex(bytes), accessRights.bits)
+  override  def tag=2
 }
 
 /**

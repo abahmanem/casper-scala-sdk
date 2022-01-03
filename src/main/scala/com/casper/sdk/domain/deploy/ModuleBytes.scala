@@ -9,10 +9,7 @@ case class ModuleBytes (
                     val modules_bytes :Array[Byte],
                     override val args: Seq[Seq[DeployNamedArg]]
                   ) extends DeployExecutable(args) {
-
-  override def  encode() : Array[Byte] ={
-    null
-  }
+  def tag=0
 }
 
 

@@ -6,7 +6,6 @@ import com.casper.sdk.util.JsonConverter
 import com.fasterxml.jackson.core.{JsonParser, ObjectCodec, TreeNode}
 import com.fasterxml.jackson.databind.node.TextNode
 import com.casper.sdk.types.cltypes.CLValue
-
 import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
 
 import java.io.IOException
@@ -36,7 +35,7 @@ class DeployExecutableDeserializer extends JsonDeserializer[DeployExecutable] {
       for (i <- 0 to (args.size() - 1)) {
         val subArg = args.get(i)
         assert(subArg.isArray)
-        deployArgsSeq = deployArgsSeq :+ new DeployNamedArg(subArg.get(0).toString, JsonConverter.fromJson[CLValue](subArg.get(1).toString))
+        deployArgsSeq = deployArgsSeq :+ new DeployNamedArg(subArg.get(0).asInstanceOf[TextNode].asText(), JsonConverter.fromJson[CLValue](subArg.get(1).toString))
       }
       Seq(deployArgsSeq)
     }
@@ -45,27 +44,28 @@ class DeployExecutableDeserializer extends JsonDeserializer[DeployExecutable] {
       it.next() match {
         case "ModuleBytes" => {
 
-          deployexe = new ModuleBytes(treeNode.get("ModuleBytes").get("module_bytes").toString.getBytes, getArgs("ModuleBytes", treeNode))
+          deployexe = new ModuleBytes(treeNode.get("ModuleBytes").get("module_bytes").asInstanceOf[TextNode].asText().getBytes, getArgs("ModuleBytes", treeNode))
         }
         case "StoredContractByHash" => {
-          deployexe = new StoredContractByHash(treeNode.get("StoredContractByHash").get("hash").toString, treeNode.get("StoredContractByHash").get("entry_point").toString,
+          deployexe = new StoredContractByHash(treeNode.get("StoredContractByHash").get("hash").asInstanceOf[TextNode].asText(),
+            treeNode.get("StoredContractByHash").get("entry_point").asInstanceOf[TextNode].asText(),
             getArgs("StoredContractByHash", treeNode))
         }
         case "StoredContractByName" => {
-          deployexe = new StoredContractByName(treeNode.get("StoredContractByName").get("name").toString,
-            treeNode.get("StoredContractByName").get("entry_point").toString,
+           deployexe = new StoredContractByName(treeNode.get("StoredContractByName").get("name").asInstanceOf[TextNode].asText(),
+            treeNode.get("StoredContractByName").get("entry_point").asInstanceOf[TextNode].asText(),
             getArgs("StoredContractByName", treeNode))
         }
         case "StoredVersionedContractByHash" => {
-          deployexe = new StoredVersionedContractByHash(treeNode.get("StoredVersionedContractByHash").get("hash").toString,
+          deployexe = new StoredVersionedContractByHash(treeNode.get("StoredVersionedContractByHash").get("hash").asInstanceOf[TextNode].asText(),
             Some(treeNode.get("StoredVersionedContractByHash").get("version").toString.toInt),
-            treeNode.get("StoredVersionedContractByHash").get("entry_point").toString,
+            treeNode.get("StoredVersionedContractByHash").get("entry_point").asInstanceOf[TextNode].asText(),
             getArgs("StoredVersionedContractByHash", treeNode))
         }
         case "StoredVersionedContractByName" => {
-          deployexe = new StoredVersionedContractByHash(treeNode.get("StoredVersionedContractByName").get("name").toString,
+          deployexe = new StoredVersionedContractByHash(treeNode.get("StoredVersionedContractByName").get("name").asInstanceOf[TextNode].asText(),
             Some(treeNode.get("StoredVersionedContractByName").get("version").toString.toInt),
-            treeNode.get("StoredVersionedContractByName").get("entry_point").toString,
+            treeNode.get("StoredVersionedContractByName").get("entry_point").asInstanceOf[TextNode].asText(),
             getArgs("StoredVersionedContractByName", treeNode))
         }
         case "Transfer" => {

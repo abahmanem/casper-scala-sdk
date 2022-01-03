@@ -1,0 +1,17 @@
+package com.casper.sdk.types.cltypes.serialization
+import com.casper.sdk.types.cltypes.CLValue
+import com.casper.sdk.types.cltypes.CLPublicKey
+import com.casper.sdk.util.HexUtils
+import com.casper.sdk.domain.deploy.DeployHeader
+import org.scalatest.funsuite.AnyFunSuite
+class DeployHeaderByteSerializerTest extends AnyFunSuite {
+
+  val serializer = new DeployHeaderByteSerializer()
+
+  test("Test serialize DeployHeader ") {
+    val header = new DeployHeader(new CLPublicKey("01d9bf2148748a85c89da5aad8ee0b0fc2d105fd39d41a4c796536354f0ae2900c"),
+      "1605573564072", "3600000", 1, "4811966d37fe5674a8af4001884ea0d9042d1c06668da0c963769c3a01ebd08f",
+      Seq("0101010101010101010101010101010101010101010101010101010101010101"), "casper-example")
+    assert("01d9bf2148748a85c89da5aad8ee0b0fc2d105fd39d41a4c796536354f0ae2900ca856a4d37501000080ee36000000000001000000000000004811966d37fe5674a8af4001884ea0d9042d1c06668da0c963769c3a01ebd08f0100000001010101010101010101010101010101010101010101010101010101010101010e0000006361737065722d6578616d706c65" == HexUtils.toHex(serializer.toBytes(header)))
+  }
+}

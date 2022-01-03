@@ -1,18 +1,21 @@
 package com.casper.sdk.util
 
+import org.apache.commons.codec.DecoderException
+import org.apache.commons.codec.binary.Hex
+
 /**
  * Hex utility object
  */
 object HexUtils {
 
-  /**
+ /**
    * Convert byte array to hex string
    *
    * @param bytes
    * @param sep
    * @return
    */
-  def toHex(bytes: Array[Byte], separator: Option[String] = None): String = bytes.map("%02x".format(_)).mkString(separator.getOrElse(""))
+  def toHex(bytes: Array[Byte], separator: Option[String] = None): String = Hex.encodeHexString(bytes)
 
   /**
    *
@@ -30,11 +33,9 @@ object HexUtils {
    * @return byte array
    */
   def fromHex(hex: String): Array[Byte] = try {
-    require((hex.length & 1) == 0, "Hex string must have length of 2n.")
-    hextoT(hex, _.toByteArray)
+    Hex.decodeHex(hex.toCharArray)
   }
   catch {
-    case x: NumberFormatException => throw new IllegalArgumentException("Unable to decode: " + hex, x)
+    case x: DecoderException => throw new IllegalArgumentException("Unable to decode: " + hex, x)
   }
-
 }

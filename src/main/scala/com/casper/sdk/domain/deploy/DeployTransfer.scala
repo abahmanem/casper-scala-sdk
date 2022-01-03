@@ -1,15 +1,11 @@
 package com.casper.sdk.domain.deploy
 
+/**
+ * DeployTransfer Entity
+ * @param args
+ */
 class DeployTransfer (
-                      // hash:String,
-                      // entry_point:String,
-                       override  val args: Seq[Seq[DeployNamedArg]]
+                     override  val args: Seq[Seq[DeployNamedArg]]
                      )  extends DeployExecutable(args) {
-
-
-
-
-  override def  encode() : Array[Byte] ={
-    null
-  }
+   def tag=5
 }

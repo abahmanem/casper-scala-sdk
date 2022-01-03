@@ -44,7 +44,6 @@ object KeyAlgorithm {
    * @return
    */
   def fromId(id: Char): KeyAlgorithm = {
-
     id match {
       case 1 | '1' => ED25519
       case 2 | '2' => SECP256K1

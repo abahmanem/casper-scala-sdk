@@ -6,8 +6,5 @@ case class StoredContractByHash(
                                  override  val args: Seq[Seq[DeployNamedArg]]
                                )  extends DeployExecutable(args) {
 
-
-  override def  encode() : Array[Byte] ={
-   null
-  }
+  def tag=1
 }

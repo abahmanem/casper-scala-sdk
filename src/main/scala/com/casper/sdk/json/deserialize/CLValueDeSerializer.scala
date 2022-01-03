@@ -4,13 +4,14 @@ import com.casper.sdk.types.cltypes.{CLOptionTypeInfo, _}
 import com.fasterxml.jackson.core.{JsonParser, ObjectCodec, TreeNode}
 import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
 import com.fasterxml.jackson.databind.node.{NumericNode, TextNode}
+import  com.casper.sdk.types.cltypes.*
 
 import java.io.IOException
 
 /**
  *   Custom fasterXml Deserializer for CLValue
  */
-class CLValueSerializer extends JsonDeserializer[CLValue] {
+class CLValueDeSerializer extends JsonDeserializer[CLValue] {
   @throws[IOException]
   override def deserialize(parser: JsonParser, ctx: DeserializationContext): CLValue = {
     val codec: ObjectCodec = parser.getCodec
@@ -46,7 +47,7 @@ class CLValueSerializer extends JsonDeserializer[CLValue] {
         val sizeNode = typeNode.get(CLType.ByteArray.toString)
         var size = 0
         if (sizeNode.isInstanceOf[NumericNode]) size = sizeNode.asInstanceOf[NumericNode].asInt
-        new CLByteArrayInfo(size)
+        new CLByteArrayTypeInfo(size)
       }
       case CLType.Option => {
         val optionNode = typeNode.get(CLType.Option.toString)
