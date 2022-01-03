@@ -7,7 +7,7 @@ import com.casper.sdk.util.HexUtils
 import scala.collection.mutable.ArrayBuilder
 
 /**
- *  DeployByteSerializer
+ * DeployByteSerializer
  */
 class DeployByteSerializer extends BytesSerializable[Deploy] {
 
@@ -22,7 +22,7 @@ class DeployByteSerializer extends BytesSerializable[Deploy] {
       .addAll(HexUtils.fromHex(value.hash))
       .addAll(deployExecutableByteSerializer.toBytes(value.payment))
       .addAll(deployExecutableByteSerializer.toBytes(value.session))
-     .addAll(CLValue.U32(value.approvals.size).bytes)
+      .addAll(CLValue.U32(value.approvals.size).bytes)
     for (approuval <- value.approvals) builder.addAll(approvalByteSerializer.toBytes(approuval))
     builder.result()
   }

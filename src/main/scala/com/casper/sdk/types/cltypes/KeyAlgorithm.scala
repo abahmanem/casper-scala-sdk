@@ -1,7 +1,10 @@
 package com.casper.sdk.types.cltypes
 
-import com.fasterxml.jackson.databind.ser.std.StdArraySerializers.FloatArraySerializer
 
+
+/**
+ * KeyAlgorithm Enum
+ */
 enum KeyAlgorithm(val bits: Int) {
   case ED25519 extends KeyAlgorithm(1)
   case SECP256K1 extends KeyAlgorithm(2)

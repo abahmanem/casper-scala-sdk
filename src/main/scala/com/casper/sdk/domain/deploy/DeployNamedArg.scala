@@ -2,7 +2,7 @@ package com.casper.sdk.domain.deploy
 
 import com.casper.sdk.types.cltypes.{CLPublicKey, CLValue}
 /**
- *
+ * DeployNamedArg entiyt class
  */
 case class DeployNamedArg(
                           val name:String,

@@ -39,7 +39,6 @@ class DeployExecutableByteSerializer extends BytesSerializable[DeployExecutable]
           .addAll(CLValue.U32(storedContractByHash.entry_point.getBytes(StandardCharsets.UTF_8).length).bytes)
           .addAll(storedContractByHash.entry_point.getBytes(StandardCharsets.UTF_8))
 
-
       case storedVersionedContractByHash: StoredVersionedContractByHash => {
         builder.addAll(HexUtils.fromHex(storedVersionedContractByHash.hash))
         storedVersionedContractByHash.version match {
@@ -47,16 +46,15 @@ class DeployExecutableByteSerializer extends BytesSerializable[DeployExecutable]
           case Some(a) => builder.addOne(0x01.toByte).addAll(CLValue.U32(storedVersionedContractByHash.version.get).bytes)
         }
       }
-
-      case transfer: DeployTransfer => {}
+      case transfer: DeployTransfer =>
     }
     builder.addAll(argsToBytes(value.args))
     builder.result()
   }
 
-  def argsToBytes(list :Seq[Seq[DeployNamedArg]]) : Array[Byte] ={
+  def argsToBytes(list: Seq[Seq[DeployNamedArg]]): Array[Byte] = {
     val builder = new ArrayBuilder.ofByte
-    builder .addAll(CLValue.U32(list.size).bytes)
+    builder.addAll(CLValue.U32(list.size).bytes)
     val argSerializer = new DeployNamedArgByteSerializer()
     for (i <- 0 to (list.size - 1)) {
       val subArg = list(i)
@@ -64,5 +62,4 @@ class DeployExecutableByteSerializer extends BytesSerializable[DeployExecutable]
     }
     builder.result()
   }
-
 }

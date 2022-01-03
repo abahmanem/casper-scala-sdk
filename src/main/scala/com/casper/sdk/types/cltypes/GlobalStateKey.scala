@@ -2,11 +2,9 @@ package com.casper.sdk.types.cltypes
 
 import scala.collection.mutable
 
+/**
+ * A key in global state
+ */
 abstract class GlobalStateKey {
 
- // val  buil = new mutable.ArrayBuilder[Byte] ()
-  import scala.collection.mutable.ArrayBuilder
-
-  val builder = new ArrayBuilder.ofLong
- // builder.
 }
