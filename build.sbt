@@ -5,11 +5,11 @@ version := "1.0.0"
 scalaVersion := "3.0.2"
 //scalaVersion := "2.13.7"
 
-//ScalaTest framework
+//scalaTest framework
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.10"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.10" % "test"
 
-//FasteXml library
+//fasterXml library
 libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.13.0"
 
 //bouncycastle crypto library
