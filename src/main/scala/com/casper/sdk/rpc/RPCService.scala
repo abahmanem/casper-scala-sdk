@@ -24,7 +24,7 @@ trait RPCService {
   def send[T: ClassTag](request: RPCRequest): RPCResult[T]
 
   /**
-   * Performs a synchronous JSON-RPC request
+   * Performs a asynchronous JSON-RPC request
    *
    * @param request : request to perform
    * @tparam T : Casper type  item to be returned by the request
