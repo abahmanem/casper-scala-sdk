@@ -40,7 +40,7 @@ class CasperSdkTest extends AnyFunSuite {
   /**
    * Test  getStateRootHash with no parameter
    */
-  test("Get state root hash with no blockHash paramter, state root hash is not empty and is 64 characters long") {
+  test("Get state root hash with no blockHash parameter, state root hash is not empty and is 64 characters long") {
     val stateRootHash = client.getStateRootHash("")
     info("state root hash : "+stateRootHash)
     assert(!stateRootHash.isEmpty)

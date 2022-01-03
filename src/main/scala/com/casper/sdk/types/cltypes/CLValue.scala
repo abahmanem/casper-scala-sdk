@@ -48,7 +48,6 @@ object CLValue {
   //Bool
   def Bool(value: Boolean): CLValue = {
     val bytes = Array[Byte]((if (value) 0x01 else 0x00).toByte)
-    //Array[Byte]((if (value) 1 else 0))
     new CLValue(bytes, CLTypeInfo(CLType.Bool), value);
   }
 
