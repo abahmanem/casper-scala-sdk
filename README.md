@@ -268,7 +268,14 @@ sbt package
 This will generate : casper-scala-sdk_${scala.version}{version}.jar. 
 
 
-## TODOS :
+## Documentation:
+
+### CasperSdk
+
+####[getPeers()](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/rpc/RPC.md#get-peers)
+
+
+
 
 -  
 
