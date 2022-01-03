@@ -272,12 +272,18 @@ This will generate : casper-scala-sdk_${scala.version}{version}.jar.
 
 ### CasperSdk
 
-####[getPeers()](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/rpc/RPC.md#get-peers)
-
-
-
-
--  
+- [getPeers](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/rpc/RPC.md#get-peers)
+- [getStateRootHash](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/rpc/RPC.md#get-state_root_hash)
+- [getBlock by hash](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/rpc/RPC.md#get-block-by-hash)
+- [getBlock by height](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/rpc/RPC.md#get-block-by-height)
+- [getStatus](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/rpc/RPC.md#get-status)
+- [getBlockTransfers](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/rpc/RPC.md#get-block-transfers)
+- [getAuctionInfo](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/rpc/RPC.md#get-auction-state)
+- [getDeploy](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/rpc/RPC.md#get-deploy)
+- [getEraInfoBySwitchBlock](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/rpc/RPC.md#get-era-summary-by-switch-block-hash)
+- [getStateItem](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/rpc/RPC.md#get--state-item)
+- [getBalance](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/rpc/RPC.md#get-account-balance)
+- [getDictionaryItem](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/rpc/RPC.md#get-dictionary-item)
 
 ## License
 
