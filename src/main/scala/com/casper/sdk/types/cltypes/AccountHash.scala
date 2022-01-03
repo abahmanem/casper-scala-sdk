@@ -17,7 +17,7 @@ class AccountHash(val bytes: Array[Byte]){ //extends CLValue(bytes, CLType. .Def
    *
    * @return
    */
-  def format: String = String.format(AccountHash.ACCOUNT_PREFIX + "%s", HexUtils.toHex(bytes).drop(2))
+  def format: String = String.format(AccountHash.ACCOUNT_PREFIX + "%s", HexUtils.toHex(bytes))
 
   /**
    * Constructor using s String Uref value
