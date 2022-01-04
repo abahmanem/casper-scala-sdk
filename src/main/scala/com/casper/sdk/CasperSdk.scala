@@ -123,9 +123,7 @@ class CasperSdk(url: String)(implicit id: IdInstance) extends RPCCommand(new Htt
    */
   def getRpcSchema(): String = call[String](Method.RPC_SCHEMA, Seq.empty)
 
-
   // def put_deploy
-
 }
 
 

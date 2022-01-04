@@ -3,7 +3,7 @@ package com.casper.sdk.types.cltypes
 import com.casper.sdk.util.HexUtils
 
 /**
- * Option CLType CLValue
+ * Option CLValue
  * @param bytes
  * @param clTypeOption
  * @param parsed
