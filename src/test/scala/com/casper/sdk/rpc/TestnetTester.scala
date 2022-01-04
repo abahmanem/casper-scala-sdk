@@ -26,14 +26,6 @@ import java.net.URL
 object TestnetTester  extends  App {
 
 
- val client = new CasperSdk("http://65.108.1.10:7777/rpc")
- val storedVvalue = client.getDictionaryItem("8180307A39A8583a4a164154C360FB9Ab9B15A5B626295635A62DFc7A82e66a3",
-  "a8261377ef9cf8e741dd6858801c71e38c9322e66355586549b75ab24bdd73f2","uref-F5ea525E6493B41DC3c9b196ab372b6F3f00cA6F1EEf8fe0544e7d044E5480Ba-007")
-
- assert(storedVvalue.CLValue !=null)
- assert(storedVvalue.CLValue.cl_infoType.cl_Type == CLType.String)
- assert(storedVvalue.CLValue.parsed == "https://caspercommunity.io")
-
 
 
 /*

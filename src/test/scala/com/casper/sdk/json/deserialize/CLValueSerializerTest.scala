@@ -1,9 +1,12 @@
 package com.casper.sdk.json.deserialize
 
-import com.casper.sdk.types.cltypes.{CLPublicKey, _}
+import com.casper.sdk.types.cltypes.{CLPublicKey, CLType, CLValue}
 import com.casper.sdk.util.{HexUtils, JsonConverter}
 import org.scalatest.funsuite.AnyFunSuite
 
+/**
+ * CLValueSerializerTest
+ */
 class CLValueSerializerTest extends AnyFunSuite {
 
 
@@ -78,7 +81,7 @@ class CLValueSerializerTest extends AnyFunSuite {
   }
 
   /**
-   *  Test deserialize  Option CLValue
+   * Test deserialize  Option CLValue
    */
   test("Deserialize Option value") {
     val option =
@@ -97,13 +100,13 @@ class CLValueSerializerTest extends AnyFunSuite {
     info("cl_type = U64 ")
     assert(value.cl_infoType.cl_Type == CLType.U64)
     info("bytes same as  HexUtils.fromHex(\"00\") ")
-     assert(value.bytes.sameElements(HexUtils.fromHex("00")))
+    assert(value.bytes.sameElements(HexUtils.fromHex("00")))
   }
 
   /**
-   *  Test deserialize  String CLValue
+   * Test deserialize  String CLValue
    */
-   
+
   test("Deserialize String value") {
 
     val str =
