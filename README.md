@@ -15,7 +15,7 @@ In your build.sbt, add :
 
 ```
 
- libraryDependencies += "io.caspercommunity" %% "casper-scala-sdk" % "1.0.0"
+ libraryDependencies += "io.caspercommunity" %% "casper-scala-sdk" % "1.0.1"
  
 ```
 
@@ -28,12 +28,10 @@ In your maven pom file add :
 <dependency>
   <groupId>io.caspercommunity</groupId>
   <artifactId>casper-scala-sdk_${scala.version}</artifactId>
-  <version>M.m.i</version>
+  <version>1.0.1</version>
 </dependency>  
 
 ```
-
-M.m.i is the version number , example 1.0.0
 
 
 # Usage examples 
