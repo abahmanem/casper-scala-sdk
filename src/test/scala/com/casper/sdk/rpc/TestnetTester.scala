@@ -2,9 +2,9 @@ package com.casper.sdk.rpc
 
 import com.casper.sdk.domain
 import com.casper.sdk.CasperSdk
-import com.casper.sdk.domain.deploy.*
-import com.casper.sdk.domain.deploy
-import com.casper.sdk.domain.deploy.DeployNamedArg
+import com.casper.sdk.domain.{EraSummary, Peer, deploy}
+import com.casper.sdk.domain
+import com.casper.sdk.domain.deploy.Deploy
 import com.casper.sdk.types.cltypes.{AccessRight, AccountHash, CLPublicKey, CLType, CLTypeInfo, CLValue, KeyAlgorithm, Signature, URef, serialization}
 import com.casper.sdk.util.{ByteUtils, HexUtils, JsonConverter, TimeUtil}
 import com.casper.sdk.util.implicits.idInstance
@@ -12,21 +12,44 @@ import scodec.bits.ByteVector
 import scodec.bits.hex
 import org.scalactic.Prettifier.default
 import com.casper.sdk.types.cltypes.serialization
-import com.casper.sdk.types.cltypes.serialization.*
+import com.casper.sdk.types.cltypes.serialization
 
+import java.io.FileWriter
+import java.io.File
 import java.math.BigInteger
 import java.nio.charset.StandardCharsets
 import math.BigInt.int2bigInt
 import scala.collection.mutable.ArrayBuilder
 import java.nio
+import scala.io.Source
+import java.net.URL
 object TestnetTester  extends  App {
 
 
+ val client = new CasperSdk("http://65.108.1.10:7777/rpc")
+ val storedVvalue = client.getDictionaryItem("8180307A39A8583a4a164154C360FB9Ab9B15A5B626295635A62DFc7A82e66a3",
+  "a8261377ef9cf8e741dd6858801c71e38c9322e66355586549b75ab24bdd73f2","uref-F5ea525E6493B41DC3c9b196ab372b6F3f00cA6F1EEf8fe0544e7d044E5480Ba-007")
+
+ assert(storedVvalue.CLValue !=null)
+ assert(storedVvalue.CLValue.cl_infoType.cl_Type == CLType.String)
+ assert(storedVvalue.CLValue.parsed == "https://caspercommunity.io")
+
+
+
 /*
- val client = new CasperSdk("http://65.21.227.180:7777/rpc")
+ val client = new CasperSdk("http://65.108.1.10:7777/rpc")
 
   val deploy = client.getDeploy("5545207665f6837F44a6BCC274319280B73a6f0997F957A993e60f878A736678")
 
+
+
+ val fileWriter = new FileWriter(new File("auction.json"))
+ fileWriter.write(JsonConverter.toJson(client.getAuctionInfo("9F2D38d6b6d139DAA70fEF85FE7f1907A1ce055ca87e260995E4B84D161d42E5")))
+ fileWriter.close()
+ */
+
+
+/*
   println("sd "+deploy.payment.getClass)
   println("de "+deploy)
 
@@ -81,7 +104,7 @@ object TestnetTester  extends  App {
   val p = new CLPublicKey("017f747b67bd3fe63c2a736739dfe40156d622347346e70f68f51c178a75ce5537")
   assert(pubKey.bytes.sameElements(p.bytes))
   println(p.formatAsHexAccount)
-*/
+
  //val b = BigInt.apply("123456789101112131415")// .int2bigInt(b)
  //var bytes = b.toByteArray
 
@@ -228,5 +251,5 @@ println(HexUtils.toHex(deployApprovalByteSerializer.toBytes(deploy)))
   var xxx = new DeployNamedArg("test",new URef("uref-9cC68775d07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007"))
   assert(srr.toBytes(xxx).sameElements(builder.result()))
 
-
+*/
 }

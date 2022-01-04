@@ -1,6 +1,5 @@
 package com.casper.sdk.types.cltypes.serialization
 import com.casper.sdk.domain.deploy.Deploy
-import com.casper.sdk.rpc.TestnetTester.str
 import com.casper.sdk.util.{HexUtils, JsonConverter}
 import org.scalatest.funsuite.AnyFunSuite
 class DeployByteSerializerTest extends AnyFunSuite {
