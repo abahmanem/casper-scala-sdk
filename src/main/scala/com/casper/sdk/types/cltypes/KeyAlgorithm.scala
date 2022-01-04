@@ -1,7 +1,6 @@
 package com.casper.sdk.types.cltypes
 
 
-
 /**
  * KeyAlgorithm Enum
  */

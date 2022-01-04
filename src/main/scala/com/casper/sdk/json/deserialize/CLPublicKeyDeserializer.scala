@@ -7,9 +7,9 @@ import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
 import java.io.IOException
 
 /**
- * Custom Deserializer for CLPublicKey
+ * Custom fasterXml Deserializer for CLPublicKey object
  */
-class CLPublicKeyDeserializer extends JsonDeserializer[CLValue] {
+class CLPublicKeyDeserializer extends JsonDeserializer[CLPublicKey] {
   @throws[IOException]
   override def deserialize(parser: JsonParser, ctx: DeserializationContext): CLPublicKey = {
     new CLPublicKey(parser.getText)

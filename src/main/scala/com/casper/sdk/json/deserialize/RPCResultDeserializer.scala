@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.util.JSONPObject
 import java.io.IOException
 
 /**
- * Custom Deserializer for RCPResult
+ * Custom fasterXml Deserializer for RCPResult Object
  */
 class RPCResultDeserializer extends JsonDeserializer[RPCResult[?]] {
   @throws[IOException]
