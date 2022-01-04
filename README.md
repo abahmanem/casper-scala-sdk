@@ -43,7 +43,7 @@ Pass the url of the node  to constructor
 ```
 import com.casper.sdk.util.implicits.*
 
-val client = new CasperSdk("http://65.21.227.180:7777/rpc")
+val client = new CasperSdk("http://95.216.116.53:7777/rpc")
 
 
 ```
