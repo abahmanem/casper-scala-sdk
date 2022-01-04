@@ -9,6 +9,7 @@ import com.casper.sdk.types.cltypes.CLValue
 import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
 
 import java.io.IOException
+import scala.None
 
 /**
  * Custom fasterXml Deserializer for DeployExecutable objects
@@ -58,20 +59,22 @@ class DeployExecutableDeserializer extends JsonDeserializer[DeployExecutable] {
         }
         case "StoredVersionedContractByHash" => {
           deployexe = new StoredVersionedContractByHash(treeNode.get("StoredVersionedContractByHash").get("hash").asInstanceOf[TextNode].asText(),
-            Some(treeNode.get("StoredVersionedContractByHash").get("version").toString.toInt),
+            if (treeNode.get("StoredVersionedContractByHash").get("version").asInstanceOf[TextNode].asText().isEmpty) None else
+              Some(treeNode.get("StoredVersionedContractByHash").get("version").asInstanceOf[TextNode].asText().toInt),
             treeNode.get("StoredVersionedContractByHash").get("entry_point").asInstanceOf[TextNode].asText(),
             getArgs("StoredVersionedContractByHash", treeNode))
         }
         case "StoredVersionedContractByName" => {
-          deployexe = new StoredVersionedContractByHash(treeNode.get("StoredVersionedContractByName").get("name").asInstanceOf[TextNode].asText(),
-            Some(treeNode.get("StoredVersionedContractByName").get("version").toString.toInt),
+          deployexe = new StoredVersionedContractByName(treeNode.get("StoredVersionedContractByName").get("name").asInstanceOf[TextNode].asText(),
+            if (treeNode.get("StoredVersionedContractByName").get("version").asInstanceOf[TextNode].asText().isEmpty) None else
+            Some(treeNode.get("StoredVersionedContractByName").get("version").asInstanceOf[TextNode].asText().toInt),
             treeNode.get("StoredVersionedContractByName").get("entry_point").asInstanceOf[TextNode].asText(),
             getArgs("StoredVersionedContractByName", treeNode))
         }
         case "Transfer" => {
           deployexe = new DeployTransfer(getArgs("Transfer", treeNode))
         }
-        case _ => throw IllegalArgumentException("Not a subtype of  DeployExecutable. Cannot be handled")
+        case _ => throw IllegalArgumentException("Not a subtype of  DeployExecutable. Cannot be deserilized")
       }
     }
     deployexe

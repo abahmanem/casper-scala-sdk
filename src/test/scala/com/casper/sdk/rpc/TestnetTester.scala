@@ -4,14 +4,13 @@ import com.casper.sdk.domain
 import com.casper.sdk.CasperSdk
 import com.casper.sdk.domain.{EraSummary, Peer, deploy}
 import com.casper.sdk.domain
-import com.casper.sdk.domain.deploy.Deploy
+import com.casper.sdk.domain.deploy.{Deploy, DeployExecutable, ModuleBytes}
 import com.casper.sdk.types.cltypes.{AccessRight, AccountHash, CLPublicKey, CLType, CLTypeInfo, CLValue, KeyAlgorithm, Signature, URef}
 import com.casper.sdk.util.{ByteUtils, HexUtils, JsonConverter, TimeUtil}
 import com.casper.sdk.util.implicits.idInstance
 import scodec.bits.ByteVector
 import scodec.bits.hex
 import org.scalactic.Prettifier.default
-
 
 import java.io.FileWriter
 import java.io.File
@@ -23,7 +22,6 @@ import java.nio
 import scala.io.Source
 import java.net.URL
 object TestnetTester  extends  App {
-
 
 
 
