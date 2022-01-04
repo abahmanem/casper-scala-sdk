@@ -1,8 +1,14 @@
-package com.casper.sdk.types.cltypes.serialization
-import com.casper.sdk.types.cltypes.{CLPublicKey, Signature}
+package com.casper.sdk.serialization.domain.deploy
+
 import com.casper.sdk.domain.deploy.DeployApproval
+import com.casper.sdk.serialization.domain.deploy.DeployApprovalByteSerializer
+import com.casper.sdk.types.cltypes.{CLPublicKey, Signature}
 import com.casper.sdk.util.HexUtils
 import org.scalatest.funsuite.AnyFunSuite
+
+/**
+ * DeployApprovalByteSerializerTest
+ */
 class DeployApprovalByteSerializerTest extends AnyFunSuite {
 
 

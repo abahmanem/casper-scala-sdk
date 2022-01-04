@@ -1,6 +1,9 @@
-package com.casper.sdk.types.cltypes.serialization
-import com.casper.sdk.domain.deploy.*
-import com.casper.sdk.types.cltypes.*
+package com.casper.sdk.serialization.domain.deploy
+
+import com.casper.sdk.domain.deploy.DeployNamedArg
+import com.casper.sdk.serialization.BytesSerializable
+import com.casper.sdk.serialization.cltypes.CLValueByteSerializer
+import com.casper.sdk.types.cltypes.CLValue
 import com.casper.sdk.util.{ByteUtils, HexUtils}
 
 import java.nio.charset.StandardCharsets

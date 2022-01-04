@@ -1,14 +1,17 @@
-package com.casper.sdk.types.cltypes.serialization
+package com.casper.sdk.serialization.cltypes
 
-import org.scalatest.funsuite.AnyFunSuite
-import com.casper.sdk.types.cltypes.{CLTypeInfo, CLValue, CLType}
+import com.casper.sdk.serialization.cltypes.CLValueByteSerializer
+import com.casper.sdk.types.cltypes.{CLType, CLTypeInfo, CLValue}
 import com.casper.sdk.util.HexUtils
-import com.casper.sdk.types.cltypes.serialization.CLValueByteSerializer
+import org.scalatest.funsuite.AnyFunSuite
+
+/**
+ * CLValueByteSerializerTest
+ */
 
 class CLValueByteSerializerTest extends AnyFunSuite {
 
   val cLValueByteSerializer = new CLValueByteSerializer()
-
   /**
    * Test Bool CLValue
    */

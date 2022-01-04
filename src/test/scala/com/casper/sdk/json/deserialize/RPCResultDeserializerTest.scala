@@ -9,6 +9,9 @@ import org.scalatest.funsuite.AnyFunSuite
 
 import scala.io.Source
 
+/**
+ * RPCResultDeserializerTest
+ */
 class RPCResultDeserializerTest extends AnyFunSuite {
 
   test("RPCResultDeserializer test with getPeers") {

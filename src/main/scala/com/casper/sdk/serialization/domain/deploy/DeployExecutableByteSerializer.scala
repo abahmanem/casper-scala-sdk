@@ -1,7 +1,8 @@
-package com.casper.sdk.types.cltypes.serialization
+package com.casper.sdk.serialization.domain.deploy
 
 import com.casper.sdk.domain.deploy.*
-import com.casper.sdk.types.cltypes.*
+import com.casper.sdk.serialization.BytesSerializable
+import com.casper.sdk.types.cltypes
 import com.casper.sdk.types.cltypes.CLValue
 import com.casper.sdk.util.{HexUtils, JsonConverter}
 

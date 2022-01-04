@@ -1,5 +1,6 @@
-package com.casper.sdk.types.cltypes.serialization
+package com.casper.sdk.serialization.cltypes
 
+import com.casper.sdk.serialization.cltypes.CLPublicKeySerializer
 import com.casper.sdk.types.cltypes.CLPublicKey
 import org.scalatest.funsuite.AnyFunSuite
 

@@ -1,7 +1,7 @@
 package com.casper.sdk.domain.deploy
 
 import com.casper.sdk.json.deserialize.DeployExecutableDeserializer
-import com.casper.sdk.types.cltypes.serialization.BytesSerializable
+import com.casper.sdk.serialization.BytesSerializable
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 
 /**

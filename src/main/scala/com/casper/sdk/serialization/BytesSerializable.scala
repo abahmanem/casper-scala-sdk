@@ -1,7 +1,8 @@
-package com.casper.sdk.types.cltypes.serialization
+package com.casper.sdk.serialization
 
 /**
  * Trait to serialize casper objects into array bytes
+ *
  * @tparam T : Casper object Type
  */
 trait BytesSerializable[T] {

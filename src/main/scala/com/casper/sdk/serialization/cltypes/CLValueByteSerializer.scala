@@ -1,6 +1,7 @@
-package com.casper.sdk.types.cltypes.serialization
+package com.casper.sdk.serialization.cltypes
 
-import com.casper.sdk.types.cltypes.*
+import com.casper.sdk.serialization.BytesSerializable
+import com.casper.sdk.types.cltypes.{CLTuple1TypeInfo,CLTuple3TypeInfo,CLTuple2TypeInfo,CLValue,CLType,CLTypeInfo,CLResultTypeInfo,CLByteArrayTypeInfo,CLListTypeInfo,CLOptionTypeInfo}
 import com.casper.sdk.types.cltypes.CLResultTypeInfo
 import com.casper.sdk.util.{ByteUtils, HexUtils}
 

@@ -1,9 +1,16 @@
-package com.casper.sdk.types.cltypes.serialization
-import com.casper.sdk.types.cltypes.*
-import com.casper.sdk.domain.deploy.DeployNamedArg
-import org.scalatest.funsuite.AnyFunSuite
+package com.casper.sdk.serialization.domain.deploy
 
+import com.casper.sdk.domain.deploy.DeployNamedArg
+import com.casper.sdk.serialization.cltypes.CLValueByteSerializer
+import com.casper.sdk.serialization.domain.deploy.DeployNamedArgByteSerializer
+import com.casper.sdk.types.cltypes.{CLValue,CLPublicKey,URef}
+import org.scalatest.funsuite.AnyFunSuite
 import scala.collection.mutable.ArrayBuilder
+
+/**
+ * DeployNamedArgByteSerializerTest
+ */
+
 class DeployNamedArgByteSerializerTest extends AnyFunSuite {
 
   val serializer = new DeployNamedArgByteSerializer()

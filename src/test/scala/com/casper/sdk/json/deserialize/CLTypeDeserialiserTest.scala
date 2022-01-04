@@ -2,9 +2,11 @@ package com.casper.sdk.json.deserialize
 import com.casper.sdk.types.cltypes.CLType
 import com.casper.sdk.util.JsonConverter
 import org.scalatest.funsuite.AnyFunSuite
+
+/**
+ * CLTypeDeserialiserTest
+ */
 class CLTypeDeserialiserTest  extends AnyFunSuite {
-
-
 
   /**
    * Test  Deserialize U512 CLType

@@ -1,11 +1,14 @@
-package com.casper.sdk.types.cltypes.serialization
+package com.casper.sdk.serialization.domain.deploy
 
-import com.casper.sdk.domain.deploy
-import com.casper.sdk.domain.deploy.*
+import com.casper.sdk.domain.deploy.{StoredContractByHash,DeployTransfer,DeployNamedArg,StoredContractByName,ModuleBytes,StoredVersionedContractByHash,StoredVersionedContractByName}
+import com.casper.sdk.serialization.domain.deploy.DeployExecutableByteSerializer
 import com.casper.sdk.types.cltypes.{CLPublicKey, CLValue}
 import com.casper.sdk.util.HexUtils
 import org.scalatest.funsuite.AnyFunSuite
 
+/**
+ * DeployExecutableByteSerializerTest
+ */
 class DeployExecutableByteSerializerTest extends AnyFunSuite {
   val serializer = new DeployExecutableByteSerializer()
 

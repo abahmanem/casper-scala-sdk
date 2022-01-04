@@ -5,14 +5,13 @@ import com.casper.sdk.CasperSdk
 import com.casper.sdk.domain.{EraSummary, Peer, deploy}
 import com.casper.sdk.domain
 import com.casper.sdk.domain.deploy.Deploy
-import com.casper.sdk.types.cltypes.{AccessRight, AccountHash, CLPublicKey, CLType, CLTypeInfo, CLValue, KeyAlgorithm, Signature, URef, serialization}
+import com.casper.sdk.types.cltypes.{AccessRight, AccountHash, CLPublicKey, CLType, CLTypeInfo, CLValue, KeyAlgorithm, Signature, URef}
 import com.casper.sdk.util.{ByteUtils, HexUtils, JsonConverter, TimeUtil}
 import com.casper.sdk.util.implicits.idInstance
 import scodec.bits.ByteVector
 import scodec.bits.hex
 import org.scalactic.Prettifier.default
-import com.casper.sdk.types.cltypes.serialization
-import com.casper.sdk.types.cltypes.serialization
+
 
 import java.io.FileWriter
 import java.io.File
@@ -189,7 +188,7 @@ println(HexUtils.toHex(deployApprovalByteSerializer.toBytes(deploy)))
 
 
   println(TimeUtil.ToEpochMs("2020-11-17T00:39:24.072Z"))
-  import com.casper.sdk.types.cltypes.serialization.CLValueByteSerializer
+  import com.casper.sdk.serialization.cltypes.CLValueByteSerializer
 
   val cLValueByteSerializer = new CLValueByteSerializer()
 

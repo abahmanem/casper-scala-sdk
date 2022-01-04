@@ -1,9 +1,14 @@
-package com.casper.sdk.types.cltypes.serialization
-import com.casper.sdk.types.cltypes.CLValue
-import com.casper.sdk.types.cltypes.CLPublicKey
-import com.casper.sdk.util.HexUtils
+package com.casper.sdk.serialization.domain.deploy
+
 import com.casper.sdk.domain.deploy.DeployHeader
+import com.casper.sdk.serialization.domain.deploy.DeployHeaderByteSerializer
+import com.casper.sdk.types.cltypes.{CLPublicKey, CLValue}
+import com.casper.sdk.util.HexUtils
 import org.scalatest.funsuite.AnyFunSuite
+
+/**
+ * DeployHeaderByteSerializerTest
+ */
 class DeployHeaderByteSerializerTest extends AnyFunSuite {
 
   val serializer = new DeployHeaderByteSerializer()
