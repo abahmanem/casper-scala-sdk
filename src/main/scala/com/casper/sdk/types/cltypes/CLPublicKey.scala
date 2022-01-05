@@ -6,6 +6,7 @@ import com.casper.sdk.types.cltypes.CLPublicKey.dropAlgorithmBytes
 import com.casper.sdk.util.{ByteUtils, HexUtils}
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.casper.sdk.types.cltypes.KeyAlgorithm
+
 /**
  * CLPublicKey : Casper system public key
  *
@@ -67,5 +68,15 @@ object CLPublicKey {
   def dropAlgorithmBytes(key: Array[Byte]): Array[Byte] = {
     key.drop(1)
   }
+
+  /**
+   * Extract account hash from publicKey
+   * @param publicKey
+   * @return
+   */
+  def accountHash(publicKey: CLPublicKey): AccountHash={
+    null
+  }
+
 
 }
