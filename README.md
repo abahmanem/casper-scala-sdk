@@ -286,7 +286,7 @@ This will generate : casper-scala-sdk_${scala.version}{version}.jar.
 * [getStateItem](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/rpc/RPC.md#get--state-item)
 * [getBalance](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/rpc/RPC.md#get-account-balance)
 * [getDictionaryItem](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/rpc/RPC.md#get-dictionary-item)
-* [putDeploy]
+* [putDeploy](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/rpc/RPC.md#put-deploy)
 ## License
 
 The Casper Scala SDK is open-sourced software licensed under the [MIT license](https:sbt//opensource.org/licenses/MIT).
