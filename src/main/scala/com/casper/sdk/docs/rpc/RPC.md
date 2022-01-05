@@ -153,7 +153,7 @@ Returns an item from a Dictionary as StoredValue object.
 
 ---
 
-## Put Deploy Dictionary Item
+## Put Deploy 
 ```scala
 def putDeploy
 ```
