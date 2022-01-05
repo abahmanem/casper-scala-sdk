@@ -133,7 +133,7 @@ def getEraInfoBySwitchBlock(blockHash: String): EraSummary
 ```
 Returns an EraSummary object for the given block hash
 ### Parameters
-| Name | Type | Description | Required |
+| Name | Type | Description | Mandatory |
 |---|---|---|---|
 | `blockHash` | `String` | Hex-encoded hash of the block | Yes |
 
