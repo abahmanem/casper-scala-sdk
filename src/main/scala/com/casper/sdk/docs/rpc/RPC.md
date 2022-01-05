@@ -150,3 +150,13 @@ Returns an item from a Dictionary as StoredValue object.
 | `stateRootHash` | `String` | Hex-encoded hash of the state root | Yes |
 | `itemKey` | `String` | The dictionary item key  | Yes |
 | `uref` | `String` | The dictionary's seed URef | Yes |
+
+---
+
+## Put Deploy Dictionary Item
+```scala
+def putDeploy
+```
+sends a deploy to casper blockchain.
+
+### Parameters
