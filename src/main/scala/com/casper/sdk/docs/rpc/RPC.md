@@ -112,7 +112,7 @@ Returns StoredValue object entity for the given state root hash, casper-type key
 | Name | Type | Description | Mandatory |
 |---|---|---|---|
 | `stateRootHash` | `String` | Hex-encoded hash of the state root | Yes |
-| `key` | `String` |  `String`  | Yes |
+| `key` | `String` |  Casper-type key  | Yes |
 | `path` | `Seq[Any]` | Path components  | No |
 
 ---
