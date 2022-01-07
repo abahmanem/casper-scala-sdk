@@ -96,7 +96,7 @@ class CasperSdkTest extends AnyFunSuite {
 
   test("Get Block using Block height parameter") {
     val block = client.getBlockByHeight(371608)
-    assert(block.hash == "2aCa74CF33F6aCe634eD82aC88e597d55920Ff1dE8e596Dd77d9558736EF570d")
+    assert(block.hash.toLowerCase == "2aCa74CF33F6aCe634eD82aC88e597d55920Ff1dE8e596Dd77d9558736EF570d".toLowerCase)
     assert(!block.body.proposer.isEmpty)
   }
 
@@ -156,7 +156,7 @@ class CasperSdkTest extends AnyFunSuite {
     val nodeSatatus = client.getStatus()
     //assert(nodeSatatus.peers.size == client.getPeers().size)
     info("assert node pub key is : 01cd807fb41345d8dD5A61da7991e1468173acbEE53920E4DFe0D28Cb8825AC664")
-    assert(nodeSatatus.our_public_signing_key == "01cd807fb41345d8dD5A61da7991e1468173acbEE53920E4DFe0D28Cb8825AC664")
+    assert(nodeSatatus.our_public_signing_key.toLowerCase == "01cd807fb41345d8dD5A61da7991e1468173acbEE53920E4DFe0D28Cb8825AC664".toLowerCase)
     info("assert network is : casper-test ")
     assert(nodeSatatus.chainspec_name=="casper-test")
   }
@@ -171,7 +171,7 @@ class CasperSdkTest extends AnyFunSuite {
     info("assert this block contains two transfert")
     assert(transfers.size==2)
     info("assert first transfert deploy hash is = 277AEF49321B3b19B0EDd732Cd5CFf4F2E76c1Df0260356367711aD81f4bC8FC")
-    assert(transfers(0).deploy_hash=="277AEF49321B3b19B0EDd732Cd5CFf4F2E76c1Df0260356367711aD81f4bC8FC")
+    assert(transfers(0).deploy_hash.toLowerCase=="277AEF49321B3b19B0EDd732Cd5CFf4F2E76c1Df0260356367711aD81f4bC8FC".toLowerCase)
     info("assert amount of first transfert is = 1000000000000 motes")
     assert(transfers(0).amount ==1000000000000L)
     //add tests with  from and to  clpubkeys
@@ -210,7 +210,7 @@ class CasperSdkTest extends AnyFunSuite {
     info("assert  era = 2974")
     assert(erasummury.era_id== 2974)
     info("assert  state root hash  = c1A62d5DeB74d3fEAfeCd1EEa526941edd0264895EB8E516474108D4EA4D7D21")
-    assert(erasummury.state_root_hash  == "c1A62d5DeB74d3fEAfeCd1EEa526941edd0264895EB8E516474108D4EA4D7D21")
+    assert(erasummury.state_root_hash.toLowerCase  == "c1A62d5DeB74d3fEAfeCd1EEa526941edd0264895EB8E516474108D4EA4D7D21".toLowerCase)
 
   }
 
@@ -285,7 +285,7 @@ class CasperSdkTest extends AnyFunSuite {
     val caught: RPCException = intercept[RPCException] {
       client.getStateItem("808ad642fefe6a0d3cadfb151a39aecb37183121ae20565ab32f5c04db20513e","hash-1c1545ab3bdbe0df3823a53c8160fc1960847cd3008376701f73e5e3ff13bbc9",Seq.empty)
     }
-    assert(caught.getMessage == "An error occured when invoking RPC method: state_get_item with params: ArraySeq(808ad642fefe6a0d3cadfb151a39aecb37183121ae20565ab32f5c04db20513e, hash-1c1545ab3bdbe0df3823a53c8160fc1960847cd3008376701f73e5e3ff13bbc9, List()). RPC error code: -32003 , RPC error message: state query failed: ValueNotFound(\"Failed to find base key at path: Key::Hash(1c1545AB3bdbe0DF3823A53C8160fc1960847cD3008376701f73E5E3fF13BbC9)\")")
+    assert(caught.getMessage.toLowerCase == "An error occured when invoking RPC method: state_get_item with params: ArraySeq(808ad642fefe6a0d3cadfb151a39aecb37183121ae20565ab32f5c04db20513e, hash-1c1545ab3bdbe0df3823a53c8160fc1960847cd3008376701f73e5e3ff13bbc9, List()). RPC error code: -32003 , RPC error message: state query failed: ValueNotFound(\"Failed to find base key at path: Key::Hash(1c1545AB3bdbe0DF3823A53C8160fc1960847cD3008376701f73E5E3fF13BbC9)\")".toLowerCase)
 
   }
 
@@ -331,7 +331,7 @@ class CasperSdkTest extends AnyFunSuite {
       client.getBalance("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956",new URef("9cC6877ft07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007"))
 
     }
-    assert(caught.getMessage == "9cC6877ft07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007 is not a valid uref")
+    assert(caught.getMessage.toLowerCase == "9cC6877ft07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007 is not a valid uref".toLowerCase)
   }
 
   /**
