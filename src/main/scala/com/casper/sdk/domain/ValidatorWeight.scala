@@ -1,5 +1,7 @@
 package com.casper.sdk.domain
 
+import com.casper.sdk.types.cltypes.CLPublicKey
+
 /**
  * ValidatorWeight entity class
  *
@@ -7,6 +9,6 @@ package com.casper.sdk.domain
  * @param weight
  */
 case class ValidatorWeight(
-                            public_key: String,
+                            public_key: CLPublicKey,
                             weight: String
                           )

@@ -1,5 +1,7 @@
 package com.casper.sdk.domain
 
+import com.casper.sdk.types.cltypes.CLPublicKey
+
 /**
  * Reward entity class
  *
@@ -8,6 +10,6 @@ package com.casper.sdk.domain
  */
 
 case class Reward(
-                   validator: String,
+                   validator: CLPublicKey,
                    amount: Int
                  )

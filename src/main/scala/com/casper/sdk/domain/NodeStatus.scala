@@ -1,7 +1,10 @@
 package com.casper.sdk.domain
 
+import com.casper.sdk.types.cltypes.CLPublicKey
+
 /**
  * NodeStatus entity class
+ *
  * @param api_version
  * @param chainspec_name
  * @param starting_state_root_hash
@@ -14,12 +17,12 @@ package com.casper.sdk.domain
  * @param uptime
  */
 case class NodeStatus(
-                      // api_version: String,
+                       // api_version: String,
                        chainspec_name: String,
                        starting_state_root_hash: String,
                        peers: Seq[Peer],
                        last_added_block_info: BlockInfo,
-                       our_public_signing_key: String,
+                       our_public_signing_key: CLPublicKey,
                        round_length: String,
                        next_upgrade: NextUpgrade,
                        build_version: String,

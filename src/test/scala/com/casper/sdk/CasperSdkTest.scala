@@ -156,7 +156,7 @@ class CasperSdkTest extends AnyFunSuite {
     val nodeSatatus = client.getStatus()
     //assert(nodeSatatus.peers.size == client.getPeers().size)
     info("assert node pub key is : 01cd807fb41345d8dD5A61da7991e1468173acbEE53920E4DFe0D28Cb8825AC664")
-    assert(nodeSatatus.our_public_signing_key.toLowerCase == "01cd807fb41345d8dD5A61da7991e1468173acbEE53920E4DFe0D28Cb8825AC664".toLowerCase)
+    assert(nodeSatatus.our_public_signing_key.formatAsHexAccount.toLowerCase == "01cd807fb41345d8dD5A61da7991e1468173acbEE53920E4DFe0D28Cb8825AC664".toLowerCase)
     info("assert network is : casper-test ")
     assert(nodeSatatus.chainspec_name=="casper-test")
   }
