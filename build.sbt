@@ -13,8 +13,10 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.10" % "test"
 libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.13.0"
 
 //bouncycastle crypto library
-libraryDependencies += "org.bouncycastle" % "bcprov-jdk15on" % "1.66"
-
+libraryDependencies += "org.bouncycastle" % "bcprov-jdk15on" % "1.69"  //exclude("org.bouncycastle", "httpclient")
+libraryDependencies += "org.bouncycastle" % "bcpkix-jdk15on" % "1.69"
+//libraryDependencies += "org.bouncycastle" % "bcpkix-jdk14" % "1.69" excludeAll ExclusionRule(organization = "org.bouncycastle")
+libraryDependencies += "org.bouncycastle" % "bcprov-ext-jdk15on" % "1.69"
 //scala cats library
 libraryDependencies += "org.typelevel" %% "cats-core" % "2.6.1"
 libraryDependencies += "org.scala-lang" % "scala-reflect" % "2.13.6"

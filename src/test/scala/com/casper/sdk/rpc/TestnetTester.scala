@@ -3,7 +3,7 @@ package com.casper.sdk.rpc
 import com.casper.sdk.domain
 import com.casper.sdk.CasperSdk
 import com.casper.sdk.domain.{EraSummary, Peer, deploy}
-import com.casper.sdk.domain
+import com.casper.sdk.domain._
 import com.casper.sdk.domain.deploy.{Deploy, DeployExecutable, ModuleBytes}
 import com.casper.sdk.types.cltypes.{AccessRight, AccountHash, CLPublicKey, CLType, CLTypeInfo, CLValue, KeyAlgorithm, Signature, URef}
 import com.casper.sdk.util.{ByteUtils, HexUtils, JsonConverter, TimeUtil}
@@ -23,6 +23,72 @@ import scala.io.Source
 import java.net.URL
 object TestnetTester  extends  App {
 
+
+  import org.bouncycastle.openssl.PEMParser
+  import java.io._
+  import org.bouncycastle.jce.provider.BouncyCastleProvider
+  import org.bouncycastle .openssl.PEMParser
+  import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
+  import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter
+
+  import org.bouncycastle.crypto.params.Ed25519PublicKeyParameters
+  import org.bouncycastle.jce.ECNamedCurveTable
+  import org.bouncycastle.crypto.params.ECDomainParameters
+  import org.bouncycastle.crypto.params.ECPublicKeyParameters
+  import java.nio.file.{Files,Paths,FileSystems}
+  import org.bouncycastle.openssl.PEMWriter
+  val hex = "01d9bf2148748a85c89da5aad8ee0b0fc2d105fd39d41a4c796536354f0ae2900c"
+  val key = new CLPublicKey(hex)
+  //val publicPath = Paths.get(path)
+  import org.bouncycastle.util.io.pem.PemObject
+  val writer = new StringWriter
+  val pemWriter = new PEMWriter(writer)
+  key.keyAlgorithm match {
+    case KeyAlgorithm.ED25519=> {
+      val Ed25519 : Ed25519PublicKeyParameters =  new Ed25519PublicKeyParameters(key.bytes, 0)
+      pemWriter.writeObject(new PemObject("PUBLIC KEY",Ed25519.getEncoded))
+      pemWriter.flush
+      pemWriter.close()
+      println(writer.toString)
+    }
+    case KeyAlgorithm.SECP256K1=> {
+      val eCParameterSpec = ECNamedCurveTable.getParameterSpec("secp256k1")
+      val domParams= new ECDomainParameters(eCParameterSpec.getCurve,eCParameterSpec.getG,eCParameterSpec.getN,eCParameterSpec.getH,eCParameterSpec.getSeed)
+      val q =  eCParameterSpec.getCurve.decodePoint(key.bytes)
+      val secp256k1  =  new ECPublicKeyParameters(q, domParams)
+      pemWriter.writeObject(secp256k1)
+
+      print(writer.toString)
+
+    }
+    case _ => throw  new IllegalArgumentException("algorithm not handled")
+  }
+
+/*
+  import org.bouncycastle.jce.provider.BouncyCastleProvider
+  import java.security.Security
+//  Security.addProvider(new BouncyCastleProvider())
+  //Security.addProvider(new BouncyCastleProvider)
+  pemParser.close
+
+
+  val provider = new BouncyCastleProvider()
+  val converter = new JcaPEMKeyConverter().setProvider(provider);
+
+  //val converter = new JcaPEMKeyConverter().setProvider("BC")
+  if (obj.isInstanceOf[SubjectPublicKeyInfo]) {
+    val bytes = obj.asInstanceOf[SubjectPublicKeyInfo].getEncoded()
+    val algo = converter.getPublicKey(obj.asInstanceOf[SubjectPublicKeyInfo]).getAlgorithm
+
+    algo match {
+      case "Ed25519" => new CLPublicKey(bytes, KeyAlgorithm.ED25519)
+      case "ECDSA" => new CLPublicKey(bytes, KeyAlgorithm.SECP256K1)
+    }
+  }
+  else throw new IllegalArgumentException("not a public key file PEM")
+
+
+*/
 
 
 /*
