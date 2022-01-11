@@ -95,7 +95,7 @@ class CLPublicKey(
         pemWriter.close()
         writer.toString
       }
-      case _ => throw new IllegalArgumentException("algorithm not handled")
+      case null => throw new IllegalArgumentException("algorithm not handled")
     }
   }
 
@@ -147,7 +147,7 @@ object CLPublicKey {
           algo match {
             case KeyAlgorithm.ED25519 => new CLPublicKey(bytes, KeyAlgorithm.ED25519)
             case KeyAlgorithm.SECP256K1 => new CLPublicKey(bytes, KeyAlgorithm.SECP256K1)
-            case _ => throw new IllegalArgumentException("Can not handle this algorithm :" + algo)
+            case null => throw new IllegalArgumentException("Can not handle this algorithm :" + algo)
           }
         }
         case _ => throw new IllegalArgumentException("this not a public pem file")
