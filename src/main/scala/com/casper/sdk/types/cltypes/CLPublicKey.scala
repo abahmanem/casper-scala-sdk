@@ -81,7 +81,6 @@ class CLPublicKey(
     keyAlgorithm match {
       case KeyAlgorithm.ED25519 => {
         val Ed25519 = new Ed25519PublicKeyParameters(bytes, 0)
-        pemWriter.writeObject(Ed25519)
         pemWriter.writeObject(new PemObject("PUBLIC KEY", Ed25519.getEncoded))
         pemWriter.flush
         pemWriter.close()
@@ -90,8 +89,7 @@ class CLPublicKey(
       case KeyAlgorithm.SECP256K1 => {
         val eCParameterSpec = ECNamedCurveTable.getParameterSpec("secp256k1")
         val domParams = new ECDomainParameters(eCParameterSpec.getCurve, eCParameterSpec.getG, eCParameterSpec.getN, eCParameterSpec.getH, eCParameterSpec.getSeed)
-        val q = eCParameterSpec.getCurve.decodePoint(bytes)
-        val secp256k1: ECPublicKeyParameters = new ECPublicKeyParameters(q, domParams)
+        val secp256k1: ECPublicKeyParameters = new ECPublicKeyParameters(eCParameterSpec.getCurve.decodePoint(bytes), domParams)
         pemWriter.writeObject(new PemObject("PUBLIC KEY", secp256k1.getQ.getEncoded(true)))
         pemWriter.flush
         pemWriter.close()
@@ -143,12 +141,13 @@ object CLPublicKey {
     val converter = new JcaPEMKeyConverter().setProvider(new BouncyCastleProvider());
     Option(new PEMParser(new FileReader(path)).readObject()) match {
       case Some(obj) => obj match {
-        case sub: SubjectPublicKeyInfo => {
-          val bytes = sub.getEncoded()
-          val algo = converter.getPublicKey(sub).getAlgorithm
+        case pubkey: SubjectPublicKeyInfo => {
+          val bytes = pubkey.getEncoded()
+
+          val algo = KeyAlgorithm.valueOf(converter.getPublicKey(pubkey).getAlgorithm)
           algo match {
-            case "Ed25519" => new CLPublicKey(bytes, KeyAlgorithm.ED25519)
-            case "ECDSA" => new CLPublicKey(bytes, KeyAlgorithm.SECP256K1)
+            case KeyAlgorithm.ED25519 => new CLPublicKey(bytes, KeyAlgorithm.ED25519)
+            case KeyAlgorithm.SECP256K1 => new CLPublicKey(bytes, KeyAlgorithm.SECP256K1)
             case _ => throw new IllegalArgumentException("Can not handle this algorithm :" + algo)
           }
         }
