@@ -143,7 +143,6 @@ object CLPublicKey {
       case Some(obj) => obj match {
         case pubkey: SubjectPublicKeyInfo => {
           val bytes = pubkey.getEncoded()
-
           val algo = KeyAlgorithm.valueOf(converter.getPublicKey(pubkey).getAlgorithm)
           algo match {
             case KeyAlgorithm.ED25519 => new CLPublicKey(bytes, KeyAlgorithm.ED25519)
@@ -157,4 +156,3 @@ object CLPublicKey {
     }
   }
 }
-
