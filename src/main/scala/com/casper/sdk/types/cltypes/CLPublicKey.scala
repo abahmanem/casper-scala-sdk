@@ -18,7 +18,7 @@ import org.bouncycastle.jce.ECNamedCurveTable
 import org.bouncycastle.crypto.params.ECDomainParameters
 import org.bouncycastle.crypto.params.ECPublicKeyParameters
 import java.nio.file.{Files, Paths, FileSystems}
-import org.bouncycastle.openssl.PEMWriter
+import org.bouncycastle.openssl.jcajce.JcaPEMWriter
 
 /**
  * CLPublicKey : Casper system public key
@@ -75,10 +75,9 @@ class CLPublicKey(
    * @param path
    */
   def toPemString(path: String): String = {
-    val publicPath = Paths.get(path)
     val writer = new StringWriter
-    //Deprecated
-    val pemWriter = new PEMWriter(writer)
+    val pemWriter = new JcaPEMWriter(new StringWriter)
+
     keyAlgorithm match {
       case KeyAlgorithm.ED25519 => {
         val Ed25519 = new Ed25519PublicKeyParameters(bytes, 0)
