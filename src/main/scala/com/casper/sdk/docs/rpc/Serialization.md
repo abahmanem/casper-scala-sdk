@@ -1,8 +1,7 @@
 
 ### Serialization
-Casper provides a custom implementation to serialize data structures used by the Casper node to their byte representation
-This custom implementation is described in detail here :
-
+Casper provides a custom implementation to serialize data structures used by the Casper node to their byte representation.
+More details on this implementation can be found here :
 [serialization-standard](https://caspernetwork.readthedocs.io/en/latest/implementation/serialization-standard.html?highlight=serialization)
 
 ### Examples
