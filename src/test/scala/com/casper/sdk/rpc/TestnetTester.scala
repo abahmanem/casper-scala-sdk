@@ -2,18 +2,21 @@ package com.casper.sdk.rpc
 
 import com.casper.sdk.domain
 import com.casper.sdk.CasperSdk
+import com.casper.sdk.crypto.KeyPair
 import com.casper.sdk.domain.{EraSummary, Peer, deploy}
 import com.casper.sdk.domain._
 import com.casper.sdk.domain.deploy.{Deploy, DeployExecutable, ModuleBytes}
 import com.casper.sdk.types.cltypes.{AccessRight, AccountHash, CLPublicKey, CLType, CLTypeInfo, CLValue, KeyAlgorithm, Signature, URef}
 import com.casper.sdk.util.{ByteUtils, HexUtils, JsonConverter, TimeUtil}
 import com.casper.sdk.util.implicits.idInstance
+import org.bouncycastle.crypto.KeyGenerationParameters
+import org.bouncycastle.crypto.generators.Ed25519KeyPairGenerator
+import org.bouncycastle.crypto.params.Ed25519PublicKeyParameters
 import scodec.bits.ByteVector
 import scodec.bits.hex
 import org.scalactic.Prettifier.default
 
-import java.io.FileWriter
-import java.io.File
+import java.io.{File, FileWriter, StringWriter}
 import java.math.BigInteger
 import java.nio.charset.StandardCharsets
 import math.BigInt.int2bigInt
@@ -21,48 +24,69 @@ import scala.collection.mutable.ArrayBuilder
 import java.nio
 import scala.io.Source
 import java.net.URL
+import java.security.SecureRandom
+import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.bouncycastle.openssl.PEMWriter
+import java.security.KeyPair
+import java.security.KeyPairGenerator
+import java.security.PublicKey
+import java.security.SecureRandom
+import java.security.spec.ECGenParameterSpec
+
+import java.security.{KeyFactory, KeyPair, KeyPairGenerator, PrivateKey, PublicKey, Signature}
+
 object TestnetTester  extends  App {
 
+  import java.security.Security
 
-  import org.bouncycastle.openssl.PEMParser
-  import java.io._
-  import org.bouncycastle.jce.provider.BouncyCastleProvider
-  import org.bouncycastle .openssl.PEMParser
-  import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
-  import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter
+  import java.security.Security
 
-  import org.bouncycastle.crypto.params.Ed25519PublicKeyParameters
-  import org.bouncycastle.jce.ECNamedCurveTable
-  import org.bouncycastle.crypto.params.ECDomainParameters
-  import org.bouncycastle.crypto.params.ECPublicKeyParameters
-  import java.nio.file.{Files,Paths,FileSystems}
-  import org.bouncycastle.openssl.PEMWriter
-  val hex = "01d9bf2148748a85c89da5aad8ee0b0fc2d105fd39d41a4c796536354f0ae2900c"
-  val key = new CLPublicKey(hex)
-  //val publicPath = Paths.get(path)
-  import org.bouncycastle.util.io.pem.PemObject
+  Security.addProvider(new BouncyCastleProvider())
+  val kpg = java.security.KeyPairGenerator.getInstance("Ed25519","BC")
+
+  kpg.initialize(new ECGenParameterSpec("Ed25519"), new SecureRandom())
+  val kp:java.security.KeyPair = kpg.genKeyPair
+
+
+  val privateKey:PrivateKey = kp.getPrivate()
+  val publicKey:PublicKey = kp.getPublic()
+
+   kp
+
   val writer = new StringWriter
   val pemWriter = new PEMWriter(writer)
-  key.keyAlgorithm match {
-    case KeyAlgorithm.ED25519=> {
-      val Ed25519 : Ed25519PublicKeyParameters =  new Ed25519PublicKeyParameters(key.bytes, 0)
-      pemWriter.writeObject(new PemObject("PUBLIC KEY",Ed25519.getEncoded))
-      pemWriter.flush
-      pemWriter.close()
-      println(writer.toString)
-    }
-    case KeyAlgorithm.SECP256K1=> {
-      val eCParameterSpec = ECNamedCurveTable.getParameterSpec("secp256k1")
-      val domParams= new ECDomainParameters(eCParameterSpec.getCurve,eCParameterSpec.getG,eCParameterSpec.getN,eCParameterSpec.getH,eCParameterSpec.getSeed)
-      val q =  eCParameterSpec.getCurve.decodePoint(key.bytes)
-      val secp256k1  =  new ECPublicKeyParameters(q, domParams)
-      pemWriter.writeObject(secp256k1)
+  pemWriter.writeObject(publicKey)
+  pemWriter.flush()
+  pemWriter.close()
 
-      print(writer.toString)
+  println(writer.toString)
 
-    }
-    case _ => throw  new IllegalArgumentException("algorithm not handled")
-  }
+
+  /**/
+
+  val kpg1 = java.security.KeyPairGenerator.getInstance("ECDSA","BC")
+  kpg1.initialize(new ECGenParameterSpec("secp256k1"), new SecureRandom())
+  val kp1:java.security.KeyPair = kpg1.genKeyPair
+
+  val privateKey1:PrivateKey = kp1.getPrivate()
+  val publicKey1:PublicKey = kp1.getPublic()
+
+  kp
+
+  val writer1 = new StringWriter
+  val pemWriter1 = new PEMWriter(writer1)
+  pemWriter1.writeObject(publicKey1)
+  pemWriter1.flush()
+  pemWriter1.close()
+
+  println(writer1.toString)
+
+
+
+
+  val p = new CLPublicKey("017f747b67bd3fe63c2a736739dfe40156d622347346e70f68f51c178a75ce5537")
+  //println("dfgdfgf" + p.toPemString())
+
 
 /*
   import org.bouncycastle.jce.provider.BouncyCastleProvider

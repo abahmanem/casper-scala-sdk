@@ -28,7 +28,7 @@ libraryDependencies += "org.scodec" %% "scodec-bits" % "1.1.29"
 
 libraryDependencies += "commons-codec" % "commons-codec" % "1.15"
 
-
+libraryDependencies += "com.rfksystems" % "blake2b" % "1.0.0"
 
 //publish
 /*

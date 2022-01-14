@@ -1,7 +1,7 @@
 package com.casper.sdk.types.cltypes
 
 import com.casper.sdk.json.deserialize.CLPublicKeyDeserializer
-import com.casper.sdk.types.cltypes
+import com.casper.sdk.types.cltypes._
 import com.casper.sdk.types.cltypes.CLPublicKey.dropAlgorithmBytes
 import com.casper.sdk.util.{ByteUtils, HexUtils}
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
@@ -19,7 +19,9 @@ import org.bouncycastle.crypto.params.ECDomainParameters
 import org.bouncycastle.crypto.params.ECPublicKeyParameters
 import java.nio.file.{Files, Paths, FileSystems}
 import org.bouncycastle.openssl.jcajce.JcaPEMWriter
-
+import org.bouncycastle.openssl.PEMWriter
+import  org.bouncycastle.asn1.x509.AlgorithmIdentifier
+import org.bouncycastle.asn1.edec.EdECObjectIdentifiers
 /**
  * CLPublicKey : Casper system public key
  *
@@ -74,13 +76,26 @@ class CLPublicKey(
    *
    * @param path
    */
-  def toPemString(path: String): String = {
+  def toPemString(): String = {
+
+    var pubKeyInfo = new SubjectPublicKeyInfo(new AlgorithmIdentifier(EdECObjectIdentifiers.id_Ed25519), bytes)
+  //  val Ed25519 = new SubjectPublicKeyInfo("keyAlgorithm",bytes)
     val writer = new StringWriter
-    val pemWriter = new JcaPEMWriter(new StringWriter)
+    val pemWriter = new PEMWriter(writer)
+    pemWriter.writeObject(pubKeyInfo)
+    pemWriter.flush()
+    pemWriter.close()
+
+
+   // val writer = new StringWriter
+   // val pem
+    //val pemWriter = new JcaPEMWriter(writer)
 
     keyAlgorithm match {
       case KeyAlgorithm.ED25519 => {
         val Ed25519 = new Ed25519PublicKeyParameters(bytes, 0)
+        pemWriter.writeObject(Ed25519)
+
         pemWriter.writeObject(new PemObject("PUBLIC KEY", Ed25519.getEncoded))
         pemWriter.flush
         pemWriter.close()
