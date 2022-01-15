@@ -19,9 +19,18 @@ import org.bouncycastle.crypto.params.ECDomainParameters
 import org.bouncycastle.crypto.params.ECPublicKeyParameters
 import java.nio.file.{Files, Paths, FileSystems}
 import org.bouncycastle.openssl.jcajce.JcaPEMWriter
-import org.bouncycastle.openssl.PEMWriter
+
 import  org.bouncycastle.asn1.x509.AlgorithmIdentifier
 import org.bouncycastle.asn1.edec.EdECObjectIdentifiers
+
+import org.bouncycastle.jcajce.provider.asymmetric.edec.BCEdDSAPublicKey
+import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey
+import org.bouncycastle.jce.spec.ECParameterSpec
+import org.bouncycastle.jce.spec.ECPublicKeySpec
+
+import java.security.KeyFactory
+
+
 /**
  * CLPublicKey : Casper system public key
  *
@@ -77,37 +86,29 @@ class CLPublicKey(
    * @param path
    */
   def toPemString(): String = {
-
-    var pubKeyInfo = new SubjectPublicKeyInfo(new AlgorithmIdentifier(EdECObjectIdentifiers.id_Ed25519), bytes)
-  //  val Ed25519 = new SubjectPublicKeyInfo("keyAlgorithm",bytes)
     val writer = new StringWriter
-    val pemWriter = new PEMWriter(writer)
-    pemWriter.writeObject(pubKeyInfo)
-    pemWriter.flush()
-    pemWriter.close()
-
-
-   // val writer = new StringWriter
-   // val pem
-    //val pemWriter = new JcaPEMWriter(writer)
-
+    val jcaWriter = new JcaPEMWriter(writer)
     keyAlgorithm match {
       case KeyAlgorithm.ED25519 => {
-        val Ed25519 = new Ed25519PublicKeyParameters(bytes, 0)
-        pemWriter.writeObject(Ed25519)
-
-        pemWriter.writeObject(new PemObject("PUBLIC KEY", Ed25519.getEncoded))
-        pemWriter.flush
-        pemWriter.close()
+        val pubKeyInfo = new SubjectPublicKeyInfo(new AlgorithmIdentifier(EdECObjectIdentifiers.id_Ed25519), bytes)
+        val converter = new JcaPEMKeyConverter().setProvider(new BouncyCastleProvider());
+        val pkey = converter.getPublicKey(pubKeyInfo)
+        println(pubKeyInfo.getAlgorithm)
+        jcaWriter.writeObject(pkey)
+        jcaWriter.flush()
+        jcaWriter.close()
         writer.toString
       }
+
       case KeyAlgorithm.SECP256K1 => {
         val eCParameterSpec = ECNamedCurveTable.getParameterSpec("secp256k1")
-        val domParams = new ECDomainParameters(eCParameterSpec.getCurve, eCParameterSpec.getG, eCParameterSpec.getN, eCParameterSpec.getH, eCParameterSpec.getSeed)
-        val secp256k1: ECPublicKeyParameters = new ECPublicKeyParameters(eCParameterSpec.getCurve.decodePoint(bytes), domParams)
-        pemWriter.writeObject(new PemObject("PUBLIC KEY", secp256k1.getQ.getEncoded(true)))
-        pemWriter.flush
-        pemWriter.close()
+        val spec = new ECParameterSpec(eCParameterSpec.getCurve, eCParameterSpec.getG, eCParameterSpec.getN, eCParameterSpec.getH, eCParameterSpec.getSeed)
+        val q = eCParameterSpec.getCurve.decodePoint(bytes)
+        val   fact = KeyFactory.getInstance("ECDSA", "BC")
+        val pkey = fact.generatePublic(new ECPublicKeySpec(q,spec))
+        jcaWriter.writeObject(pkey)
+        jcaWriter.flush
+        jcaWriter.close()
         writer.toString
       }
       case null => throw new IllegalArgumentException("algorithm not handled")
@@ -153,17 +154,20 @@ object CLPublicKey {
    * @return
    */
   def fromPemFile(path: String): CLPublicKey = {
+
     val converter = new JcaPEMKeyConverter().setProvider(new BouncyCastleProvider());
     Option(new PEMParser(new FileReader(path)).readObject()) match {
       case Some(obj) => obj match {
-        case pubkey: SubjectPublicKeyInfo => {
-          val bytes = pubkey.getEncoded()
-          val algo = KeyAlgorithm.valueOf(converter.getPublicKey(pubkey).getAlgorithm)
-          algo match {
-            case KeyAlgorithm.ED25519 => new CLPublicKey(bytes, KeyAlgorithm.ED25519)
-            case KeyAlgorithm.SECP256K1 => new CLPublicKey(bytes, KeyAlgorithm.SECP256K1)
-            case null => throw new IllegalArgumentException("Can not handle this algorithm :" + algo)
-          }
+        case pubkeyInfo: SubjectPublicKeyInfo => {
+         val pkey=  converter.getPublicKey(pubkeyInfo)
+          pkey match {
+             case  ed : BCEdDSAPublicKey => {
+              new CLPublicKey(ed.getPointEncoding(), KeyAlgorithm.ED25519)
+             }
+             case  ec : BCECPublicKey => {
+              new CLPublicKey(ec.getQ().getEncoded(true), KeyAlgorithm.SECP256K1)
+             }
+           }
         }
         case _ => throw new IllegalArgumentException("this not a public pem file")
       }

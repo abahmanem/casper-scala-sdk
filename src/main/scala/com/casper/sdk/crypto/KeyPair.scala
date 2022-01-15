@@ -1,6 +1,7 @@
 package com.casper.sdk.crypto
 
 import com.casper.sdk.types.cltypes.{CLPublicKey, KeyAlgorithm}
+import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
 import org.bouncycastle.crypto.params.{AsymmetricKeyParameter, ECDomainParameters, ECPublicKeyParameters, Ed25519PrivateKeyParameters, Ed25519PublicKeyParameters}
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair
 import org.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator
@@ -9,18 +10,34 @@ import org.bouncycastle.crypto.generators.Ed25519KeyPairGenerator
 import org.bouncycastle.jce.ECNamedCurveTable
 import org.bouncycastle.util.io.pem.PemObject
 import org.bouncycastle.crypto.params.ECKeyGenerationParameters
-import  org.bouncycastle.crypto.generators.ECKeyPairGenerator
-import java.nio.file.{Files, Paths, FileSystems}
+import org.bouncycastle.crypto.generators.ECKeyPairGenerator
+
+import java.nio.file.{FileSystems, Files, Paths}
 import org.bouncycastle.openssl.jcajce.JcaPEMWriter
-import java.security.SecureRandom
+
+import java.security.{KeyFactory, SecureRandom, Security}
+import java.security.spec.ECPublicKeySpec
 import java.io._
 import org.bouncycastle.crypto.params.ECPrivateKeyParameters
-import org.bouncycastle.openssl.PEMWriter
+import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey
+import org.bouncycastle.jcajce.provider.asymmetric.edec.BCEdDSAPublicKey
+import org.bouncycastle.openssl.{PEMParser, PEMWriter}
+import org.bouncycastle.jcajce.provider.asymmetric.util.{DESUtil, EC5Util}
+import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter
+import org.bouncycastle.openssl.jcajce.JcaPEMWriter
+import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.bouncycastle.jcajce.provider.asymmetric.edec.BCEdDSAPublicKey
+import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey
+import org.bouncycastle.jcajce.provider.asymmetric.edec.BCEdDSAPrivateKey
+import java.security.Security
+
 /**
  * holder for a key pair (a public key + a private key)
  */
 case class KeyPair(publicKey: AsymmetricKeyParameter, privateKey: AsymmetricKeyParameter) {
 
+  Security.addProvider( new BouncyCastleProvider())
+  val converter = new JcaPEMKeyConverter().setProvider("BC")
   var cLPublicKey : CLPublicKey=null
   /**
    * export publicKey to Pem String
@@ -28,11 +45,15 @@ case class KeyPair(publicKey: AsymmetricKeyParameter, privateKey: AsymmetricKeyP
    * @return
    */
   def publicKeyToPem(): String = {
+    val p = org.bouncycastle.crypto.util.SubjectPublicKeyInfoFactory.createSubjectPublicKeyInfo(publicKey)
+    val ppp= converter.getPublicKey(p)
     val writer = new StringWriter
-    val pemWriter = new JcaPEMWriter(writer)
-    pemWriter.writeObject(publicKey)
-    pemWriter.flush
-    pemWriter.close()
+    val jcaWriter = new JcaPEMWriter(writer)
+     println(ppp.getClass.getName)
+    jcaWriter.writeObject(ppp)
+    jcaWriter.flush
+    jcaWriter.close()
+    println(writer.toString)
     writer.toString
   }
 
@@ -42,25 +63,16 @@ case class KeyPair(publicKey: AsymmetricKeyParameter, privateKey: AsymmetricKeyP
    * @return
    */
   def privateKeyToPem(): String = {
-
+    val p = org.bouncycastle.crypto.util.PrivateKeyInfoFactory.createPrivateKeyInfo(privateKey)
+    val ppp= converter.getPrivateKey(p)
     val writer = new StringWriter
-    val pemWriter = new JcaPEMWriter(writer)
-   cLPublicKey.keyAlgorithm match {
-     case KeyAlgorithm.ED25519 =>{
-       pemWriter.writeObject(new PemObject("Private KEY", privateKey.asInstanceOf[Ed25519PrivateKeyParameters].getEncoded))
-       pemWriter.flush
-       pemWriter.close
-       writer.toString
-     }
-     case _ =>{
-      val pv =   privateKey.asInstanceOf[ECPrivateKeyParameters]
-       val bytes = pv.getD.toByteArray
-       null
-     }
-
-   }
-
-
+    val jcaWriter = new JcaPEMWriter(writer)
+    println(ppp.getClass.getName)
+    jcaWriter.writeObject(ppp)
+    jcaWriter.flush
+    jcaWriter.close()
+    println(writer.toString)
+    writer.toString
   }
 
   /**
@@ -80,14 +92,50 @@ case class KeyPair(publicKey: AsymmetricKeyParameter, privateKey: AsymmetricKeyP
 object KeyPair {
 
   /**
-   * load Keypair from pem file
+   * load Keypair from private key pem file
    *
    * @param path
    * @return
    */
   def loadFromPem(path: String): KeyPair = {
-    null
+
+
+    import org.bouncycastle.asn1.pkcs.PrivateKeyInfo
+
+
+    val o = new PEMParser(new FileReader(path)).readObject()
+
+    println("DDDDDDDD"+o.getClass.getName)
+
+    val converter = new JcaPEMKeyConverter().setProvider(new BouncyCastleProvider());
+    Option(new PEMParser(new FileReader(path)).readObject()) match {
+      case Some(obj) => obj match {
+        case pvkeyInfo: PrivateKeyInfo => {
+         val pvkey =  converter.getPrivateKey(pvkeyInfo)
+         import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters
+         val prvparam = new Ed25519PrivateKeyParameters(pvkey.getEncoded, 0)
+         val pubkparam =  prvparam.generatePublicKey()
+          print("EEEEEEEEEEE"+pvkey.getClass.getName)
+          val p = KeyPair(pubkparam ,prvparam)
+          println(p.privateKeyToPem())
+          p
+
+        }
+        case pemKeyPair: org.bouncycastle.openssl.PEMKeyPair => {
+          val pvkey =  converter.getPrivateKey(pemKeyPair.getPrivateKeyInfo)
+          print("EEEEEEEEEEE"+pvkey.getClass.getName)
+          null
+        }
+
+
+        case _ => throw new IllegalArgumentException("this not a private pem file")
+      }
+      case None => throw new IOException("could not read private  key File")
+    }
   }
+
+
+
 
   /**
    * create a new Keypair

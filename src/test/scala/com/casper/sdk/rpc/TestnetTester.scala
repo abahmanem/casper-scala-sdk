@@ -37,10 +37,9 @@ import java.security.{KeyFactory, KeyPair, KeyPairGenerator, PrivateKey, PublicK
 
 object TestnetTester  extends  App {
 
+  
+  
   import java.security.Security
-
-  import java.security.Security
-
   Security.addProvider(new BouncyCastleProvider())
   val kpg = java.security.KeyPairGenerator.getInstance("Ed25519","BC")
 
@@ -80,11 +79,7 @@ object TestnetTester  extends  App {
   pemWriter1.close()
 
   println(writer1.toString)
-
-
-
-
-  val p = new CLPublicKey("017f747b67bd3fe63c2a736739dfe40156d622347346e70f68f51c178a75ce5537")
+   val p = new CLPublicKey("017f747b67bd3fe63c2a736739dfe40156d622347346e70f68f51c178a75ce5537")
   //println("dfgdfgf" + p.toPemString())
 
 
