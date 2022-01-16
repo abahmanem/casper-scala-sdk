@@ -1,15 +1,13 @@
 package com.casper.sdk.crypto
 
 import com.casper.sdk.types.cltypes.{CLPublicKey, KeyAlgorithm}
+import com.casper.sdk.util.HexUtils
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
-import org.bouncycastle.crypto.params.{AsymmetricKeyParameter, ECDomainParameters, ECPublicKeyParameters, Ed25519PrivateKeyParameters, Ed25519PublicKeyParameters}
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair
-import org.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator
-import org.bouncycastle.crypto.KeyGenerationParameters
+import org.bouncycastle.crypto.params.{AsymmetricKeyParameter, ECDomainParameters, ECKeyGenerationParameters, ECPrivateKeyParameters, ECPublicKeyParameters, Ed25519PrivateKeyParameters, Ed25519PublicKeyParameters}
+import org.bouncycastle.crypto.{AsymmetricCipherKeyPair, AsymmetricCipherKeyPairGenerator, KeyGenerationParameters, params}
 import org.bouncycastle.crypto.generators.Ed25519KeyPairGenerator
 import org.bouncycastle.jce.ECNamedCurveTable
 import org.bouncycastle.util.io.pem.PemObject
-import org.bouncycastle.crypto.params.ECKeyGenerationParameters
 import org.bouncycastle.crypto.generators.ECKeyPairGenerator
 
 import java.nio.file.{FileSystems, Files, Paths}
@@ -18,7 +16,6 @@ import org.bouncycastle.openssl.jcajce.JcaPEMWriter
 import java.security.{KeyFactory, SecureRandom, Security}
 import java.security.spec.ECPublicKeySpec
 import java.io._
-import org.bouncycastle.crypto.params.ECPrivateKeyParameters
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey
 import org.bouncycastle.jcajce.provider.asymmetric.edec.BCEdDSAPublicKey
 import org.bouncycastle.openssl.{PEMParser, PEMWriter}
@@ -29,8 +26,13 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.jcajce.provider.asymmetric.edec.BCEdDSAPublicKey
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey
 import org.bouncycastle.jcajce.provider.asymmetric.edec.BCEdDSAPrivateKey
+import org.bouncycastle.asn1.pkcs.PrivateKeyInfo
 import java.security.Security
-
+import com.casper.sdk.crypto.Pem
+import org.bouncycastle.asn1.pkcs.PrivateKeyInfo
+import org.bouncycastle.crypto.util.{PrivateKeyFactory, PrivateKeyInfoFactory, PublicKeyFactory, SubjectPublicKeyInfoFactory}
+import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
+import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters
 /**
  * holder for a key pair (a public key + a private key)
  */
@@ -44,36 +46,14 @@ case class KeyPair(publicKey: AsymmetricKeyParameter, privateKey: AsymmetricKeyP
    *
    * @return
    */
-  def publicKeyToPem(): String = {
-    val p = org.bouncycastle.crypto.util.SubjectPublicKeyInfoFactory.createSubjectPublicKeyInfo(publicKey)
-    val ppp= converter.getPublicKey(p)
-    val writer = new StringWriter
-    val jcaWriter = new JcaPEMWriter(writer)
-     println(ppp.getClass.getName)
-    jcaWriter.writeObject(ppp)
-    jcaWriter.flush
-    jcaWriter.close()
-    println(writer.toString)
-    writer.toString
-  }
+  def publicKeyToPem(): String =   Pem.toPem(publicKey)
 
   /**
    * export privateKey to Pem String
    *
    * @return
    */
-  def privateKeyToPem(): String = {
-    val p = org.bouncycastle.crypto.util.PrivateKeyInfoFactory.createPrivateKeyInfo(privateKey)
-    val ppp= converter.getPrivateKey(p)
-    val writer = new StringWriter
-    val jcaWriter = new JcaPEMWriter(writer)
-    println(ppp.getClass.getName)
-    jcaWriter.writeObject(ppp)
-    jcaWriter.flush
-    jcaWriter.close()
-    println(writer.toString)
-    writer.toString
-  }
+  def privateKeyToPem(): String =    Pem.toPem(privateKey)
 
   /**
    * signa message
@@ -99,43 +79,30 @@ object KeyPair {
    */
   def loadFromPem(path: String): KeyPair = {
 
-
-    import org.bouncycastle.asn1.pkcs.PrivateKeyInfo
-
-
-    val o = new PEMParser(new FileReader(path)).readObject()
-
-    println("DDDDDDDD"+o.getClass.getName)
-
     val converter = new JcaPEMKeyConverter().setProvider(new BouncyCastleProvider());
     Option(new PEMParser(new FileReader(path)).readObject()) match {
       case Some(obj) => obj match {
         case pvkeyInfo: PrivateKeyInfo => {
          val pvkey =  converter.getPrivateKey(pvkeyInfo)
-         import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters
          val prvparam = new Ed25519PrivateKeyParameters(pvkey.getEncoded, 0)
          val pubkparam =  prvparam.generatePublicKey()
-          print("EEEEEEEEEEE"+pvkey.getClass.getName)
-          val p = KeyPair(pubkparam ,prvparam)
-          println(p.privateKeyToPem())
-          p
-
+         val pair = KeyPair(pubkparam ,prvparam)
+         pair.cLPublicKey = new CLPublicKey(pubkparam.getEncoded,KeyAlgorithm.ED25519)
+         pair
         }
         case pemKeyPair: org.bouncycastle.openssl.PEMKeyPair => {
-          val pvkey =  converter.getPrivateKey(pemKeyPair.getPrivateKeyInfo)
-          print("EEEEEEEEEEE"+pvkey.getClass.getName)
-          null
+        val priv =   PrivateKeyFactory.createKey(pemKeyPair. getPrivateKeyInfo())
+        val pub =  PublicKeyFactory.createKey(pemKeyPair.getPublicKeyInfo()) .asInstanceOf[ECPublicKeyParameters]
+        val pvkey =  converter.getPrivateKey(pemKeyPair.getPrivateKeyInfo)
+        val pair = KeyPair(pub ,priv)
+          pair.cLPublicKey = new CLPublicKey(pub.getQ.getEncoded(true),KeyAlgorithm.SECP256K1)
+          pair
         }
-
-
         case _ => throw new IllegalArgumentException("this not a private pem file")
       }
       case None => throw new IOException("could not read private  key File")
     }
   }
-
-
-
 
   /**
    * create a new Keypair
@@ -155,7 +122,6 @@ object KeyPair {
         pair
       }
       case _ => {
-
         val eCParameterSpec = ECNamedCurveTable.getParameterSpec("secp256k1")
         val domParams = new ECDomainParameters(eCParameterSpec.getCurve, eCParameterSpec.getG, eCParameterSpec.getN, eCParameterSpec.getH, eCParameterSpec.getSeed)
         val keyParams = new ECKeyGenerationParameters(domParams, new SecureRandom())

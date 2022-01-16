@@ -27,7 +27,7 @@ import org.bouncycastle.jcajce.provider.asymmetric.edec.BCEdDSAPublicKey
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey
 import org.bouncycastle.jce.spec.ECParameterSpec
 import org.bouncycastle.jce.spec.ECPublicKeySpec
-
+import com.casper.sdk.crypto.Pem
 import java.security.KeyFactory
 
 
@@ -91,6 +91,9 @@ class CLPublicKey(
     keyAlgorithm match {
       case KeyAlgorithm.ED25519 => {
         val pubKeyInfo = new SubjectPublicKeyInfo(new AlgorithmIdentifier(EdECObjectIdentifiers.id_Ed25519), bytes)
+        Pem.toPem(pubKeyInfo)
+
+        /*
         val converter = new JcaPEMKeyConverter().setProvider(new BouncyCastleProvider());
         val pkey = converter.getPublicKey(pubKeyInfo)
         println(pubKeyInfo.getAlgorithm)
@@ -98,18 +101,37 @@ class CLPublicKey(
         jcaWriter.flush()
         jcaWriter.close()
         writer.toString
+
+         */
       }
 
       case KeyAlgorithm.SECP256K1 => {
+
+/*
+        var curve = ECNamedCurveTable.GetByName("secp256k1");
+        var domainParams = new ECDomainParameters(curve.Curve, curve.G, curve.N, curve.H, curve.GetSeed());
+
+        ECPoint q = curve.Curve.DecodePoint(RawBytes);
+        ECPublicKeyParameters pk = new ECPublicKeyParameters(q, domainParams);
+        writer.WriteObject(pk);
+    */
+
         val eCParameterSpec = ECNamedCurveTable.getParameterSpec("secp256k1")
-        val spec = new ECParameterSpec(eCParameterSpec.getCurve, eCParameterSpec.getG, eCParameterSpec.getN, eCParameterSpec.getH, eCParameterSpec.getSeed)
+        val domParam = new ECDomainParameters(eCParameterSpec.getCurve,eCParameterSpec.getG, eCParameterSpec.getN, eCParameterSpec.getH,eCParameterSpec.getSeed)
+       // val spec = new ECParameterSpec(eCParameterSpec.getCurve, eCParameterSpec.getG, eCParameterSpec.getN, eCParameterSpec.getH, eCParameterSpec.getSeed)
         val q = eCParameterSpec.getCurve.decodePoint(bytes)
+
+        val pk : ECPublicKeyParameters = new ECPublicKeyParameters(q, domParam);
+        Pem.toPem(pk)
+        /*
         val   fact = KeyFactory.getInstance("ECDSA", "BC")
         val pkey = fact.generatePublic(new ECPublicKeySpec(q,spec))
         jcaWriter.writeObject(pkey)
         jcaWriter.flush
         jcaWriter.close()
         writer.toString
+
+         */
       }
       case null => throw new IllegalArgumentException("algorithm not handled")
     }
