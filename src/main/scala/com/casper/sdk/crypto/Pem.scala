@@ -30,15 +30,14 @@ object Pem {
     try {
       data match {
 
-        case key: AsymmetricKeyParameter if key.isPrivate ⇒
-          writer.writeObject(BCConvert.toPrivateKeyInfo(key))
+        case keyPair: AsymmetricCipherKeyPair =>  writer.writeObject(new PEMKeyPair(BCConvert.toSubjectPublicKeyInfo(keyPair.getPublic), BCConvert.toPrivateKeyInfo(keyPair.getPrivate)))
 
-        case key: AsymmetricKeyParameter if !key.isPrivate ⇒
-          writer.writeObject(BCConvert.toSubjectPublicKeyInfo(key))
+        case key: AsymmetricKeyParameter if key.isPrivate =>  writer.writeObject(BCConvert.toPrivateKeyInfo(key))
 
-        case keyPair: AsymmetricCipherKeyPair ⇒
-          writer.writeObject(new PEMKeyPair(BCConvert.toSubjectPublicKeyInfo(keyPair.getPublic), BCConvert.toPrivateKeyInfo(keyPair.getPrivate)))
+        case key: AsymmetricKeyParameter if !key.isPrivate =>   writer.writeObject(BCConvert.toSubjectPublicKeyInfo(key))
+
         case _ => writer.writeObject(data)
+
       }
       writer.flush()
       stringWriter.toString

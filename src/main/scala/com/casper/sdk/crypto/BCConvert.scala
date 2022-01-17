@@ -48,14 +48,11 @@ object BCConvert {
    */
 
   def toAsymmetricKeyParameter(key: java.security.Key): AsymmetricKeyParameter = key match {
-    case privateKey: java.security.PrivateKey ⇒
-      PrivateKeyFactory.createKey(key.getEncoded)
+    case privateKey: java.security.PrivateKey =>  PrivateKeyFactory.createKey(key.getEncoded)
 
-    case publicKey: java.security.PublicKey ⇒
-      PublicKeyFactory.createKey(key.getEncoded)
+    case publicKey: java.security.PublicKey =>  PublicKeyFactory.createKey(key.getEncoded)
 
-    case _ ⇒
-      throw new IllegalArgumentException(s"Not supported: ${key.getClass}")
+    case _ =>  throw new IllegalArgumentException(s"Not supported: ${key.getClass}")
   }
 
 
