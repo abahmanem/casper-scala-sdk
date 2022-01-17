@@ -42,8 +42,8 @@ object KeyPairTest extends  App {
 
 */
  //val k =  KeyPair.loadFromPem("/Users/p35862/ec101.pem")
-  val k =  KeyPair.loadFromPem("/Users/p35862/ec101.pem")
-val bytes = "errrfrt ewrwe".getBytes
+  val k =  KeyPair.loadFromPem("/Users/p35862/3333.pem")
+val bytes = "errrfrt fgdfgfg hhjghjgh ewrwe".getBytes
 val sig= k.sign(bytes)
   println(k.publicKeyToPem)
   println(k.privateKeyToPem)

@@ -15,23 +15,26 @@ import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter
  */
 object BCConvert {
 
-  Security.addProvider( new BouncyCastleProvider())
+  Security.addProvider(new BouncyCastleProvider())
   val converter = new JcaPEMKeyConverter().setProvider("BC")
+
   /**
    * get a SubjectPublicKeyInfo from AsymmetricKeyParameter
+   *
    * @param key
-   * @return  SubjectPublicKeyInfo
+   * @return SubjectPublicKeyInfo
    */
-  def toSubjectPublicKeyInfo(key:AsymmetricKeyParameter): SubjectPublicKeyInfo = {
+  def toSubjectPublicKeyInfo(key: AsymmetricKeyParameter): SubjectPublicKeyInfo = {
     SubjectPublicKeyInfoFactory.createSubjectPublicKeyInfo(key)
   }
 
   /**
    * get PrivateKeyInfo from  AsymmetricKeyParameter
+   *
    * @param key
    * @return PrivateKeyInfo
    */
-  def toPrivateKeyInfo (key : AsymmetricKeyParameter): PrivateKeyInfo = {
+  def toPrivateKeyInfo(key: AsymmetricKeyParameter): PrivateKeyInfo = {
 
     println(key.getClass)
     PrivateKeyInfoFactory.createPrivateKeyInfo(key)
@@ -39,6 +42,7 @@ object BCConvert {
 
   /**
    * converts java.security.Key to AsymmetricKeyParameter
+   *
    * @param key
    * @return
    */
@@ -57,21 +61,21 @@ object BCConvert {
 
   /**
    * private AsymmetricKeyParameter to java.security.PrivateKey
+   *
    * @param key
    * @return
    */
-  def getPrivateKey(key: AsymmetricKeyParameter) : java.security.PrivateKey={
+  def getPrivateKey(key: AsymmetricKeyParameter): java.security.PrivateKey = {
     converter.getPrivateKey(toPrivateKeyInfo(key))
   }
 
   /**
    * PrivateKeyInfo to java.security.PrivateKey
+   *
    * @param key
    * @return
    */
-  def getPrivateKey(keyInfo: PrivateKeyInfo) : java.security.PrivateKey={
+  def getPrivateKey(keyInfo: PrivateKeyInfo): java.security.PrivateKey = {
     converter.getPrivateKey(keyInfo)
   }
-
-
 }

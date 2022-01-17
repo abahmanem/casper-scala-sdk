@@ -38,8 +38,7 @@ object Pem {
 
         case keyPair: AsymmetricCipherKeyPair ⇒
           writer.writeObject(new PEMKeyPair(BCConvert.toSubjectPublicKeyInfo(keyPair.getPublic), BCConvert.toPrivateKeyInfo(keyPair.getPrivate)))
-        case _ ⇒
-          writer.writeObject(data)
+        case _ => writer.writeObject(data)
       }
       writer.flush()
       stringWriter.toString

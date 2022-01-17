@@ -14,10 +14,8 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.openssl.PEMParser
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter
-import org.bouncycastle.crypto.params.Ed25519PublicKeyParameters
+import org.bouncycastle.crypto.params.{ECDomainParameters, ECKeyGenerationParameters, ECPublicKeyParameters, Ed25519PublicKeyParameters}
 import org.bouncycastle.jce.ECNamedCurveTable
-import org.bouncycastle.crypto.params.ECDomainParameters
-import org.bouncycastle.crypto.params.ECPublicKeyParameters
 
 import java.nio.file.{FileSystems, Files, Paths}
 import org.bouncycastle.openssl.jcajce.JcaPEMWriter
@@ -27,11 +25,9 @@ import org.bouncycastle.jcajce.provider.asymmetric.edec.BCEdDSAPublicKey
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey
 import org.bouncycastle.jce.spec.ECParameterSpec
 import org.bouncycastle.jce.spec.ECPublicKeySpec
-import com.casper.sdk.crypto.Pem
+import com.casper.sdk.crypto.{Pem, SECP256K1}
 
-import java.security.PublicKey
-import java.security.Signature
-import java.security.KeyFactory
+import java.security.{KeyFactory, PublicKey, SecureRandom, Signature}
 
 
 /**
@@ -114,10 +110,16 @@ class CLPublicKey(
    * @return true if the signature is valid and false if not
    */
   def verifySignature(msg: Array[Byte], signature: Array[Byte]): Boolean = {
-    val pkey = toPublicKey
-    val sig = Signature.getInstance(pkey.getAlgorithm, BouncyCastleProvider.PROVIDER_NAME)
-    sig.initVerify(pkey)
-    sig.verify(signature)
+
+    keyAlgorithm match {
+      case KeyAlgorithm.ED25519 => {
+        import org.bouncycastle.math.ec.rfc8032.Ed25519
+        Ed25519.verify(signature, 0, bytes, 0, msg, 0, msg.length)
+      }
+
+      case KeyAlgorithm.SECP256K1 =>          SECP256K1.verify(msg, signature, bytes)
+      
+     }
   }
 
   /**
@@ -128,16 +130,32 @@ class CLPublicKey(
   def toPublicKey: PublicKey = {
     keyAlgorithm match {
       case KeyAlgorithm.ED25519 => {
+
+
+
         val pubKeyInfo = new SubjectPublicKeyInfo(new AlgorithmIdentifier(EdECObjectIdentifiers.id_Ed25519), bytes)
         val converter = new JcaPEMKeyConverter().setProvider(new BouncyCastleProvider());
         converter.getPublicKey(pubKeyInfo)
       }
       case KeyAlgorithm.SECP256K1 => {
         val eCParameterSpec = ECNamedCurveTable.getParameterSpec("secp256k1")
+        import java.security.KeyFactory
+        import java.security.spec.PKCS8EncodedKeySpec
+        //.X509EncodedKeySpec
         val spec = new ECParameterSpec(eCParameterSpec.getCurve, eCParameterSpec.getG, eCParameterSpec.getN, eCParameterSpec.getH, eCParameterSpec.getSeed)
         val q = eCParameterSpec.getCurve.decodePoint(bytes)
+       val speck =  new ECPublicKeySpec(q, spec)
+        val k = KeyFactory.getInstance("ECDSA")
+         k.generatePublic(speck)
+
+  /*
+        val curve = ECNamedCurveTable.getParameterSpec("secp256k1")
+        val spec = new ECParameterSpec(curve.getCurve, curve.getG, curve.getN, curve.getH, curve.getSeed)
+        val q = curve.getCurve.decodePoint(bytes)
         val fact = KeyFactory.getInstance("ECDSA", "BC")
         fact.generatePublic(new ECPublicKeySpec(q, spec))
+
+   */
       }
       case null => throw new IllegalArgumentException("algorithm not handled")
     }
