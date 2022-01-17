@@ -58,6 +58,9 @@ class KeyPairTest extends AnyFunSuite {
     info("assert Algorithm is  SECP256K1")
     assert(keyPair.cLPublicKey.keyAlgorithm == KeyAlgorithm.SECP256K1)
 
+    info("assert SECP256K1 key length is  33")
+    assert(keyPair.cLPublicKey.bytes.length ==33)
+
     info("assert  cLPublicKey hex = 0127a89db4e0806e568a5b0646594bd5d0abe0cf695a63357bd066f412e92bd68e")
     assert(keyPair.cLPublicKey.formatAsHexAccount.toLowerCase == "0202ba7f1ec7b61e8b79cdd669f0dbf73d40dc08133019f3eba95e43798601cd82ba")
   }
@@ -145,12 +148,14 @@ class KeyPairTest extends AnyFunSuite {
     val msg = "This a test to sign !!".getBytes
     val keyPair = KeyPair.create(KeyAlgorithm.ED25519)
     val b = keyPair.sign(msg)
+    info("assert ED25519 signature length is 64  ")
+    assert(b.length==64)
     info("assert verifySignature  ED25519 publickey= true  ")
     assert(keyPair.cLPublicKey.verifySignature(msg, b))
 
   }
 
-  test("Test sign message with ed25519 keyPair ") {
+  test("Test sign message with SECP256K1 keyPair ") {
     val msg = "This a test to sign !!".getBytes
     val keyPair = KeyPair.create(KeyAlgorithm.SECP256K1)
     val b = keyPair.sign(msg)
