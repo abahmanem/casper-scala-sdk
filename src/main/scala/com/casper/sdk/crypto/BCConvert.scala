@@ -1,14 +1,14 @@
 package com.casper.sdk.crypto
 
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair
-import org.bouncycastle.crypto.params.{AsymmetricKeyParameter, DSAKeyParameters, ECKeyParameters, RSAKeyParameters}
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo
 import org.bouncycastle.asn1.x509.{AlgorithmIdentifier, SubjectPublicKeyInfo}
-
-import java.security.{KeyFactory, PrivateKey, PublicKey, Security}
+import org.bouncycastle.crypto.AsymmetricCipherKeyPair
+import org.bouncycastle.crypto.params.{AsymmetricKeyParameter, DSAKeyParameters, ECKeyParameters, RSAKeyParameters}
 import org.bouncycastle.crypto.util.{PrivateKeyFactory, PrivateKeyInfoFactory, PublicKeyFactory, SubjectPublicKeyInfoFactory}
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter
+
+import java.security.{KeyFactory, PrivateKey, PublicKey, Security}
 
 /**
  * Conversions between BouncyCastle classes and JCA
@@ -24,9 +24,8 @@ object BCConvert {
    * @param key
    * @return SubjectPublicKeyInfo
    */
-  def toSubjectPublicKeyInfo(key: AsymmetricKeyParameter): SubjectPublicKeyInfo = {
-    SubjectPublicKeyInfoFactory.createSubjectPublicKeyInfo(key)
-  }
+  def toSubjectPublicKeyInfo(key: AsymmetricKeyParameter): SubjectPublicKeyInfo = SubjectPublicKeyInfoFactory.createSubjectPublicKeyInfo(key)
+
 
   /**
    * get PrivateKeyInfo from  AsymmetricKeyParameter
@@ -34,8 +33,8 @@ object BCConvert {
    * @param key
    * @return PrivateKeyInfo
    */
-  def toPrivateKeyInfo(key: AsymmetricKeyParameter): PrivateKeyInfo =   PrivateKeyInfoFactory.createPrivateKeyInfo(key)
- 
+  def toPrivateKeyInfo(key: AsymmetricKeyParameter): PrivateKeyInfo = PrivateKeyInfoFactory.createPrivateKeyInfo(key)
+
   /**
    * converts java.security.Key to AsymmetricKeyParameter
    *
@@ -44,11 +43,11 @@ object BCConvert {
    */
 
   def toAsymmetricKeyParameter(key: java.security.Key): AsymmetricKeyParameter = key match {
-    case privateKey: java.security.PrivateKey =>  PrivateKeyFactory.createKey(key.getEncoded)
+    case privateKey: java.security.PrivateKey => PrivateKeyFactory.createKey(key.getEncoded)
 
-    case publicKey: java.security.PublicKey =>  PublicKeyFactory.createKey(key.getEncoded)
+    case publicKey: java.security.PublicKey => PublicKeyFactory.createKey(key.getEncoded)
 
-    case _ =>  throw new IllegalArgumentException(s"Not supported: ${key.getClass}")
+    case _ => throw new IllegalArgumentException(s"Not supported: ${key.getClass}")
   }
 
 
@@ -58,9 +57,8 @@ object BCConvert {
    * @param key
    * @return
    */
-  def getPrivateKey(key: AsymmetricKeyParameter): java.security.PrivateKey = {
-    converter.getPrivateKey(toPrivateKeyInfo(key))
-  }
+  def getPrivateKey(key: AsymmetricKeyParameter): java.security.PrivateKey = converter.getPrivateKey(toPrivateKeyInfo(key))
+
 
   /**
    * PrivateKeyInfo to java.security.PrivateKey
@@ -68,7 +66,6 @@ object BCConvert {
    * @param key
    * @return
    */
-  def getPrivateKey(keyInfo: PrivateKeyInfo): java.security.PrivateKey = {
-    converter.getPrivateKey(keyInfo)
-  }
+  def getPrivateKey(keyInfo: PrivateKeyInfo): java.security.PrivateKey = converter.getPrivateKey(keyInfo)
+
 }
