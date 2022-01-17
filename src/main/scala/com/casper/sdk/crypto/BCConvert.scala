@@ -34,12 +34,8 @@ object BCConvert {
    * @param key
    * @return PrivateKeyInfo
    */
-  def toPrivateKeyInfo(key: AsymmetricKeyParameter): PrivateKeyInfo = {
-
-    println(key.getClass)
-    PrivateKeyInfoFactory.createPrivateKeyInfo(key)
-  }
-
+  def toPrivateKeyInfo(key: AsymmetricKeyParameter): PrivateKeyInfo =   PrivateKeyInfoFactory.createPrivateKeyInfo(key)
+ 
   /**
    * converts java.security.Key to AsymmetricKeyParameter
    *
