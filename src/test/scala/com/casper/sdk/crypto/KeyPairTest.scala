@@ -1,59 +1,174 @@
 package com.casper.sdk.crypto
 
+import com.casper.sdk.domain.Peer
+import com.casper.sdk.rpc.RPCResult
 import com.casper.sdk.types.cltypes.{CLPublicKey, KeyAlgorithm}
-import com.casper.sdk.util.HexUtils
+import com.casper.sdk.util.{HexUtils, JsonConverter}
+import org.scalatest.funsuite.AnyFunSuite
 
 import scala.io.Source
 
 
-object KeyPairTest extends  App {
+class KeyPairTest extends AnyFunSuite {
+
+  test("Test Load keyPair from ed25519 private pem file") {
+
+    val keyPair = KeyPair.loadFromPem(getClass.getResource("/crypto/ed25519/secret.pem").getPath)
+    info("assert publickey is not null")
+    assert(keyPair.publicKey != null)
+
+    info("assert publickey is of Ed25519PublicKeyParameters  ")
+    assert(keyPair.publicKey.getClass.getSimpleName == "Ed25519PublicKeyParameters")
+
+    info("assert private key is not null")
+    assert(keyPair.privateKey != null)
+
+    info("assert privateKey is of Ed25519PrivateKeyParameters  ")
+    assert(keyPair.privateKey.getClass.getSimpleName == "Ed25519PrivateKeyParameters")
+
+    info("assert CLPublickey key is not null")
+    assert(keyPair.cLPublicKey != null)
+
+    info("assert Algorithm is  ED25519")
+    assert(keyPair.cLPublicKey.keyAlgorithm == KeyAlgorithm.ED25519)
+
+    info("assert  cLPublicKey hex = 0127a89db4e0806e568a5b0646594bd5d0abe0cf695a63357bd066f412e92bd68e")
+    assert(keyPair.cLPublicKey.formatAsHexAccount.toLowerCase == "0127a89db4e0806e568a5b0646594bd5d0abe0cf695a63357bd066f412e92bd68e")
+
+  }
 
 
-/*
-  val p0 = new CLPublicKey("01d9bf2148748a85c89da5aad8ee0b0fc2d105fd39d41a4c796536354f0ae2900c")
-  val p = new CLPublicKey("0203e7d5b66b2fd0f66fb0efcceecb673b3762595b30ae1cac48ae8f09d34c952ee4")
- println( p0.toPemString())
- println( p.toPemString())
+  test("Test Load keyPair from secp256k1 private pem file") {
+    val keyPair = KeyPair.loadFromPem(getClass.getResource("/crypto/secp256k1/secret.pem").getPath)
+    info("assert publickey is not null")
+    assert(keyPair.publicKey != null)
+
+    info("assert publickey is of ECPublicKeyParameters  ")
+    assert(keyPair.publicKey.getClass.getSimpleName == "ECPublicKeyParameters")
+
+    info("assert private key is not null")
+    assert(keyPair.privateKey != null)
+
+    info("assert privateKey is of ECPrivateKeyParameters  ")
+    assert(keyPair.privateKey.getClass.getSimpleName == "ECPrivateKeyParameters")
+
+    info("assert CLPublickey key is not null")
+    assert(keyPair.cLPublicKey != null)
+
+    info("assert Algorithm is  SECP256K1")
+    assert(keyPair.cLPublicKey.keyAlgorithm == KeyAlgorithm.SECP256K1)
+
+    info("assert  cLPublicKey hex = 0127a89db4e0806e568a5b0646594bd5d0abe0cf695a63357bd066f412e92bd68e")
+    assert(keyPair.cLPublicKey.formatAsHexAccount.toLowerCase == "0202ba7f1ec7b61e8b79cdd669f0dbf73d40dc08133019f3eba95e43798601cd82ba")
+  }
 
 
-  val ed25519Pem = Source.fromURL(getClass.getResource("/crypto/ED25519_public_key.pem")) .mkString
-  val secp256K1Pem = Source.fromURL(getClass.getResource("/crypto/SECP256K1_public_key.pem")).mkString
-  println( ed25519Pem)
-  println( p0.toPemString())
+  test("Test Load keyPair from non private pem file") {
+    info("Load keyPair from non private pem file Throws IllegalArgumentException")
+    val caught: IllegalArgumentException = intercept[IllegalArgumentException] {
+      val keyPair = KeyPair.loadFromPem(getClass.getResource("/crypto/ED25519_public_key.pem").getPath)
+    }
+    assert(caught.getMessage == "this not a private pem file")
+  }
 
 
-  assert( p0.toPemString() == ed25519Pem)
-*/
-/*
- println(getClass.getResource("/crypto/ED25519_public_key.pem").getPath)
+  test("Test create ed25519 keyPair ") {
 
- println(CLPublicKey.fromPemFile("/Users/p35862/p01.pem").formatAsHexAccount)
- println(CLPublicKey.fromPemFile("/Users/p35862/p02.pem").formatAsHexAccount)
-*/
- /*
-  val str = """-----BEGIN PUBLIC KEY-----
-              |MCowBQYDK2VwAyEAf3R7Z70/5jwqc2c53+QBVtYiNHNG5w9o9RwXinXOVTc=
-              |-----END PUBLIC KEY-----""".stripMargin
+    val keyPair = KeyPair.create(KeyAlgorithm.ED25519)
+    info("assert publickey is not null")
+    assert(keyPair.publicKey != null)
+
+    info("assert publickey is of Ed25519PublicKeyParameters  ")
+    assert(keyPair.publicKey.getClass.getSimpleName == "Ed25519PublicKeyParameters")
+
+    info("assert private key is not null")
+    assert(keyPair.privateKey != null)
+
+    info("assert privateKey is of Ed25519PrivateKeyParameters  ")
+    assert(keyPair.privateKey.getClass.getSimpleName == "Ed25519PrivateKeyParameters")
+
+    info("assert CLPublickey key is not null")
+    assert(keyPair.cLPublicKey != null)
+
+  }
+
+  test("Test create secp256k1 keyPair ") {
+    val keyPair = KeyPair.create(KeyAlgorithm.SECP256K1)
+
+    info("assert publickey is not null")
+    assert(keyPair.publicKey != null)
+
+    info("assert publickey is of ECPublicKeyParameters  ")
+    assert(keyPair.publicKey.getClass.getSimpleName == "ECPublicKeyParameters")
+
+    info("assert private key is not null")
+    assert(keyPair.privateKey != null)
+
+    info("assert privateKey is of ECPrivateKeyParameters  ")
+    assert(keyPair.privateKey.getClass.getSimpleName == "ECPrivateKeyParameters")
+
+    info("assert CLPublickey key is not null")
+    assert(keyPair.cLPublicKey != null)
+
+  }
 
 
+  test("Test publicKeyToPem from a  ed25519 keyPair ") {
+    val keyPair = KeyPair.create(KeyAlgorithm.ED25519)
+    val pem = keyPair.publicKeyToPem
 
-  println(CLPublicKey.fromPemFile("/Users/p35862/test02.pem").formatAsHexAccount)
-  println(CLPublicKey.fromPemFile("/Users/p35862/test04.pem").formatAsHexAccount)
-
-*/
- //val k =  KeyPair.loadFromPem("/Users/p35862/ec101.pem")
-  val k =  KeyPair.loadFromPem("/Users/p35862/3333.pem")
-val bytes = "errrfrt fgdfgfg hhjghjgh ewrwe".getBytes
-val sig= k.sign(bytes)
-  println(k.publicKeyToPem)
-  println(k.privateKeyToPem)
-  println(k.cLPublicKey.formatAsHexAccount)
-
-  //k.cLPublicKey.verifySignature(bytes,sig)
-
-  println(k.cLPublicKey.verifySignature(bytes,sig))
+  }
 
 
+  test("Test privateKeyToPem from a ed25519 keyPair ") {
+    val keyPair = KeyPair.create(KeyAlgorithm.ED25519)
+    val pem = keyPair.privateKeyToPem
+
+  }
+
+
+  test("Test publicKeyToPem from a secp256k1 keyPair ") {
+    val keyPair = KeyPair.create(KeyAlgorithm.ED25519)
+    val pem = keyPair.publicKeyToPem
+
+  }
+
+
+  test("Test privateKeyToPem from a secp256k1 keyPair ") {
+    val keyPair = KeyPair.create(KeyAlgorithm.ED25519)
+    val pem = keyPair.privateKeyToPem
+
+  }
+
+
+  test("Test sign message with ED25519 keyPair ") {
+    val msg = "This a test to sign !!".getBytes
+    val keyPair = KeyPair.create(KeyAlgorithm.ED25519)
+    val b = keyPair.sign(msg)
+    info("assert verifySignature  ED25519 publickey= true  ")
+    assert(keyPair.cLPublicKey.verifySignature(msg, b))
+
+  }
+
+  test("Test sign message with ed25519 keyPair ") {
+    val msg = "This a test to sign !!".getBytes
+    val keyPair = KeyPair.create(KeyAlgorithm.SECP256K1)
+    val b = keyPair.sign(msg)
+    info("assert verifySignature with SECP256K1 publickey = true  ")
+    assert(keyPair.cLPublicKey.verifySignature(msg, b))
+  }
+
+  test("Test verifiy signature with ed25519 keyPair ") {
+    val keyPair = KeyPair.create(KeyAlgorithm.ED25519)
+    val pem = keyPair.privateKeyToPem
+
+  }
+
+  test("Test verifiy signature with secp256k1 keyPair ") {
+    val keyPair = KeyPair.create(KeyAlgorithm.SECP256K1)
+    val pem = keyPair.privateKeyToPem
+
+  }
 
 
 }
