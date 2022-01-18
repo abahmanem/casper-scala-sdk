@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.{JsonSerializer, SerializerProvider}
 
 /**
- * DeployExecutable Custom Json serializer 
+ * DeployExecutable Custom Json serializer
  */
 class DeployExecutableSerializer extends JsonSerializer[DeployExecutable] {
   override def serialize(value: DeployExecutable, gen: JsonGenerator, serializers: SerializerProvider): Unit = {
@@ -106,8 +106,8 @@ class DeployExecutableSerializer extends JsonSerializer[DeployExecutable] {
       gen.writeString(HexUtils.toHex(storedVersionedContractByHash.hash.hash))
       gen.writeFieldName("version")
       storedVersionedContractByHash.version match {
-        case Some(_) => gen.writeNumber(storedVersionedContractByHash.version.get)
-        case None => gen.writeString("None")
+        case Some(_) => gen.writeRawValue("Some("+storedVersionedContractByHash.version.get+")")// .writeNumber(storedVersionedContractByHash.version.get)
+        case None => gen.writeRawValue("None")
       }
       gen.writeFieldName("entry_point")
       gen.writeString(storedVersionedContractByHash.entry_point)
@@ -131,8 +131,8 @@ class DeployExecutableSerializer extends JsonSerializer[DeployExecutable] {
       gen.writeString(storedVersionedContractByName.name)
       gen.writeFieldName("version")
       storedVersionedContractByName.version match {
-        case Some(_) => gen.writeNumber(storedVersionedContractByName.version.get)
-        case None => gen.writeString("None")
+        case Some(_) => gen.writeRawValue("Some("+storedVersionedContractByName.version.get+")")
+        case None => gen.writeRawValue("None")
       }
       gen.writeFieldName("entry_point")
       gen.writeString(storedVersionedContractByName.entry_point)

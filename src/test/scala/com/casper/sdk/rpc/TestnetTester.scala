@@ -37,24 +37,16 @@ import java.security.spec.ECGenParameterSpec
 import java.security.{KeyFactory, KeyPair, KeyPairGenerator, PrivateKey, PublicKey, Signature}
 
 object TestnetTester  extends  App {
-  val u512 =
-    """  {
-      |                                "cl_type": "U512",
-      |                                "bytes": "0400ca9A3B",
-      |                                "parsed": "1000000000"
-      |                            }""".stripMargin
-
-  val value = JsonConverter.fromJson[CLValue](u512)
 
 
-  val json = """{
-               |  "cl_type" : "U512",
-               |  "bytes" : "0412e8571b",
-               |  "parsed" : 458745874
-               |} """.stripMargin
-  val v = CLValue.Option(CLValue.String("Hello, World!"))// .Bool(true)// .String("Hello, world!")
+  val arg1 = new DeployNamedArg("bar", CLValue.U512(BigInt.apply("24512121212")))
+  val arg2 = new DeployNamedArg("foo", CLValue.U64(-5487))
 
-  println(JsonConverter.toJson(v))
+  val args1 =  Seq(Seq(arg1,arg2))
+
+  val storedVersionedContractByName = new StoredVersionedContractByName ("casper-test", Some(1425474), "entry-point",args1)
+
+  println(JsonConverter.toJson(storedVersionedContractByName))
 
 
   val str ="""{"StoredContractByHash": {
