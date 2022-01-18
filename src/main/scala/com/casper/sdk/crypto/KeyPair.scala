@@ -35,21 +35,21 @@ case class KeyPair(publicKey: AsymmetricKeyParameter, privateKey: AsymmetricKeyP
   /**
    * export publicKey to Pem String
    *
-   * @return
+   * @return String
    */
   def publicKeyToPem: String = Pem.toPem(publicKey)
 
   /**
    * export privateKey to Pem String
    *
-   * @return
+   * @return String
    */
   def privateKeyToPem: String = Pem.toPem(privateKey)
 
   /**
    * sign a message
    *
-   * @param msg
+   * @param msg : message to sign
    * @return byte array
    */
   def sign(msg: Array[Byte]): Array[Byte] = {
@@ -73,8 +73,8 @@ object KeyPair {
   /**
    * load Keypair from private key pem file
    *
-   * @param path
-   * @return
+   * @param path : path to pem file
+   * @return KeyPair instance
    */
   def loadFromPem(path: String): KeyPair = {
 
@@ -102,8 +102,8 @@ object KeyPair {
 
   /**
    * create a new Keypair
-   *
-   * @return
+   * @param algo  :  KeyAlgorithm
+   * @return KeyPair instance
    */
   def create(algo: KeyAlgorithm): KeyPair = {
 

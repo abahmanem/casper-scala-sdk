@@ -19,7 +19,7 @@ object Pem {
   /**
    * Writes key objects to pem strings
    *
-   * @param data
+   * @param data : data to write into pem String
    * @throws IOException
    * @return Pem String
    */

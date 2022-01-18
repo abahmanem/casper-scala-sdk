@@ -21,7 +21,7 @@ object BCConvert {
   /**
    * get a SubjectPublicKeyInfo from AsymmetricKeyParameter
    *
-   * @param key
+   * @param key :AsymmetricKeyParameter
    * @return SubjectPublicKeyInfo
    */
   def toSubjectPublicKeyInfo(key: AsymmetricKeyParameter): SubjectPublicKeyInfo = SubjectPublicKeyInfoFactory.createSubjectPublicKeyInfo(key)
@@ -30,7 +30,7 @@ object BCConvert {
   /**
    * get PrivateKeyInfo from  AsymmetricKeyParameter
    *
-   * @param key
+   * @param key : AsymmetricKeyParameter
    * @return PrivateKeyInfo
    */
   def toPrivateKeyInfo(key: AsymmetricKeyParameter): PrivateKeyInfo = PrivateKeyInfoFactory.createPrivateKeyInfo(key)
@@ -38,8 +38,8 @@ object BCConvert {
   /**
    * converts java.security.Key to AsymmetricKeyParameter
    *
-   * @param key
-   * @return
+   * @param key : java.security.Key
+   * @return AsymmetricKeyParameter
    */
 
   def toAsymmetricKeyParameter(key: java.security.Key): AsymmetricKeyParameter = key match {
@@ -54,8 +54,8 @@ object BCConvert {
   /**
    * private AsymmetricKeyParameter to java.security.PrivateKey
    *
-   * @param key
-   * @return
+   * @param key : AsymmetricKeyParameter
+   * @return java.security.PrivateKey
    */
   def getPrivateKey(key: AsymmetricKeyParameter): java.security.PrivateKey = converter.getPrivateKey(toPrivateKeyInfo(key))
 
@@ -63,8 +63,8 @@ object BCConvert {
   /**
    * PrivateKeyInfo to java.security.PrivateKey
    *
-   * @param key
-   * @return
+   * @param key : PrivateKeyInfo
+   * @return java.security.PrivateKey
    */
   def getPrivateKey(keyInfo: PrivateKeyInfo): java.security.PrivateKey = converter.getPrivateKey(keyInfo)
 
