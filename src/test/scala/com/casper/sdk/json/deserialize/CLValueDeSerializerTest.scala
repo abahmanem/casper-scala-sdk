@@ -7,7 +7,7 @@ import org.scalatest.funsuite.AnyFunSuite
 /**
  * CLValueSerializerTest
  */
-class CLValueSerializerTest extends AnyFunSuite {
+class CLValueDeSerializerTest extends AnyFunSuite {
 
 
   /**

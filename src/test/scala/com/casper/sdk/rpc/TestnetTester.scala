@@ -5,7 +5,7 @@ import com.casper.sdk.CasperSdk
 import com.casper.sdk.crypto.KeyPair
 import com.casper.sdk.domain.{EraSummary, Peer, deploy}
 import com.casper.sdk.domain._
-import com.casper.sdk.domain.deploy.{Deploy, DeployExecutable, DeployNamedArg, ModuleBytes, StoredVersionedContractByName}
+import com.casper.sdk.domain.deploy.{Deploy, DeployExecutable, DeployNamedArg, Hash, ModuleBytes, StoredVersionedContractByName}
 import com.casper.sdk.types.cltypes.{AccessRight, AccountHash, CLPublicKey, CLType, CLTypeInfo, CLValue, KeyAlgorithm, Signature, URef}
 import com.casper.sdk.util.{ByteUtils, HexUtils, JsonConverter, TimeUtil}
 import com.casper.sdk.util.implicits.idInstance
@@ -28,6 +28,7 @@ import java.security.SecureRandom
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.openssl.PEMWriter
 import com.casper.sdk.serialization.domain.deploy.DeployExecutableByteSerializer
+
 import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.security.PublicKey
@@ -36,6 +37,25 @@ import java.security.spec.ECGenParameterSpec
 import java.security.{KeyFactory, KeyPair, KeyPairGenerator, PrivateKey, PublicKey, Signature}
 
 object TestnetTester  extends  App {
+  val u512 =
+    """  {
+      |                                "cl_type": "U512",
+      |                                "bytes": "0400ca9A3B",
+      |                                "parsed": "1000000000"
+      |                            }""".stripMargin
+
+  val value = JsonConverter.fromJson[CLValue](u512)
+
+
+  val json = """{
+               |  "cl_type" : "U512",
+               |  "bytes" : "0412e8571b",
+               |  "parsed" : 458745874
+               |} """.stripMargin
+  val v = CLValue.Option(CLValue.String("Hello, World!"))// .Bool(true)// .String("Hello, world!")
+
+  println(JsonConverter.toJson(v))
+
 
   val str ="""{"StoredContractByHash": {
              |        "hash":"c4c411864f7b717c27839e56f6f1ebe5da3f35ec0043f437324325d65a22afa4",
