@@ -5,9 +5,9 @@ import java.util.concurrent.atomic.AtomicInteger
 /**
  * RPC Request class, used to serialize/deserilaize RPC request payloads
  * @param id
- * @param method
- * @param params
- * @param jsonrpc
+ * @param method RPC method
+ * @param params params of the call
+ * @param jsonrpc jsonrpc version
  */
 case class RPCRequest(
                       id: Long,

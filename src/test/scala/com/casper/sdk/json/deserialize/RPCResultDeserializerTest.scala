@@ -2,7 +2,7 @@ package com.casper.sdk.json.deserialize
 
 import com.casper.sdk.domain.{AuctionState, Block, EraSummary, NodeStatus, Peer, StoredValue, Transfer}
 import com.casper.sdk.domain.deploy.Deploy
-import com.casper.sdk.util.JsonConverter
+import com.casper.sdk.util.{HexUtils, JsonConverter}
 import com.casper.sdk.rpc.RPCResult
 import com.casper.sdk.types.cltypes.CLType
 import org.scalatest.funsuite.AnyFunSuite
@@ -79,7 +79,7 @@ class RPCResultDeserializerTest extends AnyFunSuite {
     val deployJson = Source.fromURL(getClass.getResource("/json/deserialize/deploy.json")).mkString
     val deploy = JsonConverter.fromJson[RPCResult[Deploy]](deployJson).result.get
     assert(deploy.approvals.size == 1)
-    assert(deploy.hash.toLowerCase == "a11ca2157b073062c3d2f2c918e6371dd33658622443bcd2fa2f7d6e2105959f".toLowerCase())
+    assert(HexUtils.toHex(deploy.hash.hash).toLowerCase == "a11ca2157b073062c3d2f2c918e6371dd33658622443bcd2fa2f7d6e2105959f".toLowerCase())
     assert(deploy.session.getClass.getSimpleName == "ModuleBytes")
     assert(deploy.payment.getClass.getSimpleName == "ModuleBytes")
 
