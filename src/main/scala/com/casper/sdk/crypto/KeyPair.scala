@@ -2,28 +2,19 @@ package com.casper.sdk.crypto
 
 import com.casper.sdk.crypto.{Pem, SECP256K1}
 import com.casper.sdk.types.cltypes.{CLPublicKey, KeyAlgorithm}
-import com.casper.sdk.util.HexUtils
-import org.bouncycastle.asn1._
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
 import org.bouncycastle.crypto.generators.{ECKeyPairGenerator, Ed25519KeyPairGenerator}
-import org.bouncycastle.crypto.params._
-import org.bouncycastle.crypto.signers.{ECDSASigner, Ed25519Signer}
+import org.bouncycastle.crypto.params.{ECKeyGenerationParameters,ECDomainParameters,Ed25519PublicKeyParameters,AsymmetricKeyParameter,Ed25519PrivateKeyParameters,ECPrivateKeyParameters,ECPublicKeyParameters}
+import org.bouncycastle.crypto.signers.Ed25519Signer
 import org.bouncycastle.crypto.util.{PrivateKeyFactory, PrivateKeyInfoFactory, PublicKeyFactory, SubjectPublicKeyInfoFactory}
 import org.bouncycastle.crypto.{AsymmetricCipherKeyPair, AsymmetricCipherKeyPairGenerator, KeyGenerationParameters, params}
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey
 import org.bouncycastle.jcajce.provider.asymmetric.edec.{BCEdDSAPrivateKey, BCEdDSAPublicKey}
-import org.bouncycastle.jcajce.provider.asymmetric.util.{DESUtil, EC5Util}
 import org.bouncycastle.jce.ECNamedCurveTable
-import org.bouncycastle.jce.provider.BouncyCastleProvider
-import org.bouncycastle.openssl.jcajce.{JcaPEMKeyConverter, JcaPEMWriter}
-import org.bouncycastle.openssl.{PEMParser, PEMWriter}
-import org.bouncycastle.util.io.pem.PemObject
-
-import java.io._
-import java.nio.file.{FileSystems, Files, Paths}
-import java.security.spec.ECPublicKeySpec
-import java.security.{KeyFactory, SecureRandom, Security, Signature}
+import org.bouncycastle.openssl.PEMParser
+import java.io.{FileReader, IOException}
+import java.security.SecureRandom
 
 /**
  * holder for a key pair (a public key + a private key)
@@ -102,7 +93,8 @@ object KeyPair {
 
   /**
    * create a new Keypair
-   * @param algo  :  KeyAlgorithm
+   *
+   * @param algo :  KeyAlgorithm
    * @return KeyPair instance
    */
   def create(algo: KeyAlgorithm): KeyPair = {
