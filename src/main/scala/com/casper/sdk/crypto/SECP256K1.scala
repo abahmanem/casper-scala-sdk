@@ -24,26 +24,23 @@ object SECP256K1 {
     curve.getH())
 
   /**
-   *
-   * @param msg
-   * @param signature
-   * @param publicKey
-   * @return
+   * verify a signature
+   * @param msg signed msg
+   * @param signature signature to verify
+   * @param publicKey key to verifiy msg against
+   * @return true if the signature is verified or false if not
    */
   def verify(msg: Array[Byte], signature: Array[Byte], publicKey: Array[Byte]): Boolean = {
 
     val curve = SECNamedCurves.getByName("secp256k1")
     val domParams = new ECDomainParameters(curve.getCurve, curve.getG, curve.getN, curve.getH, curve.getSeed)
     val q = curve.getCurve.decodePoint(publicKey)
-    val params = new ECPublicKeyParameters(q, domParams)
     val signer = new ECDSASigner()
-    signer.init(false, params)
+    signer.init(false, new ECPublicKeyParameters(q, domParams))
     val asn1 = new ASN1InputStream(signature)
     try {
       val seq = asn1.readObject().asInstanceOf[DLSequence]
-      val r = seq.getObjectAt(0).asInstanceOf[ASN1Integer].getPositiveValue
-      val s = seq.getObjectAt(1).asInstanceOf[ASN1Integer].getPositiveValue
-      signer.verifySignature(msg, r, s)
+      signer.verifySignature(msg, seq.getObjectAt(0).asInstanceOf[ASN1Integer].getPositiveValue, seq.getObjectAt(1).asInstanceOf[ASN1Integer].getPositiveValue)
     }
     catch {
       case io: IOException => false
@@ -54,10 +51,10 @@ object SECP256K1 {
   }
 
     /**
-     *
-     * @param msg
-     * @param privateKey
-     * @return
+     * sign a message
+     * @param msg message to sign
+     * @param privateKey privateKey to use t osign the message
+     * @return signature byte array
      */
     def sign(msg: Array[Byte], params: ECPrivateKeyParameters): Array[Byte] = {
       val signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()))
