@@ -38,6 +38,14 @@ class DeployExecutableByteSerializerTest extends AnyFunSuite {
     assert("03b348fdd0d0b3f66468687df93141b5924f6bb957d5893c08b60d5a78d0b9a42300010000000400000074657374110000000d00000048656c6c6f2c20576f726c64210a" == HexUtils.toHex(serializer.toBytes(storedVersionedContractByHash)))
   }
 
+  test("Test serialize StoredVersionedContractByName ") {
+    val args: DeployNamedArg = new DeployNamedArg("test", CLValue.String("Hello, World!"))
+    val storedVersionedContractByName = new StoredVersionedContractByName("test-contract", None, "PsLz5c7JsqT8BK8ll0kF", Seq(Seq(args)))
+    assert("040d000000746573742d636f6e747261637400010000000400000074657374110000000d00000048656c6c6f2c20576f726c64210a" == HexUtils.toHex(serializer.toBytes(storedVersionedContractByName)))
+  }
+
+
+
   test("Test serialize DeployTransfer ") {
     val args: DeployNamedArg = new DeployNamedArg("amount", CLValue.I32(1000))
     val deployTransfer = new DeployTransfer(Seq(Seq(args)))

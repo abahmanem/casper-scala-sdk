@@ -5,7 +5,7 @@ import com.casper.sdk.CasperSdk
 import com.casper.sdk.crypto.KeyPair
 import com.casper.sdk.domain.{EraSummary, Peer, deploy}
 import com.casper.sdk.domain._
-import com.casper.sdk.domain.deploy.{Deploy, DeployExecutable, ModuleBytes}
+import com.casper.sdk.domain.deploy.{Deploy, DeployExecutable, DeployNamedArg, ModuleBytes, StoredVersionedContractByName}
 import com.casper.sdk.types.cltypes.{AccessRight, AccountHash, CLPublicKey, CLType, CLTypeInfo, CLValue, KeyAlgorithm, Signature, URef}
 import com.casper.sdk.util.{ByteUtils, HexUtils, JsonConverter, TimeUtil}
 import com.casper.sdk.util.implicits.idInstance
@@ -27,18 +27,16 @@ import java.net.URL
 import java.security.SecureRandom
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.openssl.PEMWriter
+import com.casper.sdk.serialization.domain.deploy.DeployExecutableByteSerializer
 import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.security.PublicKey
 import java.security.SecureRandom
 import java.security.spec.ECGenParameterSpec
-
 import java.security.{KeyFactory, KeyPair, KeyPairGenerator, PrivateKey, PublicKey, Signature}
 
 object TestnetTester  extends  App {
 
-  
-  
   import java.security.Security
   Security.addProvider(new BouncyCastleProvider())
   val kpg = java.security.KeyPairGenerator.getInstance("Ed25519","BC")

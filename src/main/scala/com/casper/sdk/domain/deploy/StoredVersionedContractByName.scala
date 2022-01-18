@@ -1,6 +1,6 @@
 package com.casper.sdk.domain.deploy
 
-class StoredVersionedContractByName (
+case class StoredVersionedContractByName (
                                      name:String,
                                      version:Option[Int],
                                      entry_point:String,

@@ -47,6 +47,13 @@ class DeployExecutableByteSerializer extends BytesSerializable[DeployExecutable]
           case Some(a) => builder.addOne(0x01.toByte).addAll(CLValue.U32(storedVersionedContractByHash.version.get).bytes)
         }
       }
+        case storedVersionedContractByName: StoredVersionedContractByName => {
+          builder.addAll(CLValue.String(storedVersionedContractByName.name).bytes)
+          storedVersionedContractByName.version match {
+            case None => builder.addOne(0x00.toByte)
+            case Some(a) => builder.addOne(0x01.toByte).addAll(CLValue.U32(storedVersionedContractByName.version.get).bytes)
+          }
+        }
       case transfer: DeployTransfer =>
     }
     builder.addAll(argsToBytes(value.args))
