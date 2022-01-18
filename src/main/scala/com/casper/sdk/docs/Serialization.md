@@ -59,11 +59,11 @@ More examples on CLType and CLValue serialization can be found in this test file
 [cltypes/CLValueByteSerializerTest.scala](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/test/scala/com/casper/sdk/serialization/cltypes/CLValueByteSerializerTest.scala)
 
 
-### DeployExecutable Serialization
+### Serialization of DeployExecutable objects
+
 ```scala
 val serializer = new DeployExecutableByteSerializer()
 ```
-
 
 - ModuleBytes Serialization
 
@@ -111,7 +111,7 @@ val serializer = new DeployExecutableByteSerializer()
 
 - StoredVersionedContractByName  Serialization  
 
-####  Deploy Serialization 
+### Serialization of Deploy  objects
 
 ```scala
 val serializer = new DeployByteSerializer()
