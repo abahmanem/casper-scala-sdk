@@ -37,6 +37,52 @@ import java.security.{KeyFactory, KeyPair, KeyPairGenerator, PrivateKey, PublicK
 
 object TestnetTester  extends  App {
 
+  val str ="""{"StoredContractByHash": {
+             |        "hash":"c4c411864f7b717c27839e56f6f1ebe5da3f35ec0043f437324325d65a22afa4",
+             |        "entry_point": "pclphXwfYmCmdITj8hnh",
+             |        "args": [
+             |            [
+             |                "quantity",
+             |                {
+             |                    "cl_type": "I32",
+             |                    "bytes": "e8030000",
+             |                    "parsed": 1000
+             |                }
+             |            ]
+             |        ]
+             |        }
+             |} """.stripMargin
+
+
+  val str1= """{
+              |   "StoredContractByHash":{
+              |      "hash":"0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+              |      "entry_point":"pclphXwfYmCmdITj8hnh",
+              |      "args":[
+              |         [
+              |            "foo",
+              |            {
+              |               "cl_type":"String",
+              |               "bytes":"626172",
+              |               "parsed":"bar"
+              |            }
+              |         ],
+              |         [
+              |            "amount",
+              |            {
+              |               "cl_type":"U64",
+              |               "bytes":"05005550b405",
+              |               "parsed":"24500000000"
+              |            }
+              |         ]
+              |      ]
+              |   }
+              |}""".stripMargin
+
+  val storedContractByHash = JsonConverter.fromJson[DeployExecutable](str1)
+  println(storedContractByHash)
+  println("dddd"+JsonConverter.toJson(storedContractByHash))
+
   import java.security.Security
   Security.addProvider(new BouncyCastleProvider())
   val kpg = java.security.KeyPairGenerator.getInstance("Ed25519","BC")

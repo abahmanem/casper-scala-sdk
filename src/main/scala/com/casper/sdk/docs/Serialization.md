@@ -40,7 +40,7 @@ assert("0d00000048656c6c6f2c20576f726c6421" == HexUtils.toHex(clValue.bytes))
      assert("0a0000000957ff1ada959f4eb10608" == HexUtils.toHex(bytes))
 ```
 
-- CLValue of List of CLType
+- CLValue with List of CLType
 
 ```scala
     val bytes = cLValueByteSerializer.toBytes((CLValue.List(CLValue.U32(1), CLValue.U32(2), CLValue.U32(3))))
@@ -65,7 +65,7 @@ More examples on CLType and CLValue serialization can be found in this test file
 val serializer = new DeployExecutableByteSerializer()
 ```
 
-- ModuleBytes Serialization
+- ModuleBytes 
 
 ```scala
     val args: DeployNamedArg = new DeployNamedArg("payment", CLValue.U512(BigInt.apply("9999999999")))
@@ -74,7 +74,7 @@ val serializer = new DeployExecutableByteSerializer()
 
 ```
 
-- StoredContractByHash Serialization 
+- StoredContractByHash  
 
 ```scala
     val args: DeployNamedArg = new DeployNamedArg("quantity", CLValue.I32(1000))
@@ -83,7 +83,7 @@ val serializer = new DeployExecutableByteSerializer()
   
 ```
 
-- StoredContractByName Serialization 
+- StoredContractByName  
 
 ```scala
     val args: DeployNamedArg = new DeployNamedArg("quantity", CLValue.I32(1000))
@@ -92,7 +92,7 @@ val serializer = new DeployExecutableByteSerializer()
 
 ```
 
-- StoredVersionedContractByHash Serialization
+- StoredVersionedContractByHash 
 
 ```scala
     val args: DeployNamedArg = new DeployNamedArg("test", CLValue.String("Hello, World!"))
@@ -101,7 +101,7 @@ val serializer = new DeployExecutableByteSerializer()
   
 ```
 
-- DeployTransfer  Serialization 
+- DeployTransfer   
 
 ```scala
    val args: DeployNamedArg = new DeployNamedArg("amount", CLValue.I32(1000))
@@ -109,7 +109,7 @@ val serializer = new DeployExecutableByteSerializer()
    assert("050100000006000000616d6f756e7404000000e803000001" == HexUtils.toHex(serializer.toBytes(deployTransfer)))
 ```
 
-- StoredVersionedContractByName  Serialization  
+- StoredVersionedContractByName    
 
 ```scala
  val args: DeployNamedArg = new DeployNamedArg("test", CLValue.String("Hello, World!"))

@@ -36,12 +36,12 @@ class DeployExecutableByteSerializer extends BytesSerializable[DeployExecutable]
       }
 
       case storedContractByHash: StoredContractByHash =>
-        builder.addAll(HexUtils.fromHex(storedContractByHash.hash))
+        builder.addAll(storedContractByHash.hash.hash)
           .addAll(CLValue.U32(storedContractByHash.entry_point.getBytes(StandardCharsets.UTF_8).length).bytes)
           .addAll(storedContractByHash.entry_point.getBytes(StandardCharsets.UTF_8))
 
       case storedVersionedContractByHash: StoredVersionedContractByHash => {
-        builder.addAll(HexUtils.fromHex(storedVersionedContractByHash.hash))
+        builder.addAll(storedVersionedContractByHash.hash.hash)
         storedVersionedContractByHash.version match {
           case None => builder.addOne(0x00.toByte)
           case Some(a) => builder.addOne(0x01.toByte).addAll(CLValue.U32(storedVersionedContractByHash.version.get).bytes)

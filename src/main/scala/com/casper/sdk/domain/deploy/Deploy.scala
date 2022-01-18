@@ -37,10 +37,10 @@ case class Deploy(
   }
 }
 
-/*
-Deploy companion object
- */
 
+/**
+ * Deploy companion object
+ */
 object Deploy {
 
   /**

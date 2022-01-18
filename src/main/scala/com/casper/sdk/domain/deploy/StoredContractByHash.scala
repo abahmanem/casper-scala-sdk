@@ -1,7 +1,7 @@
 package com.casper.sdk.domain.deploy
 
 case class StoredContractByHash(
-                                 hash:String,
+                                 hash:Hash,
                                  entry_point:String,
                                  override  val args: Seq[Seq[DeployNamedArg]]
                                )  extends DeployExecutable(args) {

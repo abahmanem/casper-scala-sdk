@@ -1,9 +1,12 @@
 package com.casper.sdk.domain.deploy
 
+import com.casper.sdk.json.serialize.DeployNamedArgSerializer
 import com.casper.sdk.types.cltypes.{CLPublicKey, CLValue}
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 /**
  * DeployNamedArg entiyt class
  */
+@JsonSerialize(`using` = classOf[DeployNamedArgSerializer])
 case class DeployNamedArg(
                           val name:String,
                           val value:CLValue

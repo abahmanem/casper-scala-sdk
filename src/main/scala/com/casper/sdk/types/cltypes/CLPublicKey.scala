@@ -2,10 +2,11 @@ package com.casper.sdk.types.cltypes
 
 import com.casper.sdk.crypto.{Pem, SECP256K1}
 import com.casper.sdk.json.deserialize.CLPublicKeyDeserializer
+import com.casper.sdk.json.serialize.CLPublicKeySerializer
 import com.casper.sdk.types.cltypes.CLPublicKey.dropAlgorithmBytes
-import com.casper.sdk.types.cltypes.{KeyAlgorithm, _}
+import com.casper.sdk.types.cltypes.KeyAlgorithm
 import com.casper.sdk.util.{ByteUtils, HexUtils}
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.{JsonDeserialize, JsonSerialize}
 import org.bouncycastle.asn1.edec.EdECObjectIdentifiers
 import org.bouncycastle.asn1.x509.{AlgorithmIdentifier, SubjectPublicKeyInfo}
 import org.bouncycastle.crypto.params.{ECDomainParameters, ECKeyGenerationParameters, ECPublicKeyParameters, Ed25519PublicKeyParameters}
@@ -28,6 +29,7 @@ import java.security.{KeyFactory, PublicKey, SecureRandom, Signature}
  *
  * @param bytes
  */
+@JsonSerialize(`using` = classOf[CLPublicKeySerializer])
 @JsonDeserialize(`using` = classOf[CLPublicKeyDeserializer])
 class CLPublicKey(
                    override val bytes: Array[Byte]

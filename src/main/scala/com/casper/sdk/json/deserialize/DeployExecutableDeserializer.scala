@@ -48,7 +48,8 @@ class DeployExecutableDeserializer extends JsonDeserializer[DeployExecutable] {
           deployexe = new ModuleBytes(treeNode.get("ModuleBytes").get("module_bytes").asInstanceOf[TextNode].asText().getBytes, getArgs("ModuleBytes", treeNode))
         }
         case "StoredContractByHash" => {
-          deployexe = new StoredContractByHash(treeNode.get("StoredContractByHash").get("hash").asInstanceOf[TextNode].asText(),
+
+          deployexe = new StoredContractByHash(new Hash(treeNode.get("StoredContractByHash").get("hash").asInstanceOf[TextNode].asText()),
             treeNode.get("StoredContractByHash").get("entry_point").asInstanceOf[TextNode].asText(),
             getArgs("StoredContractByHash", treeNode))
         }
@@ -58,7 +59,7 @@ class DeployExecutableDeserializer extends JsonDeserializer[DeployExecutable] {
             getArgs("StoredContractByName", treeNode))
         }
         case "StoredVersionedContractByHash" => {
-          deployexe = new StoredVersionedContractByHash(treeNode.get("StoredVersionedContractByHash").get("hash").asInstanceOf[TextNode].asText(),
+          deployexe = new StoredVersionedContractByHash(new Hash(treeNode.get("StoredVersionedContractByHash").get("hash").asInstanceOf[TextNode].asText()),
             if (treeNode.get("StoredVersionedContractByHash").get("version").asInstanceOf[TextNode].asText().isEmpty) None else
               Some(treeNode.get("StoredVersionedContractByHash").get("version").asInstanceOf[TextNode].asText().toInt),
             treeNode.get("StoredVersionedContractByHash").get("entry_point").asInstanceOf[TextNode].asText(),

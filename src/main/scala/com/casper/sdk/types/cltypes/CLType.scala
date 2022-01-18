@@ -1,12 +1,14 @@
 package com.casper.sdk.types.cltypes
 
 import com.casper.sdk.json.deserialize.CLTypeDeserialiser
+import com.casper.sdk.json.serialize.CLTypeInfoSerializer
 import com.casper.sdk.types.cltypes
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.{JsonDeserialize, JsonSerialize}
 
 /**
  * Enum of CLType with data bytes array
  */
+
 @JsonDeserialize(`using` = classOf[CLTypeDeserialiser])
 enum CLType(val clType: Int) {
 

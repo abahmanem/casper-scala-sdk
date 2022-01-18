@@ -1,7 +1,7 @@
 package com.casper.sdk.domain.deploy
 
 case class StoredVersionedContractByHash (
-                                      hash:String,
+                                      hash:Hash,
                                       version:Option[Int],
                                       entry_point:String,
                                       override  val args: Seq[Seq[DeployNamedArg]]

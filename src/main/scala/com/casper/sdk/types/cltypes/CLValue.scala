@@ -1,8 +1,9 @@
 package com.casper.sdk.types.cltypes
 
 import com.casper.sdk.json.deserialize.CLValueDeSerializer
+import com.casper.sdk.json.serialize.CLValueSerializer
 import com.casper.sdk.util.{ByteUtils, HexUtils}
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.{JsonDeserialize, JsonSerialize}
 
 import java.nio.charset.StandardCharsets
 import scala.collection.mutable.ArrayBuilder
@@ -16,6 +17,7 @@ import scala.math.BigInt.int2bigInt
  * @param cl_type
  * @param parsed
  */
+@JsonSerialize(`using` = classOf[CLValueSerializer])
 @JsonDeserialize(`using` = classOf[CLValueDeSerializer])
 class CLValue(
                val bytes: Array[Byte],
