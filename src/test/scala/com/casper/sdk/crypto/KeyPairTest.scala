@@ -119,7 +119,6 @@ class KeyPairTest extends AnyFunSuite {
   test("Test publicKeyToPem from a  ed25519 keyPair ") {
     val keyPair = KeyPair.create(KeyAlgorithm.ED25519)
     assert(keyPair.privateKeyToPem!=null)
-
   }
 
 
