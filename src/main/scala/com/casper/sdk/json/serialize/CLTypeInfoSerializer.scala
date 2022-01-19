@@ -23,7 +23,7 @@ class CLTypeInfoSerializer extends JsonSerializer[CLTypeInfo] {
     else if (value.isInstanceOf[CLOptionTypeInfo]) {
       gen.writeStartObject
       gen.writeFieldName(value.cl_Type.toString)
-      gen.writeString(value.asInstanceOf[CLOptionTypeInfo].cl_Type.clType.toString)
+      gen.writeString(value.asInstanceOf[CLOptionTypeInfo].inner.cl_Type.toString)
       gen.writeEndObject
     }
     else gen.writeString(value.cl_Type.toString)

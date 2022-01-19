@@ -5,8 +5,8 @@ import com.casper.sdk.CasperSdk
 import com.casper.sdk.crypto.KeyPair
 import com.casper.sdk.domain.{EraSummary, Peer, deploy}
 import com.casper.sdk.domain._
-import com.casper.sdk.domain.deploy.{Deploy, DeployExecutable, DeployNamedArg, Hash, ModuleBytes, StoredVersionedContractByName}
-import com.casper.sdk.types.cltypes.{AccessRight, AccountHash, CLPublicKey, CLType, CLTypeInfo, CLValue, KeyAlgorithm, Signature, URef}
+import com.casper.sdk.domain.deploy.{Deploy, DeployExecutable, DeployNamedArg, Hash, ModuleBytes, StoredContractByHash, StoredVersionedContractByHash, StoredVersionedContractByName}
+import com.casper.sdk.types.cltypes.{AccessRight, AccountHash, CLByteArrayTypeInfo, CLOptionTypeInfo, CLPublicKey, CLType, CLTypeInfo, CLValue, KeyAlgorithm, Signature, URef}
 import com.casper.sdk.util.{ByteUtils, HexUtils, JsonConverter, TimeUtil}
 import com.casper.sdk.util.implicits.idInstance
 import org.bouncycastle.crypto.KeyGenerationParameters
@@ -28,6 +28,7 @@ import java.security.SecureRandom
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.openssl.PEMWriter
 import com.casper.sdk.serialization.domain.deploy.DeployExecutableByteSerializer
+import com.casper.sdk.domain.deploy._
 
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -39,61 +40,6 @@ import java.security.{KeyFactory, KeyPair, KeyPairGenerator, PrivateKey, PublicK
 object TestnetTester  extends  App {
 
 
-  val arg1 = new DeployNamedArg("bar", CLValue.U512(BigInt.apply("24512121212")))
-  val arg2 = new DeployNamedArg("foo", CLValue.U64(-5487))
-
-  val args1 =  Seq(Seq(arg1,arg2))
-
-  val storedVersionedContractByName = new StoredVersionedContractByName ("casper-test", Some(1425474), "entry-point",args1)
-
-  println(JsonConverter.toJson(storedVersionedContractByName))
-
-
-  val str ="""{"StoredContractByHash": {
-             |        "hash":"c4c411864f7b717c27839e56f6f1ebe5da3f35ec0043f437324325d65a22afa4",
-             |        "entry_point": "pclphXwfYmCmdITj8hnh",
-             |        "args": [
-             |            [
-             |                "quantity",
-             |                {
-             |                    "cl_type": "I32",
-             |                    "bytes": "e8030000",
-             |                    "parsed": 1000
-             |                }
-             |            ]
-             |        ]
-             |        }
-             |} """.stripMargin
-
-
-  val str1= """{
-              |   "StoredContractByHash":{
-              |      "hash":"0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
-              |      "entry_point":"pclphXwfYmCmdITj8hnh",
-              |      "args":[
-              |         [
-              |            "foo",
-              |            {
-              |               "cl_type":"String",
-              |               "bytes":"626172",
-              |               "parsed":"bar"
-              |            }
-              |         ],
-              |         [
-              |            "amount",
-              |            {
-              |               "cl_type":"U64",
-              |               "bytes":"05005550b405",
-              |               "parsed":"24500000000"
-              |            }
-              |         ]
-              |      ]
-              |   }
-              |}""".stripMargin
-
-  val storedContractByHash = JsonConverter.fromJson[DeployExecutable](str1)
-  println(storedContractByHash)
-  println("dddd"+JsonConverter.toJson(storedContractByHash))
 
   import java.security.Security
   Security.addProvider(new BouncyCastleProvider())

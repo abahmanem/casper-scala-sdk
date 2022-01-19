@@ -1,4 +1,4 @@
-package com.casper.sdk.json.deserialize.serialize
+package com.casper.sdk.json.serialize
 
 import com.casper.sdk.types.cltypes.{CLType, CLValue}
 import com.casper.sdk.util.{HexUtils, JsonConverter}
@@ -10,10 +10,10 @@ import org.scalatest.funsuite.AnyFunSuite
 class CLValueSerializerTest extends AnyFunSuite {
 
 
-  test("Seserialize Option value") {
+  test("Serialize Option value") {
     val json = """{
                  |  "cl_type" : {
-                 |    "String" : "10"
+                 |    "Option" : "String"
                  |  },
                  |  "bytes" : "010d00000048656c6c6f2c20576f726c6421",
                  |  "parsed" : "Hello, World!"
@@ -24,7 +24,7 @@ class CLValueSerializerTest extends AnyFunSuite {
   }
 
 
-  test("Seserialize Bool value") {
+  test("Serialize Bool value") {
     val json = """{
                  |  "cl_type" : "Bool",
                  |  "bytes" : "01",
@@ -35,7 +35,7 @@ class CLValueSerializerTest extends AnyFunSuite {
     assert(JsonConverter.toJson(v)==json)
   }
 
-  test("Seserialize String value") {
+  test("Serialize String value") {
     val json = """{
                  |  "cl_type" : "String",
                  |  "bytes" : "0d00000048656c6c6f2c20776f726c6421",
@@ -47,7 +47,7 @@ class CLValueSerializerTest extends AnyFunSuite {
   }
 
 
-  test("Seserialize U8 value") {
+  test("Serialize U8 value") {
     val json = """{
                  |  "cl_type" : "U8",
                  |  "bytes" : "00000000000000",
@@ -58,7 +58,7 @@ class CLValueSerializerTest extends AnyFunSuite {
     assert(JsonConverter.toJson(v)==json)
   }
 
-  test("Seserialize U512 value") {
+  test("Serialize U512 value") {
     val json = """{
                  |  "cl_type" : "U512",
                  |  "bytes" : "0412e8571b",
@@ -69,7 +69,7 @@ class CLValueSerializerTest extends AnyFunSuite {
     assert(JsonConverter.toJson(v)==json)
   }
 
-  test("Seserialize U32 value") {
+  test("Serialize U32 value") {
     val json = """{
                  |  "cl_type" : "U32",
                  |  "bytes" : "32b30000",
@@ -80,7 +80,7 @@ class CLValueSerializerTest extends AnyFunSuite {
     assert(JsonConverter.toJson(v)==json)
   }
 
-  test("Seserialize I32 value") {
+  test("Serialize I32 value") {
     val json = """{
                  |  "cl_type" : "I32",
                  |  "bytes" : "10270000",
@@ -91,7 +91,7 @@ class CLValueSerializerTest extends AnyFunSuite {
     assert(JsonConverter.toJson(v)==json)
   }
 
-  test("Seserialize I64 value") {
+  test("Serialize I64 value") {
     val json = """{
                  |  "cl_type" : "I64",
                  |  "bytes" : "99bdf7ffffffffff",
@@ -102,7 +102,7 @@ class CLValueSerializerTest extends AnyFunSuite {
     assert(JsonConverter.toJson(v)==json)
   }
 
-  test("Seserialize U128 value") {
+  test("Serialize U128 value") {
     val json = """{
                  |  "cl_type" : "U128",
                  |  "bytes" : "04bf3d3209",
@@ -113,7 +113,7 @@ class CLValueSerializerTest extends AnyFunSuite {
     assert(JsonConverter.toJson(v)==json)
   }
 
-  test("Seserialize U256 value") {
+  test("Serialize U256 value") {
     val json = """{
                  |  "cl_type" : "U256",
                  |  "bytes" : "0a2e1a2022a7d14f69f600",

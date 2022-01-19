@@ -1,4 +1,4 @@
-package com.casper.sdk.json.deserialize.serialize
+package com.casper.sdk.json.serialize
 
 import com.casper.sdk.domain.deploy.Hash
 import com.casper.sdk.types.cltypes.CLPublicKey
