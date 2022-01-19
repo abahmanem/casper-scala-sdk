@@ -38,7 +38,6 @@ object TimeUtil {
     outFormatter.format(instant)
   }
 
-
   /**
    * convert TTL into milliseconds
    *

@@ -1,11 +1,11 @@
 package com.casper.sdk.json.serialize
 
 import com.casper.sdk.util.TimeUtil
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.databind.{JsonSerializer, SerializerProvider}
+import com.fasterxml.jackson.databind.util.StdConverter
 
-class TTLSerializer extends JsonSerializer[Long] {
-  override def serialize(value:Long, gen: JsonGenerator, serializers: SerializerProvider): Unit = {
-    gen.writeString(TimeUtil.MillisToTtl(value))
+class TTLSerializer extends StdConverter[Long, String] {
+
+  override def convert(value: Long): String = {
+    TimeUtil.MillisToTtl(value)
   }
 }

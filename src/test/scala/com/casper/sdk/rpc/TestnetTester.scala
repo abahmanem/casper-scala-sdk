@@ -29,6 +29,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.openssl.PEMWriter
 import com.casper.sdk.serialization.domain.deploy.DeployExecutableByteSerializer
 import com.casper.sdk.domain.deploy._
+import com.casper.sdk.json.serialize.TimeStampSerializer
 
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -41,8 +42,10 @@ import java.time.format.DateTimeFormatter
 import java.util.regex.Pattern
 
 object TestnetTester  extends  App {
- // println(TimeUtil.ToEpochMs("202011-17T00:39:24.072Z"))
 
+
+
+  //assert(JsonConverter.toJson(12458744L) == json)
   "sdf45".toLong
   val js = """{
              |      "account": "017f747b67bd3fe63c2a736739dfe40156d622347346e70f68f51c178a75ce5537",
