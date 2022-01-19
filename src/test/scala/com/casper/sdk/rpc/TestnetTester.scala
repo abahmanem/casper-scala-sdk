@@ -36,58 +36,45 @@ import java.security.PublicKey
 import java.security.SecureRandom
 import java.security.spec.ECGenParameterSpec
 import java.security.{KeyFactory, KeyPair, KeyPairGenerator, PrivateKey, PublicKey, Signature}
+import java.time.{Instant, ZoneId}
+import java.time.format.DateTimeFormatter
+import java.util.regex.Pattern
 
 object TestnetTester  extends  App {
+ 
 
-  val msg = "This a test to sign !!".getBytes
-  val msg1 = "This a test to sign !!!".getBytes
-  val keyPair = com.casper.sdk.crypto.KeyPair.create(KeyAlgorithm.ED25519)
-  val b = keyPair.sign(msg)
-  //info("assert verifySignature on a différent message with ed25519 publickey = false  ")
-  println(keyPair.cLPublicKey.verifySignature(msg1, b))
+  val js = """{
+             |      "account": "017f747b67bd3fe63c2a736739dfe40156d622347346e70f68f51c178a75ce5537",
+             |      "timestamp": "2021-05-04T14:20:35.104Z",
+             |      "ttl": "30m",
+             |      "gas_price": 2,
+             |      "body_hash": "f2e0782bba4a0a9663cafc7d707fd4a74421bc5bfef4e368b7e8f38dfab87db8",
+             |      "dependencies": [
+             |        "0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+             |        "1010101010101010101010101010101010101010101010101010101010101010"
+             |      ],
+             |      "chain_name": "mainnet"
+             |    }""".stripMargin
 
-  import java.security.Security
-  Security.addProvider(new BouncyCastleProvider())
-  val kpg = java.security.KeyPairGenerator.getInstance("Ed25519","BC")
-
-  kpg.initialize(new ECGenParameterSpec("Ed25519"), new SecureRandom())
-  val kp:java.security.KeyPair = kpg.genKeyPair
-
-
-  val privateKey:PrivateKey = kp.getPrivate()
-  val publicKey:PublicKey = kp.getPublic()
-
-   kp
-
-  val writer = new StringWriter
-  val pemWriter = new PEMWriter(writer)
-  pemWriter.writeObject(publicKey)
-  pemWriter.flush()
-  pemWriter.close()
-
-  println(writer.toString)
+  val hh = JsonConverter.fromJson[DeployHeader](js)
+  println(hh)
+  println(JsonConverter.toJson(hh))
 
 
-  /**/
+  val instant = Instant.ofEpochMilli(1212121212)
 
-  val kpg1 = java.security.KeyPairGenerator.getInstance("ECDSA","BC")
-  kpg1.initialize(new ECGenParameterSpec("secp256k1"), new SecureRandom())
-  val kp1:java.security.KeyPair = kpg1.genKeyPair
+  val outFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneId.of("UTC"))
+  println(outFormatter.format(instant))
 
-  val privateKey1:PrivateKey = kp1.getPrivate()
-  val publicKey1:PublicKey = kp1.getPublic()
 
-  kp
-
-  val writer1 = new StringWriter
-  val pemWriter1 = new PEMWriter(writer1)
-  pemWriter1.writeObject(publicKey1)
-  pemWriter1.flush()
-  pemWriter1.close()
-
-  println(writer1.toString)
-   val p = new CLPublicKey("017f747b67bd3fe63c2a736739dfe40156d622347346e70f68f51c178a75ce5537")
-  //println("dfgdfgf" + p.toPemString())
+/*
+  val hexSECP256K1 = "0203e7d5b66b2fd0f66fb0efcceecb673b3762595b30ae1cac48ae8f09d34c952ee4"
+  val keyESECP256K1 = new CLPublicKey(hexSECP256K1)
+  val header  = new DeployHeader(keyESECP256K1,"1800000","1800000",1,null,null,"casper-test")
+  val paiment = new ModuleBytes()
+  val session = new StoredContractByHash()
+  val deploy = Deploy.createUnsignedDeploy()
+*/
 
 
 /*

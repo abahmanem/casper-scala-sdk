@@ -3,7 +3,13 @@ package com.casper.sdk.domain.deploy
 import com.casper.sdk.crypto.hash.Blake2b256
 import com.casper.sdk.types.cltypes.CLPublicKey
 import com.casper.sdk.domain.deploy.Hash
+import com.casper.sdk.json.deserialize.TimeStampDeSerializer
+import com.casper.sdk.json.deserialize.TTLDeserializer
+import com.casper.sdk.json.serialize.TimeStampSerializer
+import com.casper.sdk.json.serialize.TTLSerializer
 import com.casper.sdk.serialization.domain.deploy.DeployHeaderByteSerializer
+import com.fasterxml.jackson.databind.annotation.{JsonDeserialize, JsonSerialize}
+
 import scala.collection.mutable.ArrayBuilder
 /**
  * DeployHeader Entity class
@@ -17,8 +23,12 @@ import scala.collection.mutable.ArrayBuilder
  */
 case class DeployHeader(
                          account: CLPublicKey,
-                         timestamp: String,
-                         ttl: String,
+                         @JsonSerialize(`using` = classOf[TimeStampSerializer])
+                         @JsonDeserialize(`using` = classOf[TimeStampDeSerializer])
+                         timestamp: Long,
+                         @JsonSerialize(`using` = classOf[TTLSerializer])
+                         @JsonDeserialize(`using` = classOf[TTLDeserializer])
+                         ttl: Long,
                          gas_price: Int,
                          body_hash: Hash,
                          dependencies: Seq[Hash],

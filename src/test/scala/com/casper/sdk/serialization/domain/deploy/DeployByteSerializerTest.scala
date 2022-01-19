@@ -5,6 +5,7 @@ import com.casper.sdk.serialization.domain.deploy.DeployByteSerializer
 import com.casper.sdk.util.{HexUtils, JsonConverter}
 import org.scalatest.funsuite.AnyFunSuite
 
+
 /**
  * DeployByteSerializerTest
  */
@@ -19,8 +20,8 @@ class DeployByteSerializerTest extends AnyFunSuite {
                 |    "hash": "01da3c604f71e0e7df83ff1ab4ef15bb04de64ca02e3d2b78de6950e8b5ee187",
                 |    "header": {
                 |        "account": "01d9bf2148748a85c89da5aad8ee0b0fc2d105fd39d41a4c796536354f0ae2900c",
-                |        "timestamp": "1605573564072",
-                |        "ttl": "3600000",
+                |        "timestamp": "2020-11-17T00:39:24.072Z",
+                |        "ttl": "1h",
                 |        "gas_price": 1,
                 |        "body_hash": "4811966d37fe5674a8af4001884ea0d9042d1c06668da0c963769c3a01ebd08f",
                 |        "dependencies": [
