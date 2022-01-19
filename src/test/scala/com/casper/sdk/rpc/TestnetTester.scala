@@ -41,8 +41,9 @@ import java.time.format.DateTimeFormatter
 import java.util.regex.Pattern
 
 object TestnetTester  extends  App {
- 
+ // println(TimeUtil.ToEpochMs("202011-17T00:39:24.072Z"))
 
+  "sdf45".toLong
   val js = """{
              |      "account": "017f747b67bd3fe63c2a736739dfe40156d622347346e70f68f51c178a75ce5537",
              |      "timestamp": "2021-05-04T14:20:35.104Z",
