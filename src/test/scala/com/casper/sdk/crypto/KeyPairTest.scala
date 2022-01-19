@@ -118,29 +118,27 @@ class KeyPairTest extends AnyFunSuite {
 
   test("Test publicKeyToPem from a  ed25519 keyPair ") {
     val keyPair = KeyPair.create(KeyAlgorithm.ED25519)
-    val pem = keyPair.publicKeyToPem
+    assert(keyPair.privateKeyToPem!=null)
 
   }
 
 
   test("Test privateKeyToPem from a ed25519 keyPair ") {
     val keyPair = KeyPair.create(KeyAlgorithm.ED25519)
-    val pem = keyPair.privateKeyToPem
-
+    assert(keyPair.privateKeyToPem!=null)
   }
 
 
   test("Test publicKeyToPem from a secp256k1 keyPair ") {
-    val keyPair = KeyPair.create(KeyAlgorithm.ED25519)
-    val pem = keyPair.publicKeyToPem
+    val keyPair = KeyPair.create(KeyAlgorithm.SECP256K1)
+    assert(keyPair.privateKeyToPem!=null)
 
   }
 
 
   test("Test privateKeyToPem from a secp256k1 keyPair ") {
-    val keyPair = KeyPair.create(KeyAlgorithm.ED25519)
-    val pem = keyPair.privateKeyToPem
-
+    val keyPair = KeyPair.create(KeyAlgorithm.SECP256K1)
+    assert(keyPair.privateKeyToPem!=null)
   }
 
 
@@ -163,15 +161,23 @@ class KeyPairTest extends AnyFunSuite {
     assert(keyPair.cLPublicKey.verifySignature(msg, b))
   }
 
-  test("Test verifiy signature with ed25519 keyPair ") {
+  test("Test verifiy signature with ed25519 keyPair gives false ") {
+    val msg = "This a test to sign !!".getBytes
+    val msg1 = "This a test to sign !!!".getBytes
     val keyPair = KeyPair.create(KeyAlgorithm.ED25519)
-    val pem = keyPair.privateKeyToPem
+    val b = keyPair.sign(msg)
+    info("assert verifySignature on a différent message with ed25519 publickey = false  ")
+    assert(!keyPair.cLPublicKey.verifySignature(msg1, b))
 
   }
 
-  test("Test verifiy signature with secp256k1 keyPair ") {
+  test("Test verifiy signature with SECP256K1 keyPair gives false ") {
+    val msg = "This a test to sign !!".getBytes
+    val msg1 = "This a test to sign !!!".getBytes
     val keyPair = KeyPair.create(KeyAlgorithm.SECP256K1)
-    val pem = keyPair.privateKeyToPem
+    val b = keyPair.sign(msg)
+    info("assert verifySignature on a différent message with SECP256K1 publickey = false  ")
+    assert(!keyPair.cLPublicKey.verifySignature(msg1, b))
 
   }
 

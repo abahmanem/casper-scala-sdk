@@ -39,7 +39,12 @@ import java.security.{KeyFactory, KeyPair, KeyPairGenerator, PrivateKey, PublicK
 
 object TestnetTester  extends  App {
 
-
+  val msg = "This a test to sign !!".getBytes
+  val msg1 = "This a test to sign !!!".getBytes
+  val keyPair = com.casper.sdk.crypto.KeyPair.create(KeyAlgorithm.ED25519)
+  val b = keyPair.sign(msg)
+  //info("assert verifySignature on a différent message with ed25519 publickey = false  ")
+  println(keyPair.cLPublicKey.verifySignature(msg1, b))
 
   import java.security.Security
   Security.addProvider(new BouncyCastleProvider())
