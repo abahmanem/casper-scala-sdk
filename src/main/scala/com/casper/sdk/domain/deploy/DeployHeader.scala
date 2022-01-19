@@ -38,8 +38,8 @@ case class DeployHeader(
 
 
   /**
-   * compute hedaer hash
-   * @return
+   * compute header hash
+   * @return header hash
    */
   def deployHeaderHash:Array[Byte]={
     val serializer = DeployHeaderByteSerializer()
