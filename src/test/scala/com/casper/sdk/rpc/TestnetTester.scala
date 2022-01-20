@@ -46,15 +46,6 @@ import java.util.regex.Pattern
 object TestnetTester  extends  App {
 
 
-  val jsonuref = """ "uref-9cC68775d07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007" """
-  val uref = JsonConverter.fromJson[URef](jsonuref)
-
-  assert(uref != null)
-
-  assert(uref.bytes.sameElements(URef("uref-9cC68775d07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007").bytes))
-
-
-
 
   val ss1 = CLValue.U512(BigInt.apply("1024"))
 println(HexUtils.toHex(ss1.bytes))

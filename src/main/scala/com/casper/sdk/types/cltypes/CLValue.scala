@@ -123,7 +123,7 @@ object CLValue {
   //PublicKey
   def PublicKey(value: CLPublicKey ): CLValue = {
     assert(value != null)
-    new CLValue(value.bytes, CLTypeInfo(CLType.PublicKey), value.formatAsHexAccount)
+    new CLValue(value.bytes, CLTypeInfo(CLType.PublicKey), HexUtils.toHex(value.bytes))
   }
 
   def PublicKey(value: String ): CLValue = {
@@ -225,6 +225,6 @@ object CLValue {
   def Map(key: CLValue, value: CLValue): CLValue = {
     null
   }
-  
+
  */
 }
