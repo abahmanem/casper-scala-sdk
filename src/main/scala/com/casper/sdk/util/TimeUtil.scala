@@ -2,11 +2,10 @@ package com.casper.sdk.util
 
 import com.casper.sdk.rpc.exceptions.RPCIOException
 
+import java.time.format.{DateTimeFormatter, DateTimeParseException}
 import java.time.{Instant, OffsetDateTime, ZoneId}
-import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
-import java.time.format.DateTimeParseException
 
 object TimeUtil {
 
@@ -32,10 +31,9 @@ object TimeUtil {
    * @return
    */
   def timeStampString(epochMilliTime: Long): String = {
-
     val instant = Instant.ofEpochMilli(epochMilliTime)
-    val outFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneId.of("UTC"))
-    outFormatter.format(instant)
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneId.of("UTC"))
+    formatter.format(instant)
   }
 
   /**

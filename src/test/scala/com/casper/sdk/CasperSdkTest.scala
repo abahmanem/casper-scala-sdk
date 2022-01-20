@@ -305,7 +305,7 @@ class CasperSdkTest extends AnyFunSuite {
    * Test getBalance with existing account
    */
   test("getBalance   with existing account") {
-    val balance = client.getBalance("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956",new URef("uref-9cC68775d07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007"))
+    val balance = client.getBalance("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956", URef("uref-9cC68775d07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007"))
     info("Assert balance = 869077209920 motes ")
     assert(balance == 869077209920L)
   }
@@ -316,7 +316,7 @@ class CasperSdkTest extends AnyFunSuite {
   test("getBalance  with non hex key account , throws IllegalArgumentException") {
 
     val caught:  IllegalArgumentException = intercept[IllegalArgumentException] {
-      client.getBalance("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956",new URef("uref-9cC6877ft07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007"))
+      client.getBalance("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956", URef("uref-9cC6877ft07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007"))
 
     }
     assert(caught.getMessage == "Unable to decode: 9cC6877ft07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363")
@@ -328,7 +328,7 @@ class CasperSdkTest extends AnyFunSuite {
   test("getBalance  with non uref key account, throws IllegalArgumentException") {
 
     val caught: IllegalArgumentException = intercept[IllegalArgumentException] {
-      client.getBalance("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956",new URef("9cC6877ft07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007"))
+      client.getBalance("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956", URef("9cC6877ft07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007"))
 
     }
     assert(caught.getMessage.toLowerCase == "9cC6877ft07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007 is not a valid uref".toLowerCase)

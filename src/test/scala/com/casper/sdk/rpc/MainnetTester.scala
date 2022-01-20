@@ -43,7 +43,7 @@ object MainnetTester  extends  App {
 
   //GeBalance
   val SS3 = client.getBalance("967d608f02a2710bf550878ba28774c87c448a3618aee5900d2cdbf28162366d",
-    new URef("uref-51215724cc359a60797f64d88543002a069176f3ea92d4c37d31304e2849ef13-004"))
+     URef("uref-51215724cc359a60797f64d88543002a069176f3ea92d4c37d31304e2849ef13-004"))
   println(SS3)
 
 

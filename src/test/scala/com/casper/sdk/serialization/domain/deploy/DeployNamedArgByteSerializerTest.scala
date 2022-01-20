@@ -46,15 +46,15 @@ class DeployNamedArgByteSerializerTest extends AnyFunSuite {
 
   test("Test serialize DeployNamedArg  with CLPublicKey CLValue") {
     val builder = initBytebuilder
-    builder .addAll(new CLValueByteSerializer().toBytes(new CLPublicKey("01d9bf2148748a85c89da5aad8ee0b0fc2d105fd39d41a4c796536354f0ae2900c")))
-    var arg = new DeployNamedArg("casper-test",new CLPublicKey("01d9bf2148748a85c89da5aad8ee0b0fc2d105fd39d41a4c796536354f0ae2900c"))
+    builder .addAll(new CLValueByteSerializer().toBytes(CLValue.PublicKey("01d9bf2148748a85c89da5aad8ee0b0fc2d105fd39d41a4c796536354f0ae2900c")))
+    var arg = new DeployNamedArg("casper-test",CLValue.PublicKey("01d9bf2148748a85c89da5aad8ee0b0fc2d105fd39d41a4c796536354f0ae2900c"))
     assert(serializer.toBytes(arg).sameElements(builder.result()))
   }
 
   test("Test serialize DeployNamedArg  with URef CLValue") {
     val builder = initBytebuilder
-    builder .addAll(new CLValueByteSerializer().toBytes(new URef("uref-ebda3f171068107470bce0d74eb9a302fcb8914471fe8900c66fae258a0f46ef-007")))
-    var arg = new DeployNamedArg("casper-test",new URef("uref-ebda3f171068107470bce0d74eb9a302fcb8914471fe8900c66fae258a0f46ef-007"))
+    builder .addAll(new CLValueByteSerializer().toBytes(CLValue.URef("uref-ebda3f171068107470bce0d74eb9a302fcb8914471fe8900c66fae258a0f46ef-007")))
+    var arg = new DeployNamedArg("casper-test",CLValue.URef("uref-ebda3f171068107470bce0d74eb9a302fcb8914471fe8900c66fae258a0f46ef-007"))
     assert(serializer.toBytes(arg).sameElements(builder.result()))
   }
 

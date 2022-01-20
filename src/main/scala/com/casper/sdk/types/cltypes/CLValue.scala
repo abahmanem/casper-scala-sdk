@@ -22,7 +22,7 @@ import scala.math.BigInt.int2bigInt
 class CLValue(
                val bytes: Array[Byte],
                val cl_infoType: CLTypeInfo,
-               val parsed: Any
+               var parsed: Any
              ) {
 
   /**
@@ -103,7 +103,7 @@ object CLValue {
   //U512
   def U512(value: BigInt): CLValue = {
     assert(value != null)
-    new CLValue(ByteUtils.serializeArbitraryWidthNumber(value, 32), CLTypeInfo(CLType.U512), value)
+    new CLValue(ByteUtils.serializeArbitraryWidthNumber(value, 64), CLTypeInfo(CLType.U512), value)
   }
 
   //String
@@ -113,12 +113,41 @@ object CLValue {
       value.getBytes(StandardCharsets.UTF_8)), CLTypeInfo(CLType.String), value)
   }
 
-
   //ByteArray
   def ByteArray(bytes: Array[Byte]): CLValue = {
     assert(bytes != null)
     new CLValue(bytes, CLByteArrayTypeInfo(bytes.length), HexUtils.toHex(bytes))
   }
+
+
+  //PublicKey
+  def PublicKey(value: CLPublicKey ): CLValue = {
+    assert(value != null)
+    new CLValue(value.bytes, CLTypeInfo(CLType.PublicKey), value.formatAsHexAccount)
+  }
+
+  def PublicKey(value: String ): CLValue = {
+    assert(value != null)
+    PublicKey( CLPublicKey(value) )
+  }
+
+
+
+  //URef
+  def URef(value: URef): CLValue = {
+    assert(value != null)
+    val bytes = new Array[Byte](33)
+    Array.copy(value.bytes, 0, bytes, 1, value.bytes.length)
+    bytes(32)=value.accessRights.bits
+    new CLValue(bytes, CLTypeInfo(CLType.URef), value.format)
+  }
+
+  //URef
+  def URef(value: String): CLValue = {
+    assert(value != null)
+    URef(com.casper.sdk.types.cltypes.URef(value))
+  }
+
 
   //Option
   def Option(value: CLValue): CLValue = {
@@ -192,24 +221,10 @@ object CLValue {
   }
 
   //Map
+/*
   def Map(key: CLValue, value: CLValue): CLValue = {
     null
   }
-
-
-  //Options
-   /*
-  def Option(value: Int): CLValue = Option(CLValue.I32(value)) // test if > 0 then U32
-
-  def Option(value: Byte): CLValue = Option(CLValue.U8(value))
-
-  def Option(value: URef): CLValue = Option(value)
-
-  def Option(value: String): CLValue = Option(CLValue.String(value))
-
-  def Option(value: Long): CLValue = Option(CLValue.I64(value)) //test if > 0 then U64
-
-  def Option(value: CLPublicKey): CLValue = Option(value)
-*/
-
+  
+ */
 }

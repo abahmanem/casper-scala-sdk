@@ -6,34 +6,23 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 
 /**
  * Unforgeatable Reference
+ *
  * @param bytes
  */
 @JsonDeserialize(`using` = classOf[URefDeserializer])
-class URef(override val bytes: Array[Byte]) extends CLValue(bytes, CLType.URef)   with Tag {
-  var accessRights: AccessRight = null
-
-  /**
-   * Constructor using byte array and an AccessRight
-   * @param bytes
-   * @param rights
-   */
-  def this(bytes: Array[Byte], rights: AccessRight) = {
-    this(bytes)
-    accessRights = rights
-  }
-
-  /**
-   * Constructor using s String Uref value
-   * @param uref
-   */
-  def this(uref: String) = this(URef.parseUref(uref), URef.getAccessRight(uref))
+class URef(
+            val bytes: Array[Byte],
+            val accessRights: AccessRight
+          ) extends Tag {
 
   /**
    * format Uref objet into : uref-51215724cc359a60797f64d88543002a069176f3ea92d4c37d31304e2849ef13-004
+   *
    * @return
    */
-  def format: String = String.format(URef.UREF_PREFIX+"-%s-%03d", HexUtils.toHex(bytes), accessRights.bits)
-  override  def tag=2
+  def format: String = String.format(URef.UREF_PREFIX + "-%s-%03d", HexUtils.toHex(bytes), accessRights.bits)
+
+  override def tag = 2
 }
 
 /**
@@ -42,8 +31,17 @@ class URef(override val bytes: Array[Byte]) extends CLValue(bytes, CLType.URef) 
 object URef {
 
   val UREF_PREFIX = "uref"
+
   /**
-   *  extract AccessRight from Uref String
+   *
+   * @param uref
+   * @return
+   */
+  def apply(uref: String): URef =  new URef(URef.parseUref(uref), URef.getAccessRight(uref))
+
+  /**
+   * extract AccessRight from Uref String
+   *
    * @param uref
    * @return
    */
@@ -56,6 +54,7 @@ object URef {
 
   /**
    * parse a Uref String into A byte array
+   *
    * @param uref
    * @return
    */

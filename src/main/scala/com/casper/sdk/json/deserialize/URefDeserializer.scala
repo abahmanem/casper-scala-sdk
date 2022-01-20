@@ -13,6 +13,6 @@ import java.io.IOException
 class URefDeserializer extends JsonDeserializer[URef] {
   @throws[IOException]
   override def deserialize(parser: JsonParser, ctx: DeserializationContext): URef = {
-    new URef(parser.getText)
+    URef(parser.getText)
   }
 }

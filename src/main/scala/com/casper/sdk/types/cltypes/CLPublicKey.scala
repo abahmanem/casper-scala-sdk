@@ -32,32 +32,9 @@ import java.security.{KeyFactory, PublicKey, SecureRandom, Signature}
 @JsonSerialize(`using` = classOf[CLPublicKeySerializer])
 @JsonDeserialize(`using` = classOf[CLPublicKeyDeserializer])
 class CLPublicKey(
-                   override val bytes: Array[Byte]
-                 ) extends CLValue(bytes, CLType.PublicKey) with Tag {
-
-  var keyAlgorithm: KeyAlgorithm = null
-
-  /**
-   * Constructor using a key bytes array and an Algorithm : 06cA7c39cD272DbF21a86EeB3B36B7c26E2e9b94af64292419f7862936bcA2cA
-   *
-   * @param key
-   * @param algo
-   */
-  def this(bytes: Array[Byte], keyAlgo: KeyAlgorithm) = {
-    this(bytes)
-    keyAlgorithm = keyAlgo
-    assert(bytes != null)
-    assert(keyAlgo != null)
-  }
-
-  /**
-   * Constructor using a hex account String : 0106cA7c39cD272DbF21a86EeB3B36B7c26E2e9b94af64292419f7862936bcA2cA
-   *
-   * @param hexKey
-   */
-
-
-  def this(hexKey: String) = this(dropAlgorithmBytes(HexUtils.fromHex(hexKey)), KeyAlgorithm.fromId(hexKey.charAt(1)))
+                   val bytes: Array[Byte],
+                   val keyAlgorithm: KeyAlgorithm
+                 ) extends Tag {
 
   /**
    * format to Hex account , ie : 0106cA7c39cD272DbF21a86EeB3B36B7c26E2e9b94af64292419f7862936bcA2cA, 01 being tag bytes
@@ -65,8 +42,6 @@ class CLPublicKey(
    * @return
    */
   def formatAsHexAccount: String = HexUtils.toHex(formatAsByteAccount)
-
-
   /**
    * format to Byte array with algorithm
    *
@@ -119,13 +94,22 @@ class CLPublicKey(
    *
    * @return
    */
-  override def tag = 1
+  def tag = 1
 }
 
 /**
  * Companion object
  */
 object CLPublicKey {
+
+  /**
+   *
+   * @param uref
+   * @return CLPublicKey
+   */
+  def apply(hex: String): CLPublicKey = new CLPublicKey(dropAlgorithmBytes(HexUtils.fromHex(hex)), KeyAlgorithm.fromId(hex.charAt(1)))
+
+
   /**
    * remove algorithm tag bytes
    *

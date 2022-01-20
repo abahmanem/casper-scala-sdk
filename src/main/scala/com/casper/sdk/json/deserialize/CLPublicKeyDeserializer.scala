@@ -12,6 +12,6 @@ import java.io.IOException
 class CLPublicKeyDeserializer extends JsonDeserializer[CLPublicKey] {
   @throws[IOException]
   override def deserialize(parser: JsonParser, ctx: DeserializationContext): CLPublicKey = {
-    new CLPublicKey(parser.getText)
+     CLPublicKey(parser.getText)
   }
 }

@@ -46,38 +46,53 @@ import java.util.regex.Pattern
 object TestnetTester  extends  App {
 
 
+  val jsonuref = """ "uref-9cC68775d07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007" """
+  val uref = JsonConverter.fromJson[URef](jsonuref)
+
+  assert(uref != null)
+
+  assert(uref.bytes.sameElements(URef("uref-9cC68775d07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007").bytes))
 
 
+
+
+  val ss1 = CLValue.U512(BigInt.apply("1024"))
+println(HexUtils.toHex(ss1.bytes))
 
   val header = new DeployHeader(
-    new CLPublicKey("017d9aa0b86413d7ff9a9169182c53f0bacaa80d34c211adab007ed4876af17077"),
-    TimeUtil.ToEpochMs("2022-01-20T16:39:24.072Z"),
+     CLPublicKey("017d9aa0b86413d7ff9a9169182c53f0bacaa80d34c211adab007ed4876af17077"),
+    //TimeUtil.ToEpochMs("2022-01-20T16:36:24.072Z"),
+    System.currentTimeMillis(),
     1800000L,
     1,
     null,
     Seq(new Hash("0101010101010101010101010101010101010101010101010101010101010101")),
       "casper-test"
      )
-
+  println("ddddd")
   println(JsonConverter.toJson(header))
-
+  println("ddddd111")
   val sss = new DeployHeaderByteSerializer()
   println(HexUtils.toHex(sss.toBytes(header)))
 
 
-  val arg0 = new DeployNamedArg("quantity",CLValue.I32(1000))
-  val payment = new StoredContractByName(
-  "casper-example",
-  "example-entry-point", Seq(Seq(arg0)))
+  val arg0 = new DeployNamedArg("amount",CLValue.U512(3000000000L))
+  val payment = new ModuleBytes(
+  "".getBytes()
+  , Seq(Seq(arg0)))
 
-  val arg1 = new DeployNamedArg("amount",CLValue.U512(25000000000L))
-  val arg01 = new DeployNamedArg("target",CLValue.ByteArray(HexUtils.fromHex("0101010101010101010101010101010101010101010101010101010101010101")))
-  val session =  new DeployTransfer(Seq(Seq(arg1,arg01)))
+  val arg1 = new DeployNamedArg("amount",CLValue.U512(5000000000L))
+  val arg01 = new DeployNamedArg("target",
+     CLValue.PublicKey("014d8c494ae85bda4288d0ed02c6bb180ec84efd3d7af0ed6ab9092d8757441427")
+    )
+
+  val arg02 = new DeployNamedArg("id",
+    CLValue.Option(CLValue.U64(999L))
+  )
+
+
+  val session =  new DeployTransfer(Seq(Seq(arg1,arg01,arg02)))
   //println(JsonConverter.toJson(header))
-
-
-
-
 
 
   val pair = com.casper.sdk.crypto.KeyPair.loadFromPem("/Users/p35862/testnet.pem")
