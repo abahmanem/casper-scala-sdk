@@ -60,7 +60,7 @@ class DeployExecutableSerializer extends JsonSerializer[DeployExecutable] {
      */
     def writeStoredContractByName(storedContractByName: StoredContractByName, gen: JsonGenerator) = {
       gen.writeStartObject
-      gen.writeFieldName("storedContractByName")
+      gen.writeFieldName("StoredContractByName")
       gen.writeStartObject
       gen.writeFieldName("name")
       gen.writeString(storedContractByName.name)

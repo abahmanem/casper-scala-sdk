@@ -3,7 +3,6 @@ import com.casper.sdk.types.cltypes.CLPublicKey
 import org.bouncycastle.crypto.digests.Blake2bDigest
 
 object Blake2b256 extends App{
-
   /**
    * gives a byte hashed array from a byte array
    *

@@ -1,9 +1,11 @@
 package com.casper.sdk.serialization.cltypes
 
 import com.casper.sdk.serialization.cltypes.CLValueByteSerializer
-import com.casper.sdk.types.cltypes.{CLType, CLTypeInfo, CLValue}
+import com.casper.sdk.types.cltypes._
 import com.casper.sdk.util.HexUtils
 import org.scalatest.funsuite.AnyFunSuite
+
+import scala.collection.mutable.ArrayBuilder
 
 /**
  * CLValueByteSerializerTest
@@ -12,6 +14,7 @@ import org.scalatest.funsuite.AnyFunSuite
 class CLValueByteSerializerTest extends AnyFunSuite {
 
   val cLValueByteSerializer = new CLValueByteSerializer()
+
   /**
    * Test Bool CLValue
    */
@@ -142,7 +145,7 @@ class CLValueByteSerializerTest extends AnyFunSuite {
 
   test("Test CLValueByteSerializer with None Option CLType ") {
     val bytes = cLValueByteSerializer.toBytes((CLValue.OptionNone(new CLTypeInfo(CLType.String))))
-    assert("01000000000a" == HexUtils.toHex(bytes))
+    assert("01000000000d0a" == HexUtils.toHex(bytes))
   }
 
 
@@ -154,7 +157,7 @@ class CLValueByteSerializerTest extends AnyFunSuite {
 
   test("Test CLValueByteSerializer with  Option CLType ") {
     val bytes = cLValueByteSerializer.toBytes((CLValue.Option(CLValue.U32(10))))
-    assert("05000000010a00000004" == HexUtils.toHex(bytes))
+    assert("05000000010a0000000d04" == HexUtils.toHex(bytes))
   }
 
   test("Test serialize Empty List of CLType ") {
@@ -175,7 +178,7 @@ class CLValueByteSerializerTest extends AnyFunSuite {
 
   test("Test CLValueBteSerializer with non empty List of CLType ") {
     val bytes = cLValueByteSerializer.toBytes((CLValue.List(CLValue.U32(1), CLValue.U32(2), CLValue.U32(3))))
-    assert("100000000300000001000000020000000300000004" == HexUtils.toHex(bytes))
+    assert("10000000030000000100000002000000030000000e04" == HexUtils.toHex(bytes))
   }
 
 
@@ -186,7 +189,7 @@ class CLValueByteSerializerTest extends AnyFunSuite {
 
   test("Test CLValueBteSerializer with Ok Result CLType ") {
     val bytes = cLValueByteSerializer.toBytes((CLValue.Ok(CLValue.U64(314), new CLTypeInfo(CLType.String))))
-    assert("09000000013a01000000000000050a" == HexUtils.toHex(bytes))
+    assert("09000000013a0100000000000010050a" == HexUtils.toHex(bytes))
   }
 
 
@@ -197,7 +200,7 @@ class CLValueByteSerializerTest extends AnyFunSuite {
 
   test("Test CLValueBteSerializer with Err Result CLType ") {
     val bytes = cLValueByteSerializer.toBytes((CLValue.Err(CLValue.String("Uh oh"), new CLTypeInfo(CLType.String))))
-    assert("0a00000000050000005568206f680a0a" == HexUtils.toHex(bytes))
+    assert("0a00000000050000005568206f68100a0a" == HexUtils.toHex(bytes))
   }
 
   test("Test serialize Tuple1  CLType ") {
@@ -207,7 +210,7 @@ class CLValueByteSerializerTest extends AnyFunSuite {
 
   test("Test CLValueBteSerializer with Tuple1 CLType ") {
     val bytes = cLValueByteSerializer.toBytes((CLValue.Tuple1(CLValue.String("Hello, World!"))))
-    assert("110000000d00000048656c6c6f2c20576f726c64210a" == HexUtils.toHex(bytes))
+    assert("110000000d00000048656c6c6f2c20576f726c642112120a" == HexUtils.toHex(bytes))
   }
 
 
@@ -218,7 +221,7 @@ class CLValueByteSerializerTest extends AnyFunSuite {
 
   test("Test CLValueBteSerializer with Tuple2 CLType ") {
     val bytes = cLValueByteSerializer.toBytes((CLValue.Tuple2(CLValue.U32(1), CLValue.String("Hello, World!"))))
-    assert("15000000010000000d00000048656c6c6f2c20576f726c6421040a" == HexUtils.toHex(bytes))
+    assert("15000000010000000d00000048656c6c6f2c20576f726c642113040a" == HexUtils.toHex(bytes))
   }
 
 
@@ -229,7 +232,7 @@ class CLValueByteSerializerTest extends AnyFunSuite {
 
   test("Test CLValueBteSerializer with Tuple3 CLType ") {
     val bytes = cLValueByteSerializer.toBytes((CLValue.Tuple3(CLValue.U32(1), CLValue.String("Hello, World!"), CLValue.Bool(true))))
-    assert("16000000010000000d00000048656c6c6f2c20576f726c642101040a00" == HexUtils.toHex(bytes))
+    assert("16000000010000000d00000048656c6c6f2c20576f726c64210114040a00" == HexUtils.toHex(bytes))
   }
 
   test("Test serialize ByteArray  CLType ") {
@@ -243,5 +246,108 @@ class CLValueByteSerializerTest extends AnyFunSuite {
     val clValue = CLValue.ByteArray(bytes)
     assert("01d9bf2148748a85c89da5aad8ee0b0fc2d105fd39d41a4c796536354f0ae2900c" == HexUtils.toHex(clValue.bytes))
   }
-  //TODO add map
+
+
+  test("CLTypesToBytes Test with String CLType") {
+    val builder = new ArrayBuilder.ofByte
+    cLValueByteSerializer.CLTypesToBytes(builder, CLTypeInfo(CLType.String))
+    assert(HexUtils.toHex(builder.result()) == "0a")
+  }
+
+
+  test("CLTypesToBytes Test with U64 CLType") {
+    val builder = new ArrayBuilder.ofByte
+    cLValueByteSerializer.CLTypesToBytes(builder, CLTypeInfo(CLType.U64))
+    assert(HexUtils.toHex(builder.result()) == "05")
+  }
+
+  test("CLTypesToBytes Test with U128 CLType") {
+    val builder = new ArrayBuilder.ofByte
+    cLValueByteSerializer.CLTypesToBytes(builder, CLTypeInfo(CLType.U128))
+    assert(HexUtils.toHex(builder.result()) == "06")
+  }
+
+  test("CLTypesToBytes Test with U256 CLType") {
+    val builder = new ArrayBuilder.ofByte
+    cLValueByteSerializer.CLTypesToBytes(builder, CLTypeInfo(CLType.U256))
+    assert(HexUtils.toHex(builder.result()) == "07")
+  }
+
+  test("CLTypesToBytes Test with U512 CLType") {
+    val builder = new ArrayBuilder.ofByte
+    cLValueByteSerializer.CLTypesToBytes(builder, CLTypeInfo(CLType.U512))
+    assert(HexUtils.toHex(builder.result()) == "08")
+  }
+
+  test("CLTypesToBytes Test with I32 CLType") {
+    val builder = new ArrayBuilder.ofByte
+    cLValueByteSerializer.CLTypesToBytes(builder, CLTypeInfo(CLType.I32))
+    assert(HexUtils.toHex(builder.result()) == "01")
+  }
+
+  test("CLTypesToBytes Test with Bool CLType") {
+    val builder = new ArrayBuilder.ofByte
+    cLValueByteSerializer.CLTypesToBytes(builder, CLTypeInfo(CLType.Bool))
+    assert(HexUtils.toHex(builder.result()) == "00")
+  }
+
+  test("CLTypesToBytes Test with Unit CLType") {
+    val builder = new ArrayBuilder.ofByte
+    cLValueByteSerializer.CLTypesToBytes(builder, CLTypeInfo(CLType.Unit))
+    assert(HexUtils.toHex(builder.result()) == "09")
+  }
+
+  test("CLTypesToBytes Test with PublicKey CLType") {
+    val builder = new ArrayBuilder.ofByte
+    cLValueByteSerializer.CLTypesToBytes(builder, CLTypeInfo(CLType.PublicKey))
+    assert(HexUtils.toHex(builder.result()) == "16")
+  }
+
+  test("CLTypesToBytes Test with Uref CLType") {
+    val builder = new ArrayBuilder.ofByte
+    cLValueByteSerializer.CLTypesToBytes(builder, CLTypeInfo(CLType.URef))
+    assert(HexUtils.toHex(builder.result()) == "0c")
+  }
+
+  test("CLTypesToBytes Test with CLByteArrayTypeInfo ") {
+    val builder = new ArrayBuilder.ofByte
+    cLValueByteSerializer.CLTypesToBytes(builder, CLByteArrayTypeInfo(24))
+    assert(HexUtils.toHex(builder.result()) == "0f18000000")
+  }
+
+  test("CLTypesToBytes Test with CLOptionTypeInfo ") {
+    val builder = new ArrayBuilder.ofByte
+    cLValueByteSerializer.CLTypesToBytes(builder, CLOptionTypeInfo(CLTypeInfo(CLType.U64)))
+    assert(HexUtils.toHex(builder.result()) == "0d05")
+  }
+
+  test("CLTypesToBytes Test with CLTuple1TypeInfo ") {
+    val builder = new ArrayBuilder.ofByte
+    cLValueByteSerializer.CLTypesToBytes(builder, CLTuple1TypeInfo(CLTypeInfo(CLType.U64)))
+    assert(HexUtils.toHex(builder.result()) == "121205")
+  }
+
+  test("CLTypesToBytes Test with CLTuple2TypeInfo ") {
+    val builder = new ArrayBuilder.ofByte
+    cLValueByteSerializer.CLTypesToBytes(builder, CLTuple2TypeInfo(CLTypeInfo(CLType.String), CLTypeInfo(CLType.U64)))
+    assert(HexUtils.toHex(builder.result()) == "130a05")
+  }
+
+  test("CLTypesToBytes Test with CLTuple3TypeInfo ") {
+    val builder = new ArrayBuilder.ofByte
+    cLValueByteSerializer.CLTypesToBytes(builder, CLTuple3TypeInfo(CLTypeInfo(CLType.Bool), CLTypeInfo(CLType.String), CLTypeInfo(CLType.U64)))
+    assert(HexUtils.toHex(builder.result()) == "14000a05")
+  }
+  test("CLTypesToBytes Test with CCListTypeInfo ") {
+    val builder = new ArrayBuilder.ofByte
+    cLValueByteSerializer.CLTypesToBytes(builder, CLListTypeInfo(3, CLTypeInfo(CLType.Bool)))
+    assert(HexUtils.toHex(builder.result()) == "0e00")
+  }
+
+  test("CLTypesToBytes Test with CLResultTypeInfo ") {
+    val builder = new ArrayBuilder.ofByte
+    cLValueByteSerializer.CLTypesToBytes(builder, CLResultTypeInfo(CLTypeInfo(CLType.String), CLTypeInfo(CLType.Bool)))
+    assert(HexUtils.toHex(builder.result()) == "100a00")
+  }
+
 }

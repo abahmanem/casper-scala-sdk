@@ -40,20 +40,35 @@ class CLValueByteSerializer extends BytesSerializable[CLValue] {
            | CLTypeInfo(CLType.Unit) | CLTypeInfo(CLType.String) | CLTypeInfo(CLType.Key)
            | CLTypeInfo(CLType.URef) | CLTypeInfo(CLType.PublicKey) => builder.addOne(innerType.cl_Type.clType.toByte)
 
-
-      case option: CLOptionTypeInfo => CLTypesToBytes(builder, option.inner)
+      case option: CLOptionTypeInfo => {
+        builder.addOne(innerType.cl_Type.clType.toByte)
+        CLTypesToBytes(builder, option.inner)
+      }
       case result: CLResultTypeInfo => {
+        builder.addOne(innerType.cl_Type.clType.toByte)
         CLTypesToBytes(builder, result.ok)
         CLTypesToBytes(builder, result.err)
       }
-      case bytearray: CLByteArrayTypeInfo => builder.addAll(CLValue.U32(bytearray.size).bytes)
-      case list: CLListTypeInfo => CLTypesToBytes(builder, list.cltypeInfo)
-      case tuple1: CLTuple1TypeInfo => CLTypesToBytes(builder, tuple1.typeinfo1)
+      case bytearray: CLByteArrayTypeInfo =>{
+        builder.addOne(innerType.cl_Type.clType.toByte)
+        builder.addAll(CLValue.U32(bytearray.size).bytes)
+      }
+      case list: CLListTypeInfo => {
+        builder.addOne(innerType.cl_Type.clType.toByte)
+        CLTypesToBytes(builder, list.cltypeInfo)
+      }
+      case tuple1: CLTuple1TypeInfo => {
+        builder.addOne(innerType.cl_Type.clType.toByte)
+        builder.addOne(innerType.cl_Type.clType.toByte)
+        CLTypesToBytes(builder, tuple1.typeinfo1)
+      }
       case tuple2: CLTuple2TypeInfo => {
+        builder.addOne(innerType.cl_Type.clType.toByte)
         CLTypesToBytes(builder, tuple2.typeinfo1)
         CLTypesToBytes(builder, tuple2.typeinfo2)
       }
       case tuple3: CLTuple3TypeInfo => {
+        builder.addOne(innerType.cl_Type.clType.toByte)
         CLTypesToBytes(builder, tuple3.typeinfo1)
         CLTypesToBytes(builder, tuple3.typeinfo2)
         CLTypesToBytes(builder, tuple3.typeinfo3)

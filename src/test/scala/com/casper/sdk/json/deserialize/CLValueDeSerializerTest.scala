@@ -129,4 +129,5 @@ class CLValueDeSerializerTest extends AnyFunSuite {
     info("bytes same as  HexUtils.fromHex(\"1a00000068747470733a2f2f636173706572636f6d6d756e6974792e696f\") ")
     assert(value.bytes.sameElements(HexUtils.fromHex("1a00000068747470733a2f2f636173706572636f6d6d756e6974792e696f")))
   }
+
 }

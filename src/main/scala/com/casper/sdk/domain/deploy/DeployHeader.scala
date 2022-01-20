@@ -8,6 +8,7 @@ import com.casper.sdk.json.deserialize.TTLDeserializer
 import com.casper.sdk.json.serialize.TimeStampSerializer
 import com.casper.sdk.json.serialize.TTLSerializer
 import com.casper.sdk.serialization.domain.deploy.DeployHeaderByteSerializer
+import com.casper.sdk.util.HexUtils
 import com.fasterxml.jackson.databind.annotation.{JsonDeserialize, JsonSerialize}
 
 import scala.collection.mutable.ArrayBuilder
@@ -31,21 +32,11 @@ case class DeployHeader(
                          ttl: Long,
                          gas_price: Int,
                          body_hash: Hash,
-                         dependencies: Seq[Hash],
+                         var dependencies: Seq[Hash],
                          chain_name: String
                        )
 {
 
-
-  /**
-   * compute header hash
-   * @return header hash
-   */
-  def deployHeaderHash:Array[Byte]={
-    val serializer = DeployHeaderByteSerializer()
-    val builder = new ArrayBuilder.ofByte
-    builder.addAll(serializer.toBytes(this))
-    Blake2b256.hash(builder.result())
-  }
+ 
  }
 

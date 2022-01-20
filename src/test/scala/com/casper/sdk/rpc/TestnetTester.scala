@@ -3,10 +3,11 @@ package com.casper.sdk.rpc
 import com.casper.sdk.domain
 import com.casper.sdk.CasperSdk
 import com.casper.sdk.crypto.KeyPair
+import com.casper.sdk.crypto.hash.Blake2b256
 import com.casper.sdk.domain.{EraSummary, Peer, deploy}
 import com.casper.sdk.domain._
 import com.casper.sdk.domain.deploy.{Deploy, DeployExecutable, DeployNamedArg, Hash, ModuleBytes, StoredContractByHash, StoredVersionedContractByHash, StoredVersionedContractByName}
-import com.casper.sdk.types.cltypes.{AccessRight, AccountHash, CLByteArrayTypeInfo, CLOptionTypeInfo, CLPublicKey, CLType, CLTypeInfo, CLValue, KeyAlgorithm, Signature, URef}
+import com.casper.sdk.types.cltypes.{CLResultTypeInfo,CLTuple1TypeInfo,CLTuple2TypeInfo,CLTuple3TypeInfo,CLListTypeInfo,AccessRight, AccountHash, CLByteArrayTypeInfo, CLOptionTypeInfo, CLPublicKey, CLType, CLTypeInfo, CLValue, KeyAlgorithm, Signature, URef}
 import com.casper.sdk.util.{ByteUtils, HexUtils, JsonConverter, TimeUtil}
 import com.casper.sdk.util.implicits.idInstance
 import org.bouncycastle.crypto.KeyGenerationParameters
@@ -27,9 +28,10 @@ import java.net.URL
 import java.security.SecureRandom
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.openssl.PEMWriter
-import com.casper.sdk.serialization.domain.deploy.DeployExecutableByteSerializer
+import com.casper.sdk.serialization.domain.deploy.{DeployApprovalByteSerializer, DeployExecutableByteSerializer, DeployHeaderByteSerializer}
 import com.casper.sdk.domain.deploy._
 import com.casper.sdk.json.serialize.TimeStampSerializer
+import com.casper.sdk.serialization.cltypes.CLValueByteSerializer
 
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -45,30 +47,56 @@ object TestnetTester  extends  App {
 
 
 
-  //assert(JsonConverter.toJson(12458744L) == json)
-  "sdf45".toLong
-  val js = """{
-             |      "account": "017f747b67bd3fe63c2a736739dfe40156d622347346e70f68f51c178a75ce5537",
-             |      "timestamp": "2021-05-04T14:20:35.104Z",
-             |      "ttl": "30m",
-             |      "gas_price": 2,
-             |      "body_hash": "f2e0782bba4a0a9663cafc7d707fd4a74421bc5bfef4e368b7e8f38dfab87db8",
-             |      "dependencies": [
-             |        "0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
-             |        "1010101010101010101010101010101010101010101010101010101010101010"
-             |      ],
-             |      "chain_name": "mainnet"
-             |    }""".stripMargin
-
-  val hh = JsonConverter.fromJson[DeployHeader](js)
-  println(hh)
-  println(JsonConverter.toJson(hh))
 
 
-  val instant = Instant.ofEpochMilli(1212121212)
+  val header = new DeployHeader(
+    new CLPublicKey("017d9aa0b86413d7ff9a9169182c53f0bacaa80d34c211adab007ed4876af17077"),
+    TimeUtil.ToEpochMs("2022-01-20T16:39:24.072Z"),
+    1800000L,
+    1,
+    null,
+    Seq(new Hash("0101010101010101010101010101010101010101010101010101010101010101")),
+      "casper-test"
+     )
 
-  val outFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneId.of("UTC"))
-  println(outFormatter.format(instant))
+  println(JsonConverter.toJson(header))
+
+  val sss = new DeployHeaderByteSerializer()
+  println(HexUtils.toHex(sss.toBytes(header)))
+
+
+  val arg0 = new DeployNamedArg("quantity",CLValue.I32(1000))
+  val payment = new StoredContractByName(
+  "casper-example",
+  "example-entry-point", Seq(Seq(arg0)))
+
+  val arg1 = new DeployNamedArg("amount",CLValue.U512(25000000000L))
+  val arg01 = new DeployNamedArg("target",CLValue.ByteArray(HexUtils.fromHex("0101010101010101010101010101010101010101010101010101010101010101")))
+  val session =  new DeployTransfer(Seq(Seq(arg1,arg01)))
+  //println(JsonConverter.toJson(header))
+
+
+
+
+
+
+  val pair = com.casper.sdk.crypto.KeyPair.loadFromPem("/Users/p35862/testnet.pem")
+
+  val serializer = DeployExecutableByteSerializer()
+  val builder = new ArrayBuilder.ofByte
+//  builder.addAll(serializer.toBytes(payment)).addAll(serializer.toBytes(session))
+  println("SSSSSSS  "+HexUtils.toHex(Deploy.deployBodyHash(payment,session)))
+
+
+
+  val deploy = Deploy.createUnsignedDeploy(header,payment,session)
+  println("//////////////////////////////////////////////////////////////////////////////////////////////////////////////")
+  println(HexUtils.toHex(Blake2b256.hash(Deploy.deployHeaderHash(deploy.header))))
+  val signedDeploy = Deploy.signDeploy(deploy,pair)
+  println("//////////////////////////////////////////////////////////////////////////////////////////////////////////////")
+  println(JsonConverter.toJson(signedDeploy))
+
+
 
 
 /*

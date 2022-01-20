@@ -18,7 +18,7 @@ class CLValueSerializer extends JsonSerializer[CLValue] {
     gen.writeFieldName("bytes")
     gen.writeString(HexUtils.toHex(value.bytes))
     parsed(value, gen)
-    gen.writeEndObject();
+    gen.writeEndObject
   }
 
     /**

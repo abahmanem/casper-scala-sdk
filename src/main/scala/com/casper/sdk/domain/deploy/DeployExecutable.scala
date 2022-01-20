@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 
 @JsonSerialize(`using` = classOf[DeployExecutableSerializer])
 @JsonDeserialize(`using` = classOf[DeployExecutableDeserializer])
-abstract class DeployExecutable (val args: Seq[Seq[DeployNamedArg]]) {
+abstract class DeployExecutable (var args: Seq[Seq[DeployNamedArg]]) {
   def tag: Int
 }
 

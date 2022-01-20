@@ -115,7 +115,7 @@ class DeployExecutableSerializerTest extends AnyFunSuite {
 
   test("DeployExecutableSerializerTest with StoredContractByName"){
     val json = """{
-                 |  "storedContractByName" : {
+                 |  "StoredContractByName" : {
                  |    "name" : "casper-test",
                  |    "entry_point" : "entry-point",
                  |    "args" : [

@@ -4,7 +4,7 @@ import com.casper.sdk.util.TimeUtil
 import com.fasterxml.jackson.databind.util.StdConverter
 
 /**
- * Custom Json Deserializer for TTl field
+ * Custom Json Converter for TTl field
  */
 
 class TTLDeserializer extends  StdConverter[String,Long] {

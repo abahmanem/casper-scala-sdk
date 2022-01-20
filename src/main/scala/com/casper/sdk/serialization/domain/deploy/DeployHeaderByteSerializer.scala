@@ -18,13 +18,12 @@ class DeployHeaderByteSerializer extends BytesSerializable[DeployHeader] {
     assert(value != null)
     val builder = new ArrayBuilder.ofByte
 
-    builder.addAll(value.account.formatAsByteAccount)
+    builder.addOne(value.account.tag.toByte).addAll(value.account.bytes)
       .addAll(CLValue.U64(BigInt(value.timestamp)).bytes)
       .addAll(CLValue.U64(BigInt(value.ttl)).bytes)
       .addAll(CLValue.U64(value.gas_price).bytes)
-      //.addAll(HexUtils.fromHex(value.body_hash))
-      .addAll(value.body_hash.hash)
-      .addAll(CLValue.U32(value.dependencies.size).bytes)
+    if (value.body_hash != null) builder.addAll(value.body_hash.hash)
+    builder.addAll(CLValue.U32(value.dependencies.size).bytes)
     for (dep <- value.dependencies) builder.addAll(dep.hash)
     builder.addAll(CLValue.U32(value.chain_name.getBytes(StandardCharsets.UTF_8).length).bytes)
     builder.addAll(value.chain_name.getBytes(StandardCharsets.UTF_8))
