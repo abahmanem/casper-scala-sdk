@@ -14,15 +14,6 @@ class CLKeyValue(override val bytes: Array[Byte],
   extends CLValue(bytes, new CLKeyInfo(keyType), parsed) {
 
   /**
-   * Constructor using a hex String, KeyType and a parsed value
-   *
-   * @param hexBytes
-   * @param keyType
-   * @param parsed
-   */
- // def this(hexBytes: String, keyType: KeyType, parsed: Any) = this(HexUtils.fromHex(hexBytes), keyType, parsed)
-
-  /**
    * bytes with key tag bytes
    *
    * @return
