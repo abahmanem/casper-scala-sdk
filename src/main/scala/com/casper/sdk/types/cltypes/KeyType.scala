@@ -3,7 +3,7 @@ package com.casper.sdk.types.cltypes
 /**
  * TypeKEy enum
  */
-enum KeyType(val tag: Int, val prfix : String) {
+enum KeyType(val tag: Int, val prefix : String) {
   case  Account extends KeyType(0,"account-hash")
   case Uref extends KeyType(2,"uref")
   case Hash extends KeyType(1,"hash")
@@ -17,9 +17,9 @@ enum KeyType(val tag: Int, val prfix : String) {
 
 object KeyType{
 
-  def getByPrefix(prfix : String):KeyType={
+  def getByPrefix(prefix : String):KeyType={
 
-    prfix match {
+    prefix match {
       case  "transfer"=> Transfer
       case  "account-hash"=> Account
       case  "hash"=> Hash

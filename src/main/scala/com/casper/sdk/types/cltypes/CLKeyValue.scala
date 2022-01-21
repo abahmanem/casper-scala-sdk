@@ -20,7 +20,7 @@ class CLKeyValue(override val bytes: Array[Byte],
    * @param keyType
    * @param parsed
    */
-  def this(hexBytes: String, keyType: KeyType, parsed: Any) = this(HexUtils.fromHex(hexBytes), keyType, parsed)
+ // def this(hexBytes: String, keyType: KeyType, parsed: Any) = this(HexUtils.fromHex(hexBytes), keyType, parsed)
 
   /**
    * bytes with key tag bytes
@@ -37,14 +37,34 @@ class CLKeyValue(override val bytes: Array[Byte],
 object CLKeyValue{
 
   /**
+   * Get instance from a bytes array
+   * @param hexBytes
+   * @param keyType
+   * @return
+   */
+  def apply (hexBytes:Array[Byte]) : CLKeyValue ={
+
+    hexBytes(0) match {
+      case 0x00 =>  CLKeyValue(HexUtils.toHex(hexBytes.drop(0)),KeyType.Account)
+      case 0x01 =>  CLKeyValue(HexUtils.toHex(hexBytes.drop(0)),KeyType.Hash)
+      case 0x02 =>  CLKeyValue(HexUtils.toHex(hexBytes.drop(0)),KeyType.Uref)
+      case 0x03 =>  CLKeyValue(HexUtils.toHex(hexBytes.drop(0)),KeyType.Transfer)
+      case 0x04 =>  CLKeyValue(HexUtils.toHex(hexBytes.drop(0)),KeyType.DeployInfo)
+      case 0x05 =>  CLKeyValue(HexUtils.toHex(hexBytes.drop(0)),KeyType.EraInfo)
+      case 0x06 =>  CLKeyValue(HexUtils.toHex(hexBytes.drop(0)),KeyType.Balance)
+      case 0x07 =>  CLKeyValue(HexUtils.toHex(hexBytes.drop(0)),KeyType.Bid)
+      case 0x08 =>  CLKeyValue(HexUtils.toHex(hexBytes.drop(0)),KeyType.Withdraw)
+      case _ => throw IllegalArgumentException("Invalid Key "+ hexBytes(0))
+    }
+  }
+
+  /**
    * Get instance from hexString and KEy Type
    * @param hexBytes
    * @param keyType
    * @return
    */
-  def apply (hexBytes:String,keyType: KeyType) : CLKeyValue ={
-    new CLKeyValue(hexBytes,keyType,parsedValue)
-  }
+  def apply (hexBytes:String,keyType: KeyType) : CLKeyValue =  CLKeyValue(keyType.prefix+"-"+hexBytes)
 
   /**
    * Get instance from string : eg : transfer-e330a31701205e3871cb4f7e14d3ff26074735c84b0e54b7a75f553a8405d182
@@ -52,16 +72,14 @@ object CLKeyValue{
    * @return
    */
   //constructor from keys ie : transfer-e330a31701205e3871cb4f7e14d3ff26074735c84b0e54b7a75f553a8405d182
-  def apply (key:String) : CLKeyValue ={
-    val prefix = key.substring(0,key.lastIndexOf("-"))
-    val keyType = KeyType.getByPrefix(prefix)
-    val bytes = HexUtils.fromHex(key.substring(key.lastIndexOf("-")+1))
-    new CLKeyValue(bytes,keyType,parsedValue(key))
-  }
-
+  def apply (key:String) : CLKeyValue = new CLKeyValue(HexUtils.fromHex(key.substring(key.lastIndexOf("-")+1)),KeyType.getByPrefix(key.substring(0,key.lastIndexOf("-"))),parsedValue(key))
+    /**
+   * compute parsed value from string key
+   * @param key
+   * @return
+   */
   def parsedValue(key:String) : Any ={
-    val prefix = key.substring(0,key.lastIndexOf("-"))
-    val keyType = KeyType.getByPrefix(prefix)
+    val keyType = KeyType.getByPrefix(key.substring(0,key.lastIndexOf("-")))
     val bytes = HexUtils.fromHex(key.substring(key.lastIndexOf("-")+1))
     val mapper = new ObjectMapper
     val json = new StringBuilder("")
@@ -69,5 +87,4 @@ object CLKeyValue{
     val parsed = mapper.readValue(json.toString(), classOf[Any])
     parsed
   }
-
 }
