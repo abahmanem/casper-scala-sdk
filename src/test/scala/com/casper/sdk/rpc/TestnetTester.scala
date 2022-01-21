@@ -7,7 +7,7 @@ import com.casper.sdk.crypto.hash.Blake2b256
 import com.casper.sdk.domain.{EraSummary, Peer, deploy}
 import com.casper.sdk.domain._
 import com.casper.sdk.domain.deploy.{Deploy, DeployExecutable, DeployNamedArg, Hash, ModuleBytes, StoredContractByHash, StoredVersionedContractByHash, StoredVersionedContractByName}
-import com.casper.sdk.types.cltypes.{CLResultTypeInfo,CLTuple1TypeInfo,CLTuple2TypeInfo,CLTuple3TypeInfo,CLListTypeInfo,AccessRight, AccountHash, CLByteArrayTypeInfo, CLOptionTypeInfo, CLPublicKey, CLType, CLTypeInfo, CLValue, KeyAlgorithm, Signature, URef}
+import com.casper.sdk.types.cltypes.{AccessRight, AccountHash, CLByteArrayTypeInfo, CLKeyValue, CLListTypeInfo, CLOptionTypeInfo, CLPublicKey, CLResultTypeInfo, CLTuple1TypeInfo, CLTuple2TypeInfo, CLTuple3TypeInfo, CLType, CLTypeInfo, CLValue, KeyAlgorithm, Signature, URef}
 import com.casper.sdk.util.{ByteUtils, HexUtils, JsonConverter, TimeUtil}
 import com.casper.sdk.util.implicits.idInstance
 import org.bouncycastle.crypto.KeyGenerationParameters
@@ -46,18 +46,41 @@ import java.util.regex.Pattern
 object TestnetTester  extends  App {
 
 
+val kk = CLKeyValue("transfer-e330a31701205e3871cb4f7e14d3ff26074735c84b0e54b7a75f553a8405d182")
 
+ println(kk.keyType)
+  println(JsonConverter.toJson(kk.parsed))
+  val list = CLValue.List(CLValue.String("String1"),CLValue.String("String2"),CLValue.String("String3"),CLValue.String("String4"))
+  println(JsonConverter.toJson(list))
+
+  val oo = """{
+             |  "cl_type" : {
+             |    "List" : "String"
+             |  },
+             |  "bytes" : "0400000007000000537472696e673107000000537472696e673207000000537472696e673307000000537472696e6734",
+             |  "parsed" : "[\"String1\",\"String2\",\"String3\",\"String1\"]"
+             |}""".stripMargin
+
+
+  println(JsonConverter.fromJson[CLValue](oo).parsed)
+
+
+
+  val client = new CasperSdk("http://65.21.227.180:7777/rpc")
+  val dp = client.getDeploy("0fe0adccf645e99b9b58493c843516cd354b189e1c3efe62c4f2768716a41932")
+
+
+  println(JsonConverter.toJson(dp.session))
   val ss1 = CLValue.U512(BigInt.apply("1024"))
 println(HexUtils.toHex(ss1.bytes))
 
   val header = new DeployHeader(
      CLPublicKey("017d9aa0b86413d7ff9a9169182c53f0bacaa80d34c211adab007ed4876af17077"),
-    //TimeUtil.ToEpochMs("2022-01-20T16:36:24.072Z"),
-    System.currentTimeMillis(),
-    1800000L,
+      System.currentTimeMillis(),
+    5400000L,
     1,
     null,
-    Seq(new Hash("0101010101010101010101010101010101010101010101010101010101010101")),
+    Seq.empty,
       "casper-test"
      )
   println("ddddd")
@@ -67,7 +90,7 @@ println(HexUtils.toHex(ss1.bytes))
   println(HexUtils.toHex(sss.toBytes(header)))
 
 
-  val arg0 = new DeployNamedArg("amount",CLValue.U512(3000000000L))
+  val arg0 = new DeployNamedArg("amount",CLValue.U512(5000000000L))
   val payment = new ModuleBytes(
   "".getBytes()
   , Seq(Seq(arg0)))
@@ -86,16 +109,18 @@ println(HexUtils.toHex(ss1.bytes))
   //println(JsonConverter.toJson(header))
 
 
+  val session1 = new StoredVersionedContractByName("test",Some(12542),"entry_point",Seq(Seq(arg1,arg01,arg02)))
+
   val pair = com.casper.sdk.crypto.KeyPair.loadFromPem("/Users/p35862/testnet.pem")
 
   val serializer = DeployExecutableByteSerializer()
   val builder = new ArrayBuilder.ofByte
 //  builder.addAll(serializer.toBytes(payment)).addAll(serializer.toBytes(session))
-  println("SSSSSSS  "+HexUtils.toHex(Deploy.deployBodyHash(payment,session)))
+  println("SSSSSSS  "+HexUtils.toHex(Deploy.deployBodyHash(payment,session1)))
 
 
 
-  val deploy = Deploy.createUnsignedDeploy(header,payment,session)
+  val deploy = Deploy.createUnsignedDeploy(header,payment,session1)
   println("//////////////////////////////////////////////////////////////////////////////////////////////////////////////")
   println(HexUtils.toHex(Blake2b256.hash(Deploy.deployHeaderHash(deploy.header))))
   val signedDeploy = Deploy.signDeploy(deploy,pair)

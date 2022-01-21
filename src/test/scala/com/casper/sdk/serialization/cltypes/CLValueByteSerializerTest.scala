@@ -340,7 +340,7 @@ class CLValueByteSerializerTest extends AnyFunSuite {
   }
   test("CLTypesToBytes Test with CCListTypeInfo ") {
     val builder = new ArrayBuilder.ofByte
-    cLValueByteSerializer.CLTypesToBytes(builder, CLListTypeInfo(3, CLTypeInfo(CLType.Bool)))
+    cLValueByteSerializer.CLTypesToBytes(builder, CLListTypeInfo(CLTypeInfo(CLType.Bool)))
     assert(HexUtils.toHex(builder.result()) == "0e00")
   }
 

@@ -17,6 +17,9 @@ class CLValueByteSerializer extends BytesSerializable[CLValue] {
   def toBytes(value: CLValue): Array[Byte] = {
     assert(value != null)
     val builder = new ArrayBuilder.ofByte
+    
+    
+    
     builder.addAll(CLValue.U32(value.bytes.length).bytes)
       .addAll(value.bytes)
     CLTypesToBytes(builder, value.cl_infoType)
@@ -46,8 +49,8 @@ class CLValueByteSerializer extends BytesSerializable[CLValue] {
       }
       case result: CLResultTypeInfo => {
         builder.addOne(innerType.cl_Type.clType.toByte)
-        CLTypesToBytes(builder, result.ok)
-        CLTypesToBytes(builder, result.err)
+        CLTypesToBytes(builder, result.okCLinfo)
+        CLTypesToBytes(builder, result.errCLinfo)
       }
       case bytearray: CLByteArrayTypeInfo =>{
         builder.addOne(innerType.cl_Type.clType.toByte)

@@ -107,7 +107,8 @@ object CLPublicKey {
    * @param uref
    * @return CLPublicKey
    */
-  def apply(hex: String): CLPublicKey = new CLPublicKey(dropAlgorithmBytes(HexUtils.fromHex(hex)), KeyAlgorithm.fromId(hex.charAt(1)))
+  def apply(hex: String): CLPublicKey =
+    new CLPublicKey(dropAlgorithmBytes(HexUtils.fromHex(hex)), KeyAlgorithm.fromId(hex.charAt(1)))
 
 
   /**

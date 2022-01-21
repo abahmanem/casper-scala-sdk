@@ -6,7 +6,7 @@ package com.casper.sdk.types.cltypes
  * @param err
  */
 class CLResultTypeInfo(
-                        val ok : CLTypeInfo,
-                        val err: CLTypeInfo
+                        val okCLinfo : CLTypeInfo,
+                        val errCLinfo: CLTypeInfo
                       ) extends CLTypeInfo(CLType.Result)
 

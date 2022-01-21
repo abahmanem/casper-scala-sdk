@@ -123,14 +123,13 @@ object CLValue {
   //PublicKey
   def PublicKey(value: CLPublicKey ): CLValue = {
     assert(value != null)
-    new CLValue(value.bytes, CLTypeInfo(CLType.PublicKey), HexUtils.toHex(value.bytes))
+    new CLValue(value.formatAsByteAccount , CLTypeInfo(CLType.PublicKey), value.formatAsHexAccount)
   }
 
   def PublicKey(value: String ): CLValue = {
     assert(value != null)
     PublicKey( CLPublicKey(value) )
   }
-
 
 
   //URef
@@ -146,6 +145,21 @@ object CLValue {
   def URef(value: String): CLValue = {
     assert(value != null)
     URef(com.casper.sdk.types.cltypes.URef(value))
+  }
+
+
+
+  //Key
+  def Key(value: CLKeyValue): CLValue = {
+    assert(value != null)
+    new CLValue(value.getBytes, new CLKeyInfo(value.keyType), value.parsed)
+  }
+
+
+  //Key
+  def Key(value: String): CLValue = {
+    assert(value != null)
+    Key(CLKeyValue(value))
   }
 
 
@@ -172,10 +186,14 @@ object CLValue {
   def List(values: CLValue*): CLValue = {
     assert(values != null)
     val builder = new ArrayBuilder.ofByte
+    var parsed = Array.empty[Any]
     val elementCountBytes = U32(values.size).bytes
     builder.addAll(elementCountBytes)
-    for (value <- values) builder.addAll(value.bytes)
-    new CLValue(builder.result(), if (values.isEmpty) new CLTypeInfo(CLType.Unit) else new CLListTypeInfo(values.size, values(0).cl_infoType), "")
+    for (value <- values)
+      {builder.addAll(value.bytes)
+        parsed = parsed.:+(value.parsed)
+         }
+     new CLValue(builder.result(), if (values.isEmpty) new CLTypeInfo(CLType.Unit) else new CLListTypeInfo(values(0).cl_infoType), parsed)
   }
   // Result Ok
 

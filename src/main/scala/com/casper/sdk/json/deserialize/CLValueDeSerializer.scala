@@ -1,10 +1,10 @@
 package com.casper.sdk.json.deserialize
 
-import com.casper.sdk.types.cltypes.{CLOptionTypeInfo, _}
+import com.casper.sdk.types.cltypes._
 import com.fasterxml.jackson.core.{JsonParser, ObjectCodec, TreeNode}
 import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
-import com.fasterxml.jackson.databind.node.{NumericNode, TextNode}
-import  com.casper.sdk.types.cltypes.*
+import com.fasterxml.jackson.databind.node.{ArrayNode, NumericNode, ObjectNode, TextNode}
+import com.casper.sdk.types.cltypes
 
 import java.io.IOException
 
@@ -28,6 +28,8 @@ class CLValueDeSerializer extends JsonDeserializer[CLValue] {
     val bytesNode = treeNode.get("bytes").asInstanceOf[TextNode].asText()
     val typeNode = treeNode.get("cl_type")
     val clTypeInfo = cLTypeInfo(typeNode)
+
+   // println("OOOOOOOO-- : "+treeNode.get("parsed") + "  "+treeNode.get("parsed").getClass)
     val parsedValue =  parsed(treeNode.get("parsed"), clTypeInfo)
     clTypeInfo match {
       case  clTypeInfo :CLOptionTypeInfo  =>  CLOptionValue(bytesNode, clTypeInfo.asInstanceOf[CLOptionTypeInfo], parsedValue)
@@ -54,6 +56,12 @@ class CLValueDeSerializer extends JsonDeserializer[CLValue] {
         val interType = cLTypeInfo(optionNode)
         new CLOptionTypeInfo(interType)
       }
+
+      case CLType.List => {
+        val listNode = typeNode.get(CLType.List.toString)
+        val interType = cLTypeInfo(listNode)
+        new CLListTypeInfo(interType)
+      }
       case _ => {
         new CLTypeInfo(cl_Type)
       }
@@ -73,6 +81,9 @@ class CLValueDeSerializer extends JsonDeserializer[CLValue] {
         case true =>   typeNode.asInstanceOf[NumericNode].bigIntegerValue
         case false =>  null
       }
+      case typeNode : ArrayNode =>  typeNode.asInstanceOf[ArrayNode]
+      case typeNode : ObjectNode =>  typeNode.asInstanceOf[ObjectNode]
+
       case _ => null
     }
 

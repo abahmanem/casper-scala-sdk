@@ -6,6 +6,5 @@ package com.casper.sdk.types.cltypes
  * @param cltypeInfo
  */
 class CLListTypeInfo(
-                      val size: Int,
-                      val cltypeInfo: CLTypeInfo
+                     val cltypeInfo: CLTypeInfo
                     ) extends CLTypeInfo(CLType.List)

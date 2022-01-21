@@ -1,8 +1,9 @@
 package com.casper.sdk.json.serialize
 
-import com.casper.sdk.types.cltypes.CLValue
+import com.casper.sdk.types.cltypes._
 import com.casper.sdk.util.HexUtils
 import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.{JsonSerializer, SerializerProvider}
 
 /**
@@ -21,18 +22,44 @@ class CLValueSerializer extends JsonSerializer[CLValue] {
     gen.writeEndObject
   }
 
-    /**
-     * Write parsed tag
-     * @param value
-     * @param gen
-     */
-    def parsed(value: CLValue, gen: JsonGenerator) = {
-      if (value.parsed != null) {
-        gen.writeFieldName("parsed")
-        if (value.parsed.isInstanceOf[Number]) gen.writeNumber(value.parsed.toString)
-        else gen.writeString(value.parsed.toString)
-      }
+  /**
+   * Write parsed tag
+   *
+   * @param value
+   * @param gen
+   */
+  def parsed(value: CLValue, gen: JsonGenerator) = {
+    if (value.parsed != null) {
+      gen.writeFieldName("parsed")
+      if (value.parsed.isInstanceOf[Number]) gen.writeNumber(value.parsed.toString)
+      else if (value.parsed.isInstanceOf[Array[Any]])
+        parsedForArray(value.parsed.asInstanceOf[Array[Any]], gen)
+      else gen.writeString(value.parsed.toString)
     }
+  }
 
+  /**
+   * compute parsed value for an array (case on Lists)
+   *
+   * @param array
+   * @param gen
+   */
+  def parsedForArray(array: Array[Any], gen: JsonGenerator): Unit = {
+    if (array.length > 0) {
+      val parsed = new StringBuilder("[")
+      for (j <- 0 to array.length - 1) {
+        if (j < array.length - 1)
+          parsed.append("\"").append(array(j)).append("\",")
+        else
+          parsed.append("\"").append(array(array.length - 1)).append("\"")
+      }
+      parsed.append("]")
+      gen.writeString(parsed.toString())
+    }
+    else
+      gen.writeString("")
+  }
 }
+
+
 
