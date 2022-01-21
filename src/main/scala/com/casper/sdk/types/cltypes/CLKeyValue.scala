@@ -31,7 +31,7 @@ object CLKeyValue{
    * Get instance from a bytes array
    * @param hexBytes
    * @param keyType
-   * @return
+   * @return CLKeyValue
    */
   def apply (hexBytes:Array[Byte]) : CLKeyValue ={
 
@@ -51,23 +51,22 @@ object CLKeyValue{
 
   /**
    * Get instance from hexString and KEy Type
-   * @param hexBytes
-   * @param keyType
-   * @return
+   * @param hexBytes Hex String
+   * @param keyType  KeyType
+   * @return CLKeyValue
    */
   def apply (hexBytes:String,keyType: KeyType) : CLKeyValue =  CLKeyValue(keyType.prefix+"-"+hexBytes)
 
   /**
    * Get instance from string : eg : transfer-e330a31701205e3871cb4f7e14d3ff26074735c84b0e54b7a75f553a8405d182
    * @param key
-   * @return
+   * @return CLKeyValue
    */
-  //constructor from keys ie : transfer-e330a31701205e3871cb4f7e14d3ff26074735c84b0e54b7a75f553a8405d182
-  def apply (key:String) : CLKeyValue = new CLKeyValue(HexUtils.fromHex(key.substring(key.lastIndexOf("-")+1)),KeyType.getByPrefix(key.substring(0,key.lastIndexOf("-"))),parsedValue(key))
+   def apply (key:String) : CLKeyValue = new CLKeyValue(HexUtils.fromHex(key.substring(key.lastIndexOf("-")+1)),KeyType.getByPrefix(key.substring(0,key.lastIndexOf("-"))),parsedValue(key))
     /**
    * compute parsed value from string key
    * @param key
-   * @return
+   * @return  Any
    */
   def parsedValue(key:String) : Any ={
     val keyType = KeyType.getByPrefix(key.substring(0,key.lastIndexOf("-")))

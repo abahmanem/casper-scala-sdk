@@ -17,6 +17,7 @@ enum KeyType(val tag: Int, val prefix : String) {
 
 object KeyType{
 
+  //TODO : refactor with find method
   def getByPrefix(prefix : String):KeyType={
 
     prefix match {
@@ -32,5 +33,4 @@ object KeyType{
       case _ => throw IllegalArgumentException("invalid prefix for Key value")
     }
   }
-
 }
