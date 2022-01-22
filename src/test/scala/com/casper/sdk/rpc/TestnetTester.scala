@@ -7,7 +7,7 @@ import com.casper.sdk.crypto.hash.Blake2b256
 import com.casper.sdk.domain.{EraSummary, Peer, deploy}
 import com.casper.sdk.domain._
 import com.casper.sdk.domain.deploy.{Deploy, DeployExecutable, DeployNamedArg, Hash, ModuleBytes, StoredContractByHash, StoredVersionedContractByHash, StoredVersionedContractByName}
-import com.casper.sdk.types.cltypes.{AccessRight, AccountHash, CLByteArrayTypeInfo, CLKeyValue, CLListTypeInfo, CLOptionTypeInfo, CLPublicKey, CLResultTypeInfo, CLTuple1TypeInfo, CLTuple2TypeInfo, CLTuple3TypeInfo, CLType, CLTypeInfo, CLValue, KeyAlgorithm, Signature, URef}
+import com.casper.sdk.types.cltypes.{AccessRight, AccountHash, CLByteArrayTypeInfo, CLKeyValue, CLListTypeInfo, CLOptionTypeInfo, CLPublicKey, CLResultTypeInfo, CLTuple1TypeInfo, CLTuple2TypeInfo, CLTuple3TypeInfo, CLType, CLTypeInfo, CLValue, KeyAlgorithm, KeyType, Signature, URef}
 import com.casper.sdk.util.{ByteUtils, HexUtils, JsonConverter, TimeUtil}
 import com.casper.sdk.util.implicits.idInstance
 import org.bouncycastle.crypto.KeyGenerationParameters
@@ -47,6 +47,12 @@ object TestnetTester  extends  App {
 
 
 val kk = CLKeyValue("transfer-e330a31701205e3871cb4f7e14d3ff26074735c84b0e54b7a75f553a8405d182")
+
+KeyType.getByPrefix("account-hash")
+println(KeyAlgorithm.fromId(1))
+
+KeyAlgorithm.fromId(3)
+
 
  println(kk.keyType)
   println(JsonConverter.toJson(kk.parsed))

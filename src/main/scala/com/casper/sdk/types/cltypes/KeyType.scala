@@ -17,20 +17,15 @@ enum KeyType(val tag: Int, val prefix : String) {
 
 object KeyType{
 
-  //TODO : refactor with find method
-  def getByPrefix(prefix : String):KeyType={
-
-    prefix match {
-      case  "transfer"=> Transfer
-      case  "account-hash"=> Account
-      case  "hash"=> Hash
-      case  "uref"=> Uref
-      case  "balance"=> Balance
-      case  "Bid"=> Bid
-      case  "withdraw"=> Withdraw
-      case  "deploy"=> DeployInfo
-      case  "era"=> EraInfo
-      case _ => throw IllegalArgumentException("invalid prefix for Key value")
+  /**
+   * search KeyValue with prefix
+   * @param prefix
+   * @return
+   */
+  def getByPrefix(prefix : String):KeyType=
+    KeyType.values.find(_.prefix == prefix) match {
+      case Some(a)=> a
+      case _ => throw  IllegalArgumentException(" No key value is defined for prefix " + prefix)
     }
-  }
+
 }
