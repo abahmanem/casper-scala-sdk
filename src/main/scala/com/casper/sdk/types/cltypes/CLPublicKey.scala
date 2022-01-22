@@ -1,6 +1,7 @@
 package com.casper.sdk.types.cltypes
 
 import com.casper.sdk.crypto.{Pem, SECP256K1}
+import com.casper.sdk.crypto.hash.Blake2b256
 import com.casper.sdk.json.deserialize.CLPublicKeyDeserializer
 import com.casper.sdk.json.serialize.CLPublicKeySerializer
 import com.casper.sdk.types.cltypes.CLPublicKey.dropAlgorithmBytes
@@ -41,7 +42,14 @@ class CLPublicKey(
    *
    * @return
    */
-  def formatAsHexAccount: String = HexUtils.toHex(formatAsByteAccount)
+  def formatAsHexAccount: Option[String] = {
+    try {
+      Some(HexUtils.toHex(formatAsByteAccount).get)
+    } catch {
+      case ex: Exception => None
+    }
+  }
+
   /**
    * format to Byte array with algorithm
    *
@@ -107,8 +115,13 @@ object CLPublicKey {
    * @param uref
    * @return CLPublicKey
    */
-  def apply(hex: String): CLPublicKey =
-    new CLPublicKey(dropAlgorithmBytes(HexUtils.fromHex(hex)), KeyAlgorithm.fromId(hex.charAt(1)))
+  def apply(hex: String): Option[CLPublicKey] = {
+    try {
+      Some(new CLPublicKey(dropAlgorithmBytes(HexUtils.fromHex(hex)), KeyAlgorithm.fromId(hex.charAt(1).asDigit)))
+    } catch {
+      case e: Exception => None
+    }
+  }
 
 
   /**
@@ -118,6 +131,7 @@ object CLPublicKey {
    * @return
    */
   def dropAlgorithmBytes(key: Array[Byte]): Array[Byte] = {
+    require(key != null)
     key.drop(1)
   }
 
@@ -127,8 +141,12 @@ object CLPublicKey {
    * @param publicKey
    * @return
    */
-  def accountHash(publicKey: CLPublicKey): AccountHash = {
-    null
+  def accountHash(publicKey: CLPublicKey): Option[String] = {
+    try {
+      Some(KeyType.Account.prefix + HexUtils.toHex(Blake2b256.CLPublicKeyToAccountHash(publicKey)))
+    } catch {
+      case ex: Exception => None
+    }
   }
 
   /**
@@ -138,7 +156,7 @@ object CLPublicKey {
    * @return
    */
   def fromPemFile(path: String): CLPublicKey = {
-
+    assert(path != null)
     val converter = new JcaPEMKeyConverter().setProvider(new BouncyCastleProvider());
     Option(new PEMParser(new FileReader(path)).readObject()) match {
       case Some(obj) => obj match {

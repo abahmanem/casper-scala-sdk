@@ -1,6 +1,6 @@
 package com.casper.sdk.json.serialize
 
-import com.casper.sdk.types.cltypes.{CLType, CLValue}
+import com.casper.sdk.types.cltypes.{CLType, CLTypeInfo, CLValue}
 import com.casper.sdk.util.{HexUtils, JsonConverter}
 import org.scalatest.funsuite.AnyFunSuite
 /**
@@ -123,5 +123,110 @@ class CLValueSerializerTest extends AnyFunSuite {
     info("CLValue.U256(BigInt.apply(\"4545487556545454545454\")) serializes to "+json)
     assert(JsonConverter.toJson(v)==json)
   }
+
+
+
+  test("Serialize List of CLvalues") {
+    val json = """{
+                 |  "cl_type" : {
+                 |    "List" : "String"
+                 |  },
+                 |  "bytes" : "030000000300000061626304000000646566670a00000068696a6b6c6d6e6f7071",
+                 |  "parsed" : "[\"abc\",\"defg\",\"hijklmnopq\"]"
+                 |}""".stripMargin
+    val v = CLValue.List(CLValue.String("abc"),CLValue.String("defg") , CLValue.String("hijklmnopq"))
+    info("CLValue.List(CLValue.String(\"abc\"),CLValue.String(\"defg\") , CLValue.String(\"hijklmnopq\")) serializes to "+json)
+    assert(JsonConverter.toJson(v)==json)
+  }
+
+
+  test("Serialize Tuple1 with CLValue") {
+    val json = """{
+                 |  "cl_type" : {
+                 |    "Tuple1" : [
+                 |      "String"
+                 |    ]
+                 |  },
+                 |  "bytes" : "050000006162636566",
+                 |  "parsed" : "[\"abcef\"]"
+                 |}""".stripMargin
+    val v = CLValue.Tuple1(CLValue.String("abcef"))
+    info("CLValue.Tuple1(CLValue.String(\"abcef\")) serializes to "+json)
+    assert(JsonConverter.toJson(v)==json)
+  }
+
+
+  test("Serialize Tuple2 with CLValues") {
+    val json = """{
+                 |  "cl_type" : {
+                 |    "Tuple2" : [
+                 |      "String",
+                 |      "U512"
+                 |    ]
+                 |  },
+                 |  "bytes" : "030000006162630102",
+                 |  "parsed" : "[\"abc\",\"2\"]"
+                 |}""".stripMargin
+    val v = CLValue.Tuple2(CLValue.String("abc"), CLValue.U512(2))
+    info("CLValue.Tuple2(CLValue.String(\"abc\"), CLValue.U512(2)) serializes to "+json)
+    assert(JsonConverter.toJson(v)==json)
+  }
+
+
+  test("Serialize Tuple3 with CLValues") {
+    val json = """{
+                 |  "cl_type" : {
+                 |    "Tuple3" : [
+                 |      "PublicKey",
+                 |      {
+                 |        "Option" : "String"
+                 |      },
+                 |      "U512"
+                 |    ]
+                 |  },
+                 |  "bytes" : "01a018bf278f32fdb7b06226071ce399713ace78a28d43a346055060a660ba7aa901030000006162630102",
+                 |  "parsed" : "[\"01a018bf278f32fdb7b06226071ce399713ace78a28d43a346055060a660ba7aa9\",\"abc\",\"2\"]"
+                 |}""".stripMargin
+    val v = CLValue.Tuple3(CLValue.PublicKey("01a018bf278f32fdb7b06226071ce399713ace78a28d43a346055060a660ba7aa9") ,
+
+      CLValue.Option(CLValue.String("abc")), CLValue.U512(2))
+    info("CLValue.Tuple3(CLValue.PublicKey(\"01a018bf278f32fdb7b06226071ce399713ace78a28d43a346055060a660ba7aa9\") ,\n\n    CLValue.Option(CLValue.String(\"abc\")), CLValue.U512(2)) serializes to "+json)
+    assert(JsonConverter.toJson(v)==json)
+  }
+
+  test("Serialize Result with OK CLValue") {
+    val json = """{
+                 |  "cl_type" : {
+                 |    "Result" : {
+                 |      "ok" : "String",
+                 |      "err" : "String"
+                 |    }
+                 |  },
+                 |  "bytes" : "010a000000676f6f64726573756c74",
+                 |  "parsed" : "goodresult"
+                 |}""".stripMargin
+    val v = CLValue.Ok(CLValue.String("goodresult"),new CLTypeInfo (CLType.String))
+    info("CLValue.Ok(CLValue.String(\"goodresult\"),new CLTypeInfo (CLType.String)) serializes to "+json)
+    assert(JsonConverter.toJson(v)==json)
+  }
+
+  test("Serialize Result with Err CLValue") {
+    val json = """{
+                 |  "cl_type" : {
+                 |    "Result" : {
+                 |      "ok" : "String",
+                 |      "err" : "String"
+                 |    }
+                 |  },
+                 |  "bytes" : "001a00000075682c20736f6d657468696e6720776e65742077726f6e672121",
+                 |  "parsed" : "uh, something wnet wrong!!"
+                 |}""".stripMargin
+    val v = CLValue.Err(CLValue.String("uh, something wnet wrong!!"),new CLTypeInfo (CLType.String))
+    info("CLValue.Err(CLValue.String(\"uh, something wnet wrong!!\"),new CLTypeInfo (CLType.String)) serializes to "+json)
+    assert(JsonConverter.toJson(v)==json)
+  }
+
+
+
 
 }

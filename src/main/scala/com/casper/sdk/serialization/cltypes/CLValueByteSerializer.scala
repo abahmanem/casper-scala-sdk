@@ -45,7 +45,7 @@ class CLValueByteSerializer extends BytesSerializable[CLValue] {
 
       case option: CLOptionTypeInfo => {
         builder.addOne(innerType.cl_Type.clType.toByte)
-        CLTypesToBytes(builder, option.inner)
+        CLTypesToBytes(builder, option.inner.get)
       }
       case result: CLResultTypeInfo => {
         builder.addOne(innerType.cl_Type.clType.toByte)

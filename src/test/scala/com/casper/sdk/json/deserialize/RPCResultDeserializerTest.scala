@@ -79,7 +79,7 @@ class RPCResultDeserializerTest extends AnyFunSuite {
     val deployJson = Source.fromURL(getClass.getResource("/json/deserialize/deploy.json")).mkString
     val deploy = JsonConverter.fromJson[RPCResult[Deploy]](deployJson).result.get
     assert(deploy.approvals.size == 1)
-    assert(HexUtils.toHex(deploy.hash.hash).toLowerCase == "a11ca2157b073062c3d2f2c918e6371dd33658622443bcd2fa2f7d6e2105959f".toLowerCase())
+    assert(HexUtils.toHex(deploy.hash.hash).get.toLowerCase == "a11ca2157b073062c3d2f2c918e6371dd33658622443bcd2fa2f7d6e2105959f".toLowerCase())
     assert(deploy.session.getClass.getSimpleName == "ModuleBytes")
     assert(deploy.payment.getClass.getSimpleName == "ModuleBytes")
 

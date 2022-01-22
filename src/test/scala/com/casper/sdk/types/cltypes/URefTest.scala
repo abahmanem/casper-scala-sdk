@@ -11,7 +11,7 @@ class URefTest extends AnyFunSuite {
   }
 
   test("Test Uref decode ") {
-    assert(HexUtils.toHex(uref.bytes).toLowerCase== "bC3c71eA5246EFA149CA653E6F63192e7c59C652Ab830eC59b234B99bfA0B109".toLowerCase)
+    assert(HexUtils.toHex(uref.bytes).get.toLowerCase== "bC3c71eA5246EFA149CA653E6F63192e7c59C652Ab830eC59b234B99bfA0B109".toLowerCase)
   }
 
   test("Test format Uref  ") {

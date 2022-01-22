@@ -17,7 +17,7 @@ class CLValueSerializer extends JsonSerializer[CLValue] {
     gen.writeFieldName("cl_type")
     gen.getCodec.writeValue(gen, value.cl_infoType)
     gen.writeFieldName("bytes")
-    gen.writeString(HexUtils.toHex(value.bytes))
+    gen.writeString(HexUtils.toHex(value.bytes).get)
     parsed(value, gen)
     gen.writeEndObject
   }
@@ -39,7 +39,7 @@ class CLValueSerializer extends JsonSerializer[CLValue] {
   }
 
   /**
-   * compute parsed value for an array (case on Lists)
+   * compute parsed value for an array (List, Tuples)
    *
    * @param array
    * @param gen

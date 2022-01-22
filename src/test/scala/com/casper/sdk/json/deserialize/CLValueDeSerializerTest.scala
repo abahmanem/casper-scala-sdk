@@ -100,7 +100,7 @@ class CLValueDeSerializerTest extends AnyFunSuite {
     info("cl_type = Option ")
     assert(value.cl_infoType.cl_Type == CLType.Option)
     info("inner cltype = U64 ")
-    assert(value.cl_infoType.asInstanceOf[CLOptionTypeInfo].inner.cl_Type == CLType.U64)
+    assert(value.cl_infoType.asInstanceOf[CLOptionTypeInfo].inner.get.cl_Type == CLType.U64)
 
     info("bytes same as  HexUtils.fromHex(\"00\") ")
     assert(value.bytes.sameElements(HexUtils.fromHex("00")))

@@ -8,14 +8,22 @@ import org.apache.commons.codec.binary.Hex
  */
 object HexUtils {
 
- /**
+  /**
    * Convert byte array to hex string
    *
    * @param bytes
    * @param sep
    * @return
    */
-  def toHex(bytes: Array[Byte], separator: Option[String] = None): String = Hex.encodeHexString(bytes)
+  def toHex(bytes: Array[Byte]): Option[String] = {
+    try {
+      Some(Hex.encodeHexString(bytes))
+    } catch {
+      case e: Exception => None
+    }
+  }
+
+  //String = Hex.encodeHexString(bytes)
 
   /**
    *

@@ -21,6 +21,6 @@ class Signature (
    * Constructor from a hex String
    * @param signature
    */
- def  this(signature: String) = this(dropAlgorithmBytes(HexUtils.fromHex(signature)),KeyAlgorithm.fromId(signature.charAt(1)))
+ def  this(signature: String) = this(dropAlgorithmBytes(HexUtils.fromHex(signature)),KeyAlgorithm.fromId(signature.charAt(1).asDigit))
 }
 

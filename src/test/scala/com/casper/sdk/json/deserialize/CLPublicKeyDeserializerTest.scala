@@ -14,6 +14,6 @@ class CLPublicKeyDeserializerTest extends AnyFunSuite {
     info("PublicKey is not null")
     assert(pubKey != null)
     info("pubKey.bytes  is the same as new CLPublicKey(\"017d96b9A63ABCB61C870a4f55187A0a7AC24096Bdb5Fc585c12a686a4D892009e\").bytes")
-    assert(pubKey.bytes.sameElements(CLPublicKey("017d96b9A63ABCB61C870a4f55187A0a7AC24096Bdb5Fc585c12a686a4D892009e").bytes))
+    assert(pubKey.bytes.sameElements(CLPublicKey("017d96b9A63ABCB61C870a4f55187A0a7AC24096Bdb5Fc585c12a686a4D892009e").get.bytes))
   }
 }

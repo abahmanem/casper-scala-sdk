@@ -15,9 +15,9 @@ class SignatureSerializer extends JsonSerializer[Signature] {
     gen.writeFieldName("cl_type")
     gen.getCodec.writeValue(gen, "PublicKey")
     gen.writeFieldName("bytes")
-    gen.writeString(HexUtils.toHex(value.bytes))
+    gen.writeString(HexUtils.toHex(value.bytes).get)
     gen.writeFieldName("parsed")
-    gen.writeString(HexUtils.toHex(value.bytes))
+    gen.writeString(HexUtils.toHex(value.bytes).get)
     gen.writeEndObject
 
     // gen.writeString(value.formatAsHexAccount)

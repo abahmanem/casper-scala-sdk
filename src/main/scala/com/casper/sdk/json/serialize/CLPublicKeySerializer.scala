@@ -11,6 +11,6 @@ import com.fasterxml.jackson.databind.{JsonSerializer, SerializerProvider}
 class CLPublicKeySerializer extends JsonSerializer[CLPublicKey] {
   override def serialize(value: CLPublicKey, gen: JsonGenerator, serializers: SerializerProvider): Unit = {
     assert(value != null&&value.bytes!=null)
-    gen.writeString(value.formatAsHexAccount)
+    gen.writeString(value.formatAsHexAccount.get)
   }
 }

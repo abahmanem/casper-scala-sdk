@@ -33,7 +33,7 @@ class KeyPairTest extends AnyFunSuite {
     assert(keyPair.cLPublicKey.keyAlgorithm == KeyAlgorithm.ED25519)
 
     info("assert  cLPublicKey hex = 0127a89db4e0806e568a5b0646594bd5d0abe0cf695a63357bd066f412e92bd68e")
-    assert(keyPair.cLPublicKey.formatAsHexAccount.toLowerCase == "0127a89db4e0806e568a5b0646594bd5d0abe0cf695a63357bd066f412e92bd68e")
+    assert(keyPair.cLPublicKey.formatAsHexAccount.get.toLowerCase == "0127a89db4e0806e568a5b0646594bd5d0abe0cf695a63357bd066f412e92bd68e")
 
   }
 
@@ -62,7 +62,7 @@ class KeyPairTest extends AnyFunSuite {
     assert(keyPair.cLPublicKey.bytes.length ==33)
 
     info("assert  cLPublicKey hex = 0127a89db4e0806e568a5b0646594bd5d0abe0cf695a63357bd066f412e92bd68e")
-    assert(keyPair.cLPublicKey.formatAsHexAccount.toLowerCase == "0202ba7f1ec7b61e8b79cdd669f0dbf73d40dc08133019f3eba95e43798601cd82ba")
+    assert(keyPair.cLPublicKey.formatAsHexAccount.get.toLowerCase == "0202ba7f1ec7b61e8b79cdd669f0dbf73d40dc08133019f3eba95e43798601cd82ba")
   }
 
 

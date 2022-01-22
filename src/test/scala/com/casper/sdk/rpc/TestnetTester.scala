@@ -46,14 +46,8 @@ import java.util.regex.Pattern
 object TestnetTester  extends  App {
 
 
+
 val kk = CLKeyValue("transfer-e330a31701205e3871cb4f7e14d3ff26074735c84b0e54b7a75f553a8405d182")
-
-KeyType.getByPrefix("account-hash")
-println(KeyAlgorithm.fromId(1))
-
-KeyAlgorithm.fromId(3)
-
-
  println(kk.keyType)
   println(JsonConverter.toJson(kk.parsed))
   val list = CLValue.List(CLValue.String("String1"),CLValue.String("String2"),CLValue.String("String3"),CLValue.String("String4"))
@@ -81,7 +75,7 @@ KeyAlgorithm.fromId(3)
 println(HexUtils.toHex(ss1.bytes))
 
   val header = new DeployHeader(
-     CLPublicKey("017d9aa0b86413d7ff9a9169182c53f0bacaa80d34c211adab007ed4876af17077"),
+     CLPublicKey("017d9aa0b86413d7ff9a9169182c53f0bacaa80d34c211adab007ed4876af17077").get,
       System.currentTimeMillis(),
     5400000L,
     1,

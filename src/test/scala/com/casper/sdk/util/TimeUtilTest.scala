@@ -8,7 +8,7 @@ class TimeUtilTest extends AnyFunSuite {
 
   test("Test ToEpochMs ") {
     info("TimeUtil.ToEpochMs(\"2020-11-17T00:39:24.072Z\") == 1605573564072L")
-    assert(TimeUtil.ToEpochMs("2020-11-17T00:39:24.072Z") == 1605573564072L)
+    assert(TimeUtil.ToEpochMs("2020-11-17T00:39:24.072Z").get == 1605573564072L)
   }
 
   test("Test ToEpochMs with a wrong timestamp, throws IllegalArgumentException ") {

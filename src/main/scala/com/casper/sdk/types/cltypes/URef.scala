@@ -20,7 +20,7 @@ class URef(
    *
    * @return
    */
-  def format: String = String.format(URef.UREF_PREFIX + "-%s-%03d", HexUtils.toHex(bytes), accessRights.bits)
+  def format: String = String.format(URef.UREF_PREFIX + "-%s-%03d", HexUtils.toHex(bytes).get, accessRights.bits)
 
   override def tag = 2
 }

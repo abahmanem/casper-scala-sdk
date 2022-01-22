@@ -1,15 +1,19 @@
 package com.casper.sdk.crypto.hash
+
 import com.casper.sdk.types.cltypes.CLPublicKey
 import org.bouncycastle.crypto.digests.Blake2bDigest
 
-object Blake2b256 extends App{
+import java.nio.charset.StandardCharsets
+
+object Blake2b256 {
   /**
    * gives a byte hashed array from a byte array
    *
-   * @param bytes
+   * @param input : Array[Byte]
    * @return hex string  bytes array
    */
-   def hash(input: Array[Byte]): Array[Byte] = {
+  def hash(input: Array[Byte]): Array[Byte] = {
+    assert(input != null)
     val digest = new Blake2bDigest(256)
     synchronized {
       digest.update(input, 0, input.length)
@@ -17,5 +21,22 @@ object Blake2b256 extends App{
       digest.doFinal(res, 0)
       res
     }
+  }
+
+  /**
+   * get accountHash from CL cLPublicKey
+   *
+   * @param cLPublicKey : CLPublicKey
+   * @return Array[Byte]
+   */
+
+  def CLPublicKeyToAccountHash(cLPublicKey: CLPublicKey): Array[Byte] = {
+    assert(cLPublicKey != null)
+    val digest = new Blake2bDigest(256)
+    val algorithm = cLPublicKey.keyAlgorithm.toString.toLowerCase
+    digest.update(algorithm.getBytes(StandardCharsets.UTF_8), 0, algorithm.length)
+    digest.update(0x00)
+    digest.update(cLPublicKey.bytes, 0, cLPublicKey.bytes.length)
+    new Array[Byte](digest.getDigestSize)
   }
 }

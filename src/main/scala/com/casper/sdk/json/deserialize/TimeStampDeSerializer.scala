@@ -8,6 +8,6 @@ import com.fasterxml.jackson.databind.util.StdConverter
  */
 class TimeStampDeSerializer extends  StdConverter[String,Long] {
   override def convert(value: String): Long = {
-    TimeUtil.ToEpochMs(value)
+    TimeUtil.ToEpochMs(value).get
   }
 }

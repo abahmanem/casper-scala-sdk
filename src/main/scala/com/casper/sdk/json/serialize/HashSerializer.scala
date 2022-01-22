@@ -12,6 +12,6 @@ import com.fasterxml.jackson.databind.{JsonSerializer, SerializerProvider}
 class HashSerializer extends JsonSerializer[Hash] {
   override def serialize(value: Hash, gen: JsonGenerator, serializers: SerializerProvider): Unit ={
     assert(value!=null)
-    gen.writeString(HexUtils.toHex(value.hash))
+    gen.writeString(HexUtils.toHex(value.hash).get)
   }
 }

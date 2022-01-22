@@ -27,7 +27,7 @@ class CLTypeInfoSerializer extends JsonSerializer[CLTypeInfo] {
       case option: CLOptionTypeInfo => {
         gen.writeStartObject
         gen.writeFieldName("Option")
-        serializeCLTypes(option.inner,gen)
+        serializeCLTypes(option.inner.get,gen)
         gen.writeEndObject
       }
 
@@ -45,34 +45,37 @@ class CLTypeInfoSerializer extends JsonSerializer[CLTypeInfo] {
 
       case cLtuple: CLTuple1TypeInfo => {
         gen.writeStartObject
-        gen.writeStartArray("Tuple1")
+        gen.writeFieldName("Tuple1")
+        gen.writeStartArray
         serializeCLTypes(cLtuple.typeinfo1,gen)
-        gen.writeEndArray()
+        gen.writeEndArray
         gen.writeEndObject
       }
 
       case cLtuple: CLTuple2TypeInfo => {
         gen.writeStartObject
-        gen.writeStartArray("Tuple2")
+        gen.writeFieldName("Tuple2")
+        gen.writeStartArray
         serializeCLTypes(cLtuple.typeinfo1,gen)
         serializeCLTypes(cLtuple.typeinfo2,gen)
-        gen.writeEndArray()
+        gen.writeEndArray
         gen.writeEndObject
       }
 
       case cLtuple: CLTuple3TypeInfo => {
         gen.writeStartObject
-        gen.writeStartArray("Tuple3")
+        gen.writeFieldName("Tuple3")
+        gen.writeStartArray
         serializeCLTypes(cLtuple.typeinfo1,gen)
         serializeCLTypes(cLtuple.typeinfo2,gen)
         serializeCLTypes(cLtuple.typeinfo3,gen)
-        gen.writeEndArray()
+        gen.writeEndArray
         gen.writeEndObject
       }
 
       case cLresult: CLResultTypeInfo => {
         gen.writeStartObject
-        gen.writeStartArray("Result")
+        gen.writeFieldName("Result")
         gen.writeStartObject
         gen.writeFieldName("ok")
         serializeCLTypes(cLresult.okCLinfo,gen)

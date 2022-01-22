@@ -6,9 +6,9 @@ package com.casper.sdk.types.cltypes
  */
  class CLOptionTypeInfo extends CLTypeInfo(CLType.Option)
 {
-  var inner:CLTypeInfo = null
+  var inner:Option[CLTypeInfo] = None
   def this(innerType:CLTypeInfo) = {
     this()
-    inner = innerType
+    inner = Some(innerType)
   }
 }

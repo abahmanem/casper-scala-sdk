@@ -19,7 +19,7 @@ case class AccountHash(
    *
    * @return
    */
-  def format: String = String.format(AccountHash.ACCOUNT_PREFIX + "%s", HexUtils.toHex(bytes))
+  def format: String = String.format(AccountHash.ACCOUNT_PREFIX + "%s", HexUtils.toHex(bytes).get)
 
   /**
    * Constructor using s String Uref value

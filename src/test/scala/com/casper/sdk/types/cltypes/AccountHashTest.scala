@@ -9,7 +9,7 @@ class AccountHashTest extends AnyFunSuite {
 
 
   test("Test AccountHash  decode ") {
-    assert(HexUtils.toHex(account.bytes).toLowerCase== "85148dcd6c54b77e462a9acf387fb05aca953a83011db2c601716de0af1cf47c".toLowerCase)
+    assert(HexUtils.toHex(account.bytes).get.toLowerCase== "85148dcd6c54b77e462a9acf387fb05aca953a83011db2c601716de0af1cf47c".toLowerCase)
   }
 
   test("Test AccountHash formatAsHexAccount   ") {

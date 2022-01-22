@@ -15,12 +15,12 @@ object TimeUtil {
    * @param timestamp
    * @return
    */
-  def ToEpochMs(timestamp: String): Long = try {
+  def ToEpochMs(timestamp: String): Option[Long] = try {
     val dateTime = OffsetDateTime.parse(timestamp).toZonedDateTime
-    dateTime.toInstant.toEpochMilli
+    Some(dateTime.toInstant.toEpochMilli)
   }
   catch {
-    case e: DateTimeParseException => throw new IllegalArgumentException("Text " + timestamp + " could not be parsed as a date")
+    case e: DateTimeParseException => None
   }
 
 

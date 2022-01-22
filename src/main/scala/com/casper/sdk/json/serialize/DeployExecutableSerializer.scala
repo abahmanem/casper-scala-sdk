@@ -46,7 +46,7 @@ class DeployExecutableSerializer extends JsonSerializer[DeployExecutable] {
       gen.writeFieldName("ModuleBytes")
       gen.writeStartObject
       gen.writeFieldName("module_bytes")
-      gen.writeString(HexUtils.toHex(modulesbytes.modules_bytes))
+      gen.writeString(HexUtils.toHex(modulesbytes.modules_bytes).get)
       serializeArgs(modulesbytes, gen)
       gen.writeEndObject
       gen.writeEndObject
@@ -83,7 +83,7 @@ class DeployExecutableSerializer extends JsonSerializer[DeployExecutable] {
       gen.writeFieldName("StoredContractByHash")
       gen.writeStartObject
       gen.writeFieldName("hash")
-      gen.writeString(HexUtils.toHex(storedContractByHash.hash.hash))
+      gen.writeString(HexUtils.toHex(storedContractByHash.hash.hash).get)
       gen.writeFieldName("entry_point")
       gen.writeString(storedContractByHash.entry_point)
       serializeArgs(storedContractByHash, gen)
@@ -103,7 +103,7 @@ class DeployExecutableSerializer extends JsonSerializer[DeployExecutable] {
       gen.writeFieldName("StoredVersionedContractByHash")
       gen.writeStartObject
       gen.writeFieldName("hash")
-      gen.writeString(HexUtils.toHex(storedVersionedContractByHash.hash.hash))
+      gen.writeString(HexUtils.toHex(storedVersionedContractByHash.hash.hash).get)
       gen.writeFieldName("version")
       storedVersionedContractByHash.version match {
         case Some(_) => gen.writeRawValue("Some("+storedVersionedContractByHash.version.get+")")// .writeNumber(storedVersionedContractByHash.version.get)
