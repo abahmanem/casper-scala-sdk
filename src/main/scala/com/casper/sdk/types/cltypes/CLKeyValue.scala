@@ -2,7 +2,7 @@ package com.casper.sdk.types.cltypes
 
 
 import com.casper.sdk.types.cltypes._
-import com.casper.sdk.util.{ByteUtils, HexUtils}
+import com.casper.sdk.util.{ByteUtils, HexUtils, JsonConverter}
 import com.fasterxml.jackson.databind.ObjectMapper
 
 /**
@@ -64,7 +64,7 @@ object CLKeyValue{
    */
    def apply (key:String) : CLKeyValue =
      {
-       assert(key!=null)
+       require(key!=null)
        new CLKeyValue(HexUtils.fromHex(key.substring(key.lastIndexOf("-")+1)),KeyType.getByPrefix(key.substring(0,key.lastIndexOf("-"))),parsedValue(key))
      }
     /**
@@ -73,11 +73,11 @@ object CLKeyValue{
    * @return  Any
    */
   def parsedValue(key:String) : Any ={
-    assert(key!=null)
+    require(key!=null)
     val keyType = KeyType.getByPrefix(key.substring(0,key.lastIndexOf("-")))
     val json = new StringBuilder("")
     json.append("{").append("\"").append(keyType).append("\"").append(":").append("\"").append(key).append("\"").append("}")
-    val parsed = new ObjectMapper().readValue(json.toString(), classOf[Any])
+    val parsed = new ObjectMapper().readTree(json.toString())
     parsed
   }
 }

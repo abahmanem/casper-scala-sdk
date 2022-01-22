@@ -3,7 +3,7 @@ package com.casper.sdk.json.serialize
 import com.casper.sdk.types.cltypes._
 import com.casper.sdk.util.HexUtils
 import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.databind.node.ArrayNode
+import com.fasterxml.jackson.databind.node.{ArrayNode, ObjectNode}
 import com.fasterxml.jackson.databind.{JsonSerializer, SerializerProvider}
 
 /**
@@ -34,7 +34,7 @@ class CLValueSerializer extends JsonSerializer[CLValue] {
       if (value.parsed.isInstanceOf[Number]) gen.writeNumber(value.parsed.toString)
       else if (value.parsed.isInstanceOf[Array[Any]])
         parsedForArray(value.parsed.asInstanceOf[Array[Any]], gen)
-      else gen.writeString(value.parsed.toString)
+      else  gen.writeString(value.parsed.toString)
     }
   }
 

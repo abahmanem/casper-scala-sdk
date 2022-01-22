@@ -45,11 +45,13 @@ import java.util.regex.Pattern
 
 object TestnetTester  extends  App {
 
+val ff = CLValue.Key("transfer-e330a31701205e3871cb4f7e14d3ff26074735c84b0e54b7a75f553a8405d182")
+println(JsonConverter.toJson(ff))
 
-
+  println("/////////////////////////////////////////////////////////////////////////////////////")
 val kk = CLKeyValue("transfer-e330a31701205e3871cb4f7e14d3ff26074735c84b0e54b7a75f553a8405d182")
  println(kk.keyType)
-  println(JsonConverter.toJson(kk.parsed))
+
   val list = CLValue.List(CLValue.String("String1"),CLValue.String("String2"),CLValue.String("String3"),CLValue.String("String4"))
   println(JsonConverter.toJson(list))
 

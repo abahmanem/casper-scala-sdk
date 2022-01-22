@@ -227,6 +227,15 @@ class CLValueSerializerTest extends AnyFunSuite {
   }
 
 
-
+  test("Serialize Key CLValue") {
+    val json = """{
+                 |  "cl_type" : "Key",
+                 |  "bytes" : "03e330a31701205e3871cb4f7e14d3ff26074735c84b0e54b7a75f553a8405d182",
+                 |  "parsed" : "{\"Transfer\":\"transfer-e330a31701205e3871cb4f7e14d3ff26074735c84b0e54b7a75f553a8405d182\"}"
+                 |}""".stripMargin
+    val v =  CLValue.Key("transfer-e330a31701205e3871cb4f7e14d3ff26074735c84b0e54b7a75f553a8405d182")
+    info(" CLValue.Key(\"transfer-e330a31701205e3871cb4f7e14d3ff26074735c84b0e54b7a75f553a8405d182\") serializes to "+json)
+    assert(JsonConverter.toJson(v)==json)
+  }
 
 }
