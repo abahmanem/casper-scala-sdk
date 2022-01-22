@@ -11,12 +11,11 @@ class TimeUtilTest extends AnyFunSuite {
     assert(TimeUtil.ToEpochMs("2020-11-17T00:39:24.072Z").get == 1605573564072L)
   }
 
-  test("Test ToEpochMs with a wrong timestamp, throws IllegalArgumentException ") {
-    val caught: IllegalArgumentException = intercept[IllegalArgumentException] {
-      info("TimeUtil.ToEpochMs(\"202011-17T00:39:24.072Z\") throws IllegalArgumentException")
-      TimeUtil.ToEpochMs("202011-17T00:39:24.072Z")
+  test("Test ToEpochMs with a wrong timestamp, throws NoSuchElementException ") {
+    val caught: NoSuchElementException = intercept[NoSuchElementException] {
+      info("TimeUtil.ToEpochMs(\"202011-17T00:39:24.072Z\") throws NoSuchElementException")
+      TimeUtil.ToEpochMs("202011-17T00:39:24.072Z").get
     }
-    assert(caught.getMessage == "Text 202011-17T00:39:24.072Z could not be parsed as a date")
   }
 
   test("Test timeStampString from millis") {
