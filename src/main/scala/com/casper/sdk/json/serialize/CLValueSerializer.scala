@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.{JsonSerializer, SerializerProvider}
 
 class CLValueSerializer extends JsonSerializer[CLValue] {
   override def serialize(value: CLValue, gen: JsonGenerator, serializers: SerializerProvider): Unit = {
-    assert(value != null)
+    require(value != null)
     gen.writeStartObject
     gen.writeFieldName("cl_type")
     gen.getCodec.writeValue(gen, value.cl_infoType)
@@ -31,7 +31,7 @@ class CLValueSerializer extends JsonSerializer[CLValue] {
   def parsed(value: CLValue, gen: JsonGenerator) = {
     if (value.parsed != null) {
       gen.writeFieldName("parsed")
-      if (value.parsed.isInstanceOf[Number]) gen.writeNumber(value.parsed.toString)
+      if (value.parsed.isInstanceOf[Number]) gen.writeString(value.parsed.toString)
       else if (value.parsed.isInstanceOf[Array[Any]])
         parsedForArray(value.parsed.asInstanceOf[Array[Any]], gen)
       else  gen.writeString(value.parsed.toString)

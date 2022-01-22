@@ -1,8 +1,7 @@
 package com.casper.sdk.serialization.cltypes
 
 import com.casper.sdk.serialization.BytesSerializable
-import com.casper.sdk.types.cltypes.{CLTuple1TypeInfo,CLTuple3TypeInfo,CLTuple2TypeInfo,CLValue,CLType,CLTypeInfo,CLResultTypeInfo,CLByteArrayTypeInfo,CLListTypeInfo,CLOptionTypeInfo}
-import com.casper.sdk.types.cltypes.CLResultTypeInfo
+import com.casper.sdk.types.cltypes._
 import com.casper.sdk.util.{ByteUtils, HexUtils}
 
 import scala.collection.mutable.ArrayBuilder
@@ -15,11 +14,9 @@ import scala.collection.mutable.ArrayBuilder
 class CLValueByteSerializer extends BytesSerializable[CLValue] {
 
   def toBytes(value: CLValue): Array[Byte] = {
-    assert(value != null)
+    require(value != null)
     val builder = new ArrayBuilder.ofByte
-    
-    
-    
+
     builder.addAll(CLValue.U32(value.bytes.length).bytes)
       .addAll(value.bytes)
     CLTypesToBytes(builder, value.cl_infoType)
@@ -52,7 +49,7 @@ class CLValueByteSerializer extends BytesSerializable[CLValue] {
         CLTypesToBytes(builder, result.okCLinfo)
         CLTypesToBytes(builder, result.errCLinfo)
       }
-      case bytearray: CLByteArrayTypeInfo =>{
+      case bytearray: CLByteArrayTypeInfo => {
         builder.addOne(innerType.cl_Type.clType.toByte)
         builder.addAll(CLValue.U32(bytearray.size).bytes)
       }

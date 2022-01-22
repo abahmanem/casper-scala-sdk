@@ -4,7 +4,7 @@ import com.casper.sdk.crypto.KeyPair
 import com.casper.sdk.crypto.hash.Blake2b256
 import com.casper.sdk.domain.deploy.DeployHeader
 import com.casper.sdk.serialization.domain.deploy.{DeployExecutableByteSerializer, DeployHeaderByteSerializer}
-import com.casper.sdk.types.cltypes.{CLPublicKey, Signature}
+import com.casper.sdk.types.cltypes.{AccountHash, CLPublicKey, Signature}
 import com.casper.sdk.util.HexUtils
 
 import scala.collection.mutable.ArrayBuilder
@@ -99,6 +99,24 @@ object Deploy {
     val signature = keyPair.sign(deploy.hash.hash)
     deploy.addApproval(new DeployApproval(keyPair.cLPublicKey, new Signature(signature, keyPair.cLPublicKey.keyAlgorithm)))
     deploy
+  }
+
+
+  /**
+   * create a deploy transfert between two accounts
+   * @param from
+   * @param to recipient account
+   * @param amount amount to transfer
+   * @param fees  payment
+   * @param chaine casper chaine name
+   * @param id  transfert id
+   * @param gas gas fees
+   * @param ttl  deploy time to live
+   * @return
+   */
+  def newTransfer(from:CLPublicKey,to:CLPublicKey,amount:Long,fees:BigInt,chaine:String,id:BigInt,gas:Int=1,ttl: Long = 1800000): Deploy ={
+    val header = new DeployHeader(from,System.currentTimeMillis(),ttl,gas,null,Seq.empty,chaine)
+    createUnsignedDeploy(header,ModuleBytes(fees),DeployTransfer(amount,new AccountHash(to.bytes),id))
   }
 }
 

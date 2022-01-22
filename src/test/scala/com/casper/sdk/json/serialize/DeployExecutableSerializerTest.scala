@@ -21,7 +21,7 @@ class DeployExecutableSerializerTest extends AnyFunSuite {
                  |        {
                  |          "cl_type" : "U512",
                  |          "bytes" : "057c4909b505",
-                 |          "parsed" : 24512121212
+                 |          "parsed" : "24512121212"
                  |        }
                  |      ],
                  |      [
@@ -29,7 +29,7 @@ class DeployExecutableSerializerTest extends AnyFunSuite {
                  |        {
                  |          "cl_type" : "U64",
                  |          "bytes" : "91eaffffffffffff",
-                 |          "parsed" : -5487
+                 |          "parsed" : "-5487"
                  |        }
                  |      ]
                  |    ]
@@ -55,7 +55,7 @@ class DeployExecutableSerializerTest extends AnyFunSuite {
                  |        {
                  |          "cl_type" : "U512",
                  |          "bytes" : "03fc5d20",
-                 |          "parsed" : 2121212
+                 |          "parsed" : "2121212"
                  |        }
                  |      ],
                  |      [
@@ -92,7 +92,7 @@ class DeployExecutableSerializerTest extends AnyFunSuite {
                  |        {
                  |          "cl_type" : "U8",
                  |          "bytes" : "000000000000000000000000",
-                 |          "parsed" : 12
+                 |          "parsed" : "12"
                  |        }
                  |      ],
                  |      [
@@ -131,7 +131,7 @@ class DeployExecutableSerializerTest extends AnyFunSuite {
                  |        {
                  |          "cl_type" : "U512",
                  |          "bytes" : "03f12a16",
-                 |          "parsed" : 1452785
+                 |          "parsed" : "1452785"
                  |        }
                  |      ]
                  |    ]
@@ -153,7 +153,7 @@ class DeployExecutableSerializerTest extends AnyFunSuite {
                  |        {
                  |          "cl_type" : "I32",
                  |          "bytes" : "e8030000",
-                 |          "parsed" : 1000
+                 |          "parsed" : "1000"
                  |        }
                  |      ]
                  |    ]

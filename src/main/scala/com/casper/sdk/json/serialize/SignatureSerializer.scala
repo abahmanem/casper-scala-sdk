@@ -8,9 +8,8 @@ import com.casper.sdk.types.cltypes.Signature
 
 class SignatureSerializer extends JsonSerializer[Signature] {
   override def serialize(value: Signature, gen: JsonGenerator, serializers: SerializerProvider): Unit = {
-    assert(value != null&&value.bytes!=null)
-
-    assert(value != null)
+    require(value != null&&value.bytes!=null)
+    
     gen.writeStartObject
     gen.writeFieldName("cl_type")
     gen.getCodec.writeValue(gen, "PublicKey")

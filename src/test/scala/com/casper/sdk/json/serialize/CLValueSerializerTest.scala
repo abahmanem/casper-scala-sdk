@@ -51,7 +51,7 @@ class CLValueSerializerTest extends AnyFunSuite {
     val json = """{
                  |  "cl_type" : "U8",
                  |  "bytes" : "00000000000000",
-                 |  "parsed" : 7
+                 |  "parsed" : "7"
                  |}""".stripMargin
     val v = CLValue.U8(7)
     info("CLValue.U8(7) serializes to "+json)
@@ -62,7 +62,7 @@ class CLValueSerializerTest extends AnyFunSuite {
     val json = """{
                  |  "cl_type" : "U512",
                  |  "bytes" : "0412e8571b",
-                 |  "parsed" : 458745874
+                 |  "parsed" : "458745874"
                  |}""".stripMargin
     val v = CLValue.U512(458745874)
     info("CLValue.U512(458745874) serializes to "+json)
@@ -73,7 +73,7 @@ class CLValueSerializerTest extends AnyFunSuite {
     val json = """{
                  |  "cl_type" : "U32",
                  |  "bytes" : "32b30000",
-                 |  "parsed" : 45874
+                 |  "parsed" : "45874"
                  |}""".stripMargin
     val v = CLValue.U32(45874)
     info("CLValue.U32(45874) serializes to "+json)
@@ -84,7 +84,7 @@ class CLValueSerializerTest extends AnyFunSuite {
     val json = """{
                  |  "cl_type" : "I32",
                  |  "bytes" : "10270000",
-                 |  "parsed" : 10000
+                 |  "parsed" : "10000"
                  |}""".stripMargin
     val v = CLValue.I32(10000)
     info("CLValue.I32(10000) serializes to "+json)
@@ -95,7 +95,7 @@ class CLValueSerializerTest extends AnyFunSuite {
     val json = """{
                  |  "cl_type" : "I64",
                  |  "bytes" : "99bdf7ffffffffff",
-                 |  "parsed" : -541287
+                 |  "parsed" : "-541287"
                  |}""".stripMargin
     val v = CLValue.I64(-541287)
     info("CLValue.I64(-541287) serializes to "+json)
@@ -106,7 +106,7 @@ class CLValueSerializerTest extends AnyFunSuite {
     val json = """{
                  |  "cl_type" : "U128",
                  |  "bytes" : "04bf3d3209",
-                 |  "parsed" : 154287551
+                 |  "parsed" : "154287551"
                  |}""".stripMargin
     val v = CLValue.U128(154287551)
     info("CLValue.U128(458745874) serializes to "+json)
@@ -117,7 +117,7 @@ class CLValueSerializerTest extends AnyFunSuite {
     val json = """{
                  |  "cl_type" : "U256",
                  |  "bytes" : "0a2e1a2022a7d14f69f600",
-                 |  "parsed" : 4545487556545454545454
+                 |  "parsed" : "4545487556545454545454"
                  |}""".stripMargin
     val v = CLValue.U256(BigInt.apply("4545487556545454545454"))
     info("CLValue.U256(BigInt.apply(\"4545487556545454545454\")) serializes to "+json)

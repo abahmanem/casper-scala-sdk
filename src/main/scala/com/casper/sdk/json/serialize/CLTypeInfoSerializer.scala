@@ -12,7 +12,7 @@ import com.casper.sdk.types.cltypes.CLOptionTypeInfo
 
 class CLTypeInfoSerializer extends JsonSerializer[CLTypeInfo] {
   override def serialize(value: CLTypeInfo, gen: JsonGenerator, serializers: SerializerProvider): Unit = {
-    assert(value != null)
+    require(value != null)
     serializeCLTypes(value, gen)
   }
 

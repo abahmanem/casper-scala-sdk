@@ -15,6 +15,9 @@ enum KeyType(val tag: Int, val prefix : String) {
   case Withdraw extends KeyType(8,"withdraw")
 }
 
+/**
+ * caompanion object
+ */
 object KeyType{
 
   /**

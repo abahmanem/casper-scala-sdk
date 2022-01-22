@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.{JsonSerializer, SerializerProvider}
 
 class DeployNamedArgSerializer extends JsonSerializer[DeployNamedArg] {
   override def serialize(value: DeployNamedArg, gen: JsonGenerator, serializers: SerializerProvider): Unit = {
-    assert(value!=null)
+    require(value != null)
     gen.writeStartArray
     gen.writeString(value.name)
     gen.getCodec.writeValue(gen, value.value)

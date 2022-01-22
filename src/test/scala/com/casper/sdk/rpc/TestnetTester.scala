@@ -45,8 +45,17 @@ import java.util.regex.Pattern
 
 object TestnetTester  extends  App {
 
+
+val trs = Deploy.newTransfer(CLPublicKey("017d9aa0b86413d7ff9a9169182c53f0bacaa80d34c211adab007ed4876af17077").get,
+  CLPublicKey("0196948158bf5b35c0c84f680f110b8debaa4e7628e13ba336a95651a214d3b9bd").get,
+  10000000000L,300000000L,"casper-test",
+  1,1,1800000)
+
+  val tr = DeployTransfer(40000000000L,new AccountHash("account-hash-f2d3278a8d24837f23156b812d72ab7ae5ea81467efe2fb718e292756c88cd76"),1)
+
+
 val ff = CLValue.Key("transfer-e330a31701205e3871cb4f7e14d3ff26074735c84b0e54b7a75f553a8405d182")
-println(JsonConverter.toJson(ff))
+println(JsonConverter.toJson(trs))
 
   println("/////////////////////////////////////////////////////////////////////////////////////")
 val kk = CLKeyValue("transfer-e330a31701205e3871cb4f7e14d3ff26074735c84b0e54b7a75f553a8405d182")

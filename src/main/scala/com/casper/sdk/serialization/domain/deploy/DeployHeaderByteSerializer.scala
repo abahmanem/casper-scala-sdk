@@ -15,7 +15,7 @@ import scala.collection.mutable.ArrayBuilder
 class DeployHeaderByteSerializer extends BytesSerializable[DeployHeader] {
 
   def toBytes(value: DeployHeader): Array[Byte] = {
-    assert(value != null)
+    require(value != null)
     val builder = new ArrayBuilder.ofByte
 
     builder.addOne(value.account.tag.toByte).addAll(value.account.bytes)

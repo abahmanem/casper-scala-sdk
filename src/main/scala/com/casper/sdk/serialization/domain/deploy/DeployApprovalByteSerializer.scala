@@ -11,7 +11,7 @@ import scala.collection.mutable.ArrayBuilder
 class DeployApprovalByteSerializer extends BytesSerializable[DeployApproval] {
 
   def toBytes(value: DeployApproval): Array[Byte] = {
-    assert(value != null)
+    require(value != null)
     val builder = new ArrayBuilder.ofByte
     builder.addAll(value.signer.formatAsByteAccount).addAll(value.signature.formatAsByteAccount).result()
   }

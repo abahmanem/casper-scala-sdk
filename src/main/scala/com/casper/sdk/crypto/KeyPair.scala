@@ -5,7 +5,7 @@ import com.casper.sdk.types.cltypes.{CLPublicKey, KeyAlgorithm}
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
 import org.bouncycastle.crypto.generators.{ECKeyPairGenerator, Ed25519KeyPairGenerator}
-import org.bouncycastle.crypto.params.{ECKeyGenerationParameters,ECDomainParameters,Ed25519PublicKeyParameters,AsymmetricKeyParameter,Ed25519PrivateKeyParameters,ECPrivateKeyParameters,ECPublicKeyParameters}
+import org.bouncycastle.crypto.params._
 import org.bouncycastle.crypto.signers.Ed25519Signer
 import org.bouncycastle.crypto.util.{PrivateKeyFactory, PrivateKeyInfoFactory, PublicKeyFactory, SubjectPublicKeyInfoFactory}
 import org.bouncycastle.crypto.{AsymmetricCipherKeyPair, AsymmetricCipherKeyPairGenerator, KeyGenerationParameters, params}
@@ -13,6 +13,7 @@ import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey
 import org.bouncycastle.jcajce.provider.asymmetric.edec.{BCEdDSAPrivateKey, BCEdDSAPublicKey}
 import org.bouncycastle.jce.ECNamedCurveTable
 import org.bouncycastle.openssl.PEMParser
+
 import java.io.{FileReader, IOException}
 import java.security.SecureRandom
 
@@ -44,6 +45,7 @@ case class KeyPair(publicKey: AsymmetricKeyParameter, privateKey: AsymmetricKeyP
    * @return byte array
    */
   def sign(msg: Array[Byte]): Array[Byte] = {
+    require(msg != null)
     cLPublicKey.keyAlgorithm match {
       case KeyAlgorithm.ED25519 => {
         val signer = new Ed25519Signer()
@@ -68,7 +70,7 @@ object KeyPair {
    * @return KeyPair instance
    */
   def loadFromPem(path: String): KeyPair = {
-
+    require(path != null)
     Option(new PEMParser(new FileReader(path)).readObject()) match {
       case Some(obj) => obj match {
         case pvkeyInfo: PrivateKeyInfo => {
@@ -98,7 +100,7 @@ object KeyPair {
    * @return KeyPair instance
    */
   def create(algo: KeyAlgorithm): KeyPair = {
-
+    require(algo != null)
     algo match {
       case KeyAlgorithm.ED25519 => {
         val pairGenerator = new Ed25519KeyPairGenerator()
@@ -109,7 +111,7 @@ object KeyPair {
         keypair.cLPublicKey = new CLPublicKey(publicKey.getEncoded, algo)
         keypair
       }
-      case _ => {
+      case KeyAlgorithm.SECP256K1 => {
         val eCParameterSpec = ECNamedCurveTable.getParameterSpec("secp256k1")
         val domParams = new ECDomainParameters(eCParameterSpec.getCurve, eCParameterSpec.getG, eCParameterSpec.getN, eCParameterSpec.getH, eCParameterSpec.getSeed)
         val keyParams = new ECKeyGenerationParameters(domParams, new SecureRandom())
@@ -121,6 +123,7 @@ object KeyPair {
         keypair.cLPublicKey = new CLPublicKey(pubKey.getQ.getEncoded(true), algo)
         keypair
       }
+      case _ => throw IllegalArgumentException("unsuported CLPublickey algorithm")
     }
   }
 }

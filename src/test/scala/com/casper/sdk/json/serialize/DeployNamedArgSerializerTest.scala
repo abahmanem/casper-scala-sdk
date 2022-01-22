@@ -16,7 +16,7 @@ class DeployNamedArgSerializerTest extends AnyFunSuite {
                  |  {
                  |    "cl_type" : "I32",
                  |    "bytes" : "e8030000",
-                 |    "parsed" : 1000
+                 |    "parsed" : "1000"
                  |  }
                  |]""".stripMargin
 
@@ -32,7 +32,7 @@ class DeployNamedArgSerializerTest extends AnyFunSuite {
                  |      {
                  |        "cl_type" : "I32",
                  |        "bytes" : "e8030000",
-                 |        "parsed" : 1000
+                 |        "parsed" : "1000"
                  |      }
                  |    ],
                  |    [

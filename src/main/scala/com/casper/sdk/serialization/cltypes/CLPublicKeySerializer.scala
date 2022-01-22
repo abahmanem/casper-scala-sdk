@@ -11,7 +11,7 @@ import scala.collection.mutable.ArrayBuilder
 class CLPublicKeySerializer extends BytesSerializable[CLPublicKey] {
 
   def toBytes(value: CLPublicKey): Array[Byte] = {
-    assert(value != null)
+    require(value != null)
     value.formatAsByteAccount
   }
 }

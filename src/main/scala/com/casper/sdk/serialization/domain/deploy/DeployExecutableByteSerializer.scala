@@ -16,7 +16,7 @@ class DeployExecutableByteSerializer extends BytesSerializable[DeployExecutable]
 
   def toBytes(value: DeployExecutable): Array[Byte] = {
 
-    assert(value != null)
+    require(value != null)
     val builder = new ArrayBuilder.ofByte
     //tag
     builder.addOne(value.tag.toByte)

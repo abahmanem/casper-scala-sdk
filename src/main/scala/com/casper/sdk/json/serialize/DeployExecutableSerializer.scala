@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.{JsonSerializer, SerializerProvider}
  */
 class DeployExecutableSerializer extends JsonSerializer[DeployExecutable] {
   override def serialize(value: DeployExecutable, gen: JsonGenerator, serializers: SerializerProvider): Unit = {
-    assert(value != null)
+    require(value != null)
     value match {
       case modulesbytes: ModuleBytes => writeModuleBytes(modulesbytes, gen)
       case storedContractByName: StoredContractByName => writeStoredContractByName(storedContractByName, gen)
@@ -18,6 +18,7 @@ class DeployExecutableSerializer extends JsonSerializer[DeployExecutable] {
       case storedVersionedContractByHash: StoredVersionedContractByHash => writeStoredVersionedContractByHash(storedVersionedContractByHash, gen)
       case storedVersionedContractByName: StoredVersionedContractByName => writeStoredVersionedContractByName(storedVersionedContractByName, gen)
       case transfer: DeployTransfer => writeDeployTransfer(transfer, gen)
+      case _=> throw new IllegalArgumentException("Unsuported Deploy typte"+value)
     }
 
     /**
