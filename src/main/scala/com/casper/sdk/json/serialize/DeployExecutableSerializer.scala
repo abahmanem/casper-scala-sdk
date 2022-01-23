@@ -84,7 +84,7 @@ class DeployExecutableSerializer extends JsonSerializer[DeployExecutable] {
       gen.writeFieldName("StoredContractByHash")
       gen.writeStartObject
       gen.writeFieldName("hash")
-      gen.writeString(HexUtils.toHex(storedContractByHash.hash.hash).get)
+      gen.writeString(HexUtils.toHex(storedContractByHash.hash.get.hash).get)
       gen.writeFieldName("entry_point")
       gen.writeString(storedContractByHash.entry_point)
       serializeArgs(storedContractByHash, gen)
@@ -104,7 +104,7 @@ class DeployExecutableSerializer extends JsonSerializer[DeployExecutable] {
       gen.writeFieldName("StoredVersionedContractByHash")
       gen.writeStartObject
       gen.writeFieldName("hash")
-      gen.writeString(HexUtils.toHex(storedVersionedContractByHash.hash.hash).get)
+      gen.writeString(HexUtils.toHex(storedVersionedContractByHash.hash.get.hash).get)
       gen.writeFieldName("version")
       storedVersionedContractByHash.version match {
         case Some(_) => gen.writeRawValue("Some("+storedVersionedContractByHash.version.get+")")// .writeNumber(storedVersionedContractByHash.version.get)

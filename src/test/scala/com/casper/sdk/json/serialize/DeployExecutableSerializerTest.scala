@@ -76,7 +76,7 @@ class DeployExecutableSerializerTest extends AnyFunSuite {
     val arg1 = new DeployNamedArg("bar", CLValue.U512(BigInt.apply("2121212")))
     val arg2 = new DeployNamedArg("foo", CLValue.ByteArray("test".getBytes))
     val args1 =  Seq(Seq(arg1,arg2))
-    val storedVersionedContractByHash = new StoredVersionedContractByHash(new Hash("b348fdd0d0b3f66468687df93141b5924f6bb957d5893c08b60d5a78d0b9a423"), None, "entry-point",args1)
+    val storedVersionedContractByHash = new StoredVersionedContractByHash(Some(new Hash("b348fdd0d0b3f66468687df93141b5924f6bb957d5893c08b60d5a78d0b9a423")), None, "entry-point",args1)
     assert(JsonConverter.toJson(storedVersionedContractByHash)==json)
   }
 
@@ -108,7 +108,7 @@ class DeployExecutableSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
 
     val args1 =  Seq(Seq(new DeployNamedArg("bar", CLValue.U8(12)),DeployNamedArg("foo", CLValue.String("Hello!!"))))
-    val storedContractByHash = new StoredContractByHash(new Hash("b348fdd0d0b3f66468687df93141b5924f6bb957d5893c08b60d5a78d0b9a423"),  "entry-point",args1)
+    val storedContractByHash = new StoredContractByHash(Some(new Hash("b348fdd0d0b3f66468687df93141b5924f6bb957d5893c08b60d5a78d0b9a423")),  "entry-point",args1)
     assert(JsonConverter.toJson(storedContractByHash)==json)
   }
 

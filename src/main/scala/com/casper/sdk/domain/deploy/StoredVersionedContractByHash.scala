@@ -9,7 +9,7 @@ package com.casper.sdk.domain.deploy
  * @param args
  */
 case class StoredVersionedContractByHash(
-                                          hash: Hash,
+                                          hash: Option[Hash],
                                           version: Option[Int],
                                           entry_point: String,
                                           override val args: Seq[Seq[DeployNamedArg]]

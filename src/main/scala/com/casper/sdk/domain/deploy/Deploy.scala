@@ -2,7 +2,7 @@ package com.casper.sdk.domain.deploy
 
 import com.casper.sdk.crypto.KeyPair
 import com.casper.sdk.crypto.hash.Blake2b256
-import com.casper.sdk.domain.deploy.DeployHeader
+import com.casper.sdk.domain.deploy._
 import com.casper.sdk.serialization.domain.deploy.{DeployExecutableByteSerializer, DeployHeaderByteSerializer}
 import com.casper.sdk.types.cltypes.{AccountHash, CLPublicKey, Signature}
 import com.casper.sdk.util.HexUtils
@@ -68,7 +68,7 @@ object Deploy {
     val hHash = deployHeaderHash(header)
     val bHash = deployBodyHash(payment, session)
     val deployHeader = DeployHeader(header.account, header.timestamp, header.ttl, header.gas_price,
-      new Hash(bHash), header.dependencies, header.chain_name)
+      Some(Hash(bHash)), header.dependencies, header.chain_name)
     new Deploy(Hash(deployHeaderHash(deployHeader)), deployHeader, payment, session, Seq.empty)
   }
 
@@ -104,19 +104,117 @@ object Deploy {
 
   /**
    * create a deploy transfert between two accounts
-   * @param from
-   * @param to recipient account
+   *
+   * @param from   source of the transfer
+   * @param to     recipient account
    * @param amount amount to transfer
-   * @param fees  payment
+   * @param fees   payment
    * @param chaine casper chaine name
-   * @param id  transfert id
-   * @param gas gas fees
-   * @param ttl  deploy time to live
-   * @return
+   * @param id     transfert id
+   * @param gas    gas fees
+   * @param ttl    deploy time to live
+   * @return a  Unsigne dDeploy
    */
-  def newTransfer(from:CLPublicKey,to:CLPublicKey,amount:Long,fees:BigInt,chaine:String,id:BigInt,gas:Int=1,ttl: Long = 1800000): Deploy ={
-    val header = new DeployHeader(from,System.currentTimeMillis(),ttl,gas,null,Seq.empty,chaine)
-    createUnsignedDeploy(header,ModuleBytes(fees),DeployTransfer(amount,new AccountHash(to.bytes),id))
+  def transfer(from: CLPublicKey, to: CLPublicKey, amount: Long, fees: BigInt, chaine: String, id: BigInt, gas: Int = 1, ttl: Long = 1800000): Deploy = {
+    val header = new DeployHeader(from, System.currentTimeMillis(), ttl, gas, None, Seq.empty, chaine)
+    createUnsignedDeploy(header, ModuleBytes(fees), DeployTransfer(amount, new AccountHash(to.bytes), id))
   }
+
+
+  /**
+   * create a Deploy to deploy a  smart contract to casper network
+   *
+   * @param wasm   compiled smart contract bytes
+   * @param from   source that will dpeloys the smart contract
+   * @param fees   payment
+   * @param chaine casper chaine name
+   * @param id     id
+   * @param gas    gas price
+   * @param ttl    TTL
+   * @return an  Unsigned Deploy
+   */
+  def contract(wasm: Array[Byte], from: CLPublicKey, fees: BigInt, chaine: String, gas: Int = 1, ttl: Long = 1800000): Deploy = {
+    val header = new DeployHeader(from, System.currentTimeMillis(), ttl, gas, None, Seq.empty, chaine)
+    createUnsignedDeploy(header, ModuleBytes(fees), new ModuleBytes(wasm, Seq.empty))
+  }
+
+  /**
+   * Deplyo to call a smart contract on the network (ex: delegation)
+   *
+   * @param name       name of the smart contract
+   * @param entryPoint enty point (function) to call in the smart contract
+   * @param args       sequence of execution arguments
+   * @param from       source of the call on the smart contract
+   * @param fees       paymenet amount
+   * @param chaine     casper chaine name
+   * @param gas        gas price
+   * @param ttl        TTL
+   * @return an  Unsigned Deploy
+   */
+
+  def contractByNameCall(name: String, entryPoint: String, args: Seq[DeployNamedArg], from: CLPublicKey, fees: BigInt, chaine: String, gas: Int = 1, ttl: Long = 1800000): Deploy = {
+    val header = new DeployHeader(from, System.currentTimeMillis(), ttl, gas, None, Seq.empty, chaine)
+    createUnsignedDeploy(header, ModuleBytes(fees), new StoredContractByName(name, entryPoint, Seq(args)))
+  }
+
+  /**
+   * Creates a Deploy to call a smart contract on the network
+   *
+   * @param hash       hash of the smart contract to call
+   * @param entryPoint enty point (function) to call in the smart contract
+   * @param args       sequence of execution arguments
+   * @param from       source of the call on the smart contract
+   * @param fees       paymenet amount
+   * @param chaine     casper chaine name
+   * @param gas        gas price
+   * @param ttl        TTL
+   * @return an  Unsigned Deploy
+   */
+
+  def contractByHashCall(hash: Option[Hash], entryPoint: String, args: Seq[DeployNamedArg], from: CLPublicKey, fees: BigInt, chaine: String, gas: Int = 1, ttl: Long = 1800000): Deploy = {
+    val header = new DeployHeader(from, System.currentTimeMillis(), ttl, gas, None, Seq.empty, chaine)
+    createUnsignedDeploy(header, ModuleBytes(fees), new StoredContractByHash(hash, entryPoint, Seq(args)))
+  }
+
+
+  /**
+   * Creates a Deploy to call a function in a versionned smart contract on the network
+   *
+   * @param name       name of the smart contract to call
+   * @param entryPoint enty point (function) to call in the  smart contract
+   * @param version    version of the  contract
+   * @param args       sequence of execution arguments
+   * @param from       source of the call on the smart contract
+   * @param fees       paymenet amount
+   * @param chaine     casper chaine name
+   * @param gas        gas price
+   * @param ttl        TTL
+   * @return an  Unsigned Deploy
+   */
+  def versionnedContractByNameCall(name: String, entryPoint: String, version: Int, args: Seq[DeployNamedArg], from: CLPublicKey, fees: BigInt, chaine: String, gas: Int = 1, ttl: Long = 1800000): Deploy = {
+    val header = new DeployHeader(from, System.currentTimeMillis(), ttl, gas, None, Seq.empty, chaine)
+    createUnsignedDeploy(header, ModuleBytes(fees), new StoredVersionedContractByName(name, Some(version), entryPoint, Seq(args)))
+  }
+
+
+  /**
+   * Creates a Deploy to call a function in a versionned smart contract on the network
+   *
+   * @param hash       hash of the smart contract to call
+   * @param entryPoint enty point (function) to call in the smart contract
+   * @param version    version of the  contract
+   * @param args       sequence of execution arguments
+   * @param from       source of the call on the smart contract
+   * @param fees       paymenet amount
+   * @param chaine     casper chaine name
+   * @param gas        gas price
+   * @param ttl        TTL
+   * @return an  Unsigned Deploy
+   */
+  def versionnedContractByHashCall(hash: Option[Hash], entryPoint: String, version: Int, args: Seq[DeployNamedArg], from: CLPublicKey, fees: BigInt, chaine: String, gas: Int = 1, ttl: Long = 1800000): Deploy = {
+    val header = new DeployHeader(from, System.currentTimeMillis(), ttl, gas, None, Seq.empty, chaine)
+    createUnsignedDeploy(header, ModuleBytes(fees), new StoredVersionedContractByHash(hash, Some(version), entryPoint, Seq(args)))
+  }
+
 }
 

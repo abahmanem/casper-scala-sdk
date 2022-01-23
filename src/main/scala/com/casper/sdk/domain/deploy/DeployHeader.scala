@@ -31,7 +31,7 @@ case class DeployHeader(
                          @JsonDeserialize(converter =  classOf[TTLDeserializer])
                          ttl: Long,
                          gas_price: Int,
-                         body_hash: Hash,
+                         body_hash: Option[Hash]=None,
                          var dependencies: Seq[Hash],
                          chain_name: String
                        )
