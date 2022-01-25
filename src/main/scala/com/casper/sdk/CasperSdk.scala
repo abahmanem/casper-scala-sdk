@@ -112,7 +112,7 @@ class CasperSdk(url: String)(implicit id: IdInstance) extends RPCCommand(new Htt
    * @param stateRootHash : State Root Hash
    * @param itemKey       :  dictionary Item Key
    * @param uref          : seed Uref
-   * @return  StoredValue
+   * @return StoredValue
    */
   def getDictionaryItem(stateRootHash: String, itemKey: String, uref: String): StoredValue =
     call[StoredValue](Method.STATE_GET_DICTIONARY_ITEM, stateRootHash, Map("URef" -> Map("dictionary_item_key" -> itemKey, "seed_uref" -> uref)))
@@ -125,11 +125,12 @@ class CasperSdk(url: String)(implicit id: IdInstance) extends RPCCommand(new Htt
   def getRpcSchema(): String = call[String](Method.RPC_SCHEMA, Seq.empty)
 
   /**
-   *  put deploy
+   * put deploy
+   *
    * @param deploy
    * @return Hash
    */
-  def putDeploy(deploy:Deploy) : Hash=  call[Hash](Method.ACCOUNT_PUT_DEPLOY, deploy)
+  def putDeploy(deploy: Deploy): Hash = call[Hash](Method.ACCOUNT_PUT_DEPLOY, deploy)
 
 }
 

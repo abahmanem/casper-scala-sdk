@@ -155,8 +155,15 @@ Returns an item from a Dictionary as StoredValue object.
 
 ## Put Deploy 
 ```scala
-def putDeploy
+
+def putDeploy(deploy:Deploy): Hash
 ```
-sends a deploy to casper blockchain.
+Sends a deploy to casper network.
+Returns a Hash object representing the deploy hash.
+
 
 ### Parameters
+| Name | Type | Description | Mandatory |
+|---|---|---|---|
+| `deploy` | `Deploy` | Deploy object  | Yes |
+
