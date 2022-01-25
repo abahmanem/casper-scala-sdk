@@ -1,6 +1,7 @@
 package com.casper.sdk.serialization.domain.deploy
 
-import com.casper.sdk.domain.deploy.{Hash,StoredContractByHash,DeployTransfer,DeployNamedArg,StoredContractByName,ModuleBytes,StoredVersionedContractByHash,StoredVersionedContractByName}
+import com.casper.sdk.crypto.hash.Hash
+import com.casper.sdk.domain.deploy.{DeployNamedArg, DeployTransfer, ModuleBytes, StoredContractByHash, StoredContractByName, StoredVersionedContractByHash, StoredVersionedContractByName}
 import com.casper.sdk.serialization.domain.deploy.DeployExecutableByteSerializer
 import com.casper.sdk.types.cltypes.{CLPublicKey, CLValue}
 import com.casper.sdk.util.HexUtils

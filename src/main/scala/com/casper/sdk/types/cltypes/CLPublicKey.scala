@@ -1,7 +1,8 @@
 package com.casper.sdk.types.cltypes
 
 import com.casper.sdk.crypto.hash.Blake2b256
-import com.casper.sdk.crypto.{Pem, SECP256K1}
+import com.casper.sdk.crypto.util.{Crypto, Pem}
+import com.casper.sdk.crypto.KeyPair
 import com.casper.sdk.json.deserialize.CLPublicKeyDeserializer
 import com.casper.sdk.json.serialize.CLPublicKeySerializer
 import com.casper.sdk.types.cltypes.CLPublicKey.dropAlgorithmBytes
@@ -33,7 +34,7 @@ import java.security.{KeyFactory, PublicKey, SecureRandom, Signature}
  */
 @JsonSerialize(`using` = classOf[CLPublicKeySerializer])
 @JsonDeserialize(`using` = classOf[CLPublicKeyDeserializer])
-class CLPublicKey(
+ class CLPublicKey(
                    val bytes: Array[Byte],
                    val keyAlgorithm: KeyAlgorithm
                  ) extends Tag {
@@ -89,12 +90,25 @@ class CLPublicKey(
    */
   def verifySignature(msg: Array[Byte], signature: Array[Byte]): Boolean = {
     require(msg!=null && signature!=null)
+
+
+    val publicKey = Crypto.fromCLPublicKey(this)
+
+    val sig = Signature.getInstance(publicKey.getAlgorithm, BouncyCastleProvider.PROVIDER_NAME)
+
+    sig.initVerify(publicKey)
+    sig.update(msg)
+    sig.verify(signature)
+
+    /*
     keyAlgorithm match {
       case KeyAlgorithm.ED25519 => {
         Ed25519.verify(signature, 0, bytes, 0, msg, 0, msg.length)
       }
       case KeyAlgorithm.SECP256K1 => SECP256K1.verify(msg, signature, bytes)
     }
+
+     */
   }
 
   /**

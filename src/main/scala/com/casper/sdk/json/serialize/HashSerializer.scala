@@ -1,6 +1,6 @@
 package com.casper.sdk.json.serialize
 
-import com.casper.sdk.domain.deploy.Hash
+import com.casper.sdk.crypto.hash.Hash
 import com.casper.sdk.util.HexUtils
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.{JsonSerializer, SerializerProvider}

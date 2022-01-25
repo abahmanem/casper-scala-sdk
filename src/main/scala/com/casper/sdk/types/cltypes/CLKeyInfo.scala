@@ -1,5 +1,13 @@
 package com.casper.sdk.types.cltypes
 
-class CLKeyInfo (keyType: KeyType) extends  CLTypeInfo(CLType.Key){
-}
+/**
+ * Key info holder
+ *
+ * @param keyType
+ */
+class CLKeyInfo(
+                 val keyType: KeyType
+               )
+  extends CLTypeInfo(CLType.Key)
+
 

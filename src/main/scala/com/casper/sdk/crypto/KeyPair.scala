@@ -1,42 +1,38 @@
 package com.casper.sdk.crypto
 
-import com.casper.sdk.crypto.{Pem, SECP256K1}
+import com.casper.sdk.crypto.util.{Crypto, Pem}
 import com.casper.sdk.types.cltypes.{CLPublicKey, KeyAlgorithm}
+import com.casper.sdk.util.{ByteUtils, HexUtils}
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
-import org.bouncycastle.crypto.generators.{ECKeyPairGenerator, Ed25519KeyPairGenerator}
-import org.bouncycastle.crypto.params._
-import org.bouncycastle.crypto.signers.Ed25519Signer
-import org.bouncycastle.crypto.util.{PrivateKeyFactory, PrivateKeyInfoFactory, PublicKeyFactory, SubjectPublicKeyInfoFactory}
-import org.bouncycastle.crypto.{AsymmetricCipherKeyPair, AsymmetricCipherKeyPairGenerator, KeyGenerationParameters, params}
-import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey
-import org.bouncycastle.jcajce.provider.asymmetric.edec.{BCEdDSAPrivateKey, BCEdDSAPublicKey}
-import org.bouncycastle.jce.ECNamedCurveTable
-import org.bouncycastle.openssl.PEMParser
+import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters
+import org.bouncycastle.crypto.util.PrivateKeyFactory
+import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.bouncycastle.openssl.{PEMKeyPair, PEMParser}
 
-import java.io.{FileReader, IOException}
-import java.security.SecureRandom
+import java.io.FileReader
+import java.io.IOException
+import java.security._
+
 
 /**
- * holder for a key pair (a public key + a private key)
+ * KeyPait holder
+ * @param privateKey private key
+ * @param publicKey  CLPublicKey
  */
-case class KeyPair(publicKey: AsymmetricKeyParameter, privateKey: AsymmetricKeyParameter) {
-
-  var cLPublicKey: CLPublicKey = null
+case class KeyPair(privateKey : PrivateKey, publicKey: CLPublicKey) {
 
   /**
-   * export publicKey to Pem String
    *
-   * @return String
+   * @return
    */
-  def publicKeyToPem: String = Pem.toPem(publicKey)
+  def privateToPem: String = Pem.toPem(privateKey)
 
   /**
-   * export privateKey to Pem String
    *
-   * @return String
+   * @return
    */
-  def privateKeyToPem: String = Pem.toPem(privateKey)
+  def publicToPem: String = Pem.toPem(Crypto.fromCLPublicKey(publicKey))
 
   /**
    * sign a message
@@ -46,27 +42,23 @@ case class KeyPair(publicKey: AsymmetricKeyParameter, privateKey: AsymmetricKeyP
    */
   def sign(msg: Array[Byte]): Array[Byte] = {
     require(msg != null)
-    cLPublicKey.keyAlgorithm match {
-      case KeyAlgorithm.ED25519 => {
-        val signer = new Ed25519Signer()
-        signer.init(true, privateKey.asInstanceOf[Ed25519PrivateKeyParameters])
-        signer.update(msg, 0, msg.length)
-        signer.generateSignature()
-      }
-      case _ => SECP256K1.sign(msg, privateKey.asInstanceOf[ECPrivateKeyParameters])
-    }
+    val sig = Signature.getInstance(privateKey.getAlgorithm, BouncyCastleProvider.PROVIDER_NAME)
+    sig.initSign(privateKey)
+    sig.update(msg)
+    sig.sign()
   }
 }
 
 /**
- * campanion object
+ * companion object
  */
-object KeyPair {
+
+object KeyPair{
 
   /**
    * load Keypair from private key pem file
    *
-   * @param path : path to pem file
+   * @param path : path to private pem file
    * @return KeyPair instance
    */
   def loadFromPem(path: String): KeyPair = {
@@ -74,17 +66,15 @@ object KeyPair {
     Option(new PEMParser(new FileReader(path)).readObject()) match {
       case Some(obj) => obj match {
         case pvkeyInfo: PrivateKeyInfo => {
+          val privKey = Crypto.converter.getPrivateKey(pvkeyInfo)
           val privkeyparam = PrivateKeyFactory.createKey(pvkeyInfo)
-          val pubkkeyparam = privkeyparam.asInstanceOf[Ed25519PrivateKeyParameters].generatePublicKey
-          val pair = KeyPair(pubkkeyparam, privkeyparam)
-          pair.cLPublicKey = new CLPublicKey(pubkkeyparam.getEncoded, KeyAlgorithm.ED25519)
+          val pubkkeyparam = privkeyparam.asInstanceOf[Ed25519PrivateKeyParameters].generatePublicKey()
+          val pair = new KeyPair(privKey, new CLPublicKey(pubkkeyparam.getEncoded, KeyAlgorithm.ED25519))
           pair
         }
         case pemKeyPair: org.bouncycastle.openssl.PEMKeyPair => {
-          val privkeyparam = PrivateKeyFactory.createKey(pemKeyPair.getPrivateKeyInfo())
-          val pubkkeyparam = PublicKeyFactory.createKey(pemKeyPair.getPublicKeyInfo()).asInstanceOf[ECPublicKeyParameters]
-          val pair = KeyPair(pubkkeyparam, privkeyparam)
-          pair.cLPublicKey = new CLPublicKey(pubkkeyparam.getQ.getEncoded(true), KeyAlgorithm.SECP256K1)
+          val keypair = Crypto.converter.getKeyPair(pemKeyPair.asInstanceOf[PEMKeyPair])
+          val pair = new KeyPair(keypair.getPrivate, Crypto.toCLPublicKey(keypair.getPublic))
           pair
         }
         case _ => throw new IllegalArgumentException("this not a private pem file")
@@ -94,36 +84,25 @@ object KeyPair {
   }
 
   /**
-   * create a new Keypair
    *
-   * @param algo :  KeyAlgorithm
-   * @return KeyPair instance
+   * @param algo
+   * @return
    */
-  def create(algo: KeyAlgorithm): KeyPair = {
-    require(algo != null)
+
+  def create(algo:KeyAlgorithm) : KeyPair =   {
     algo match {
       case KeyAlgorithm.ED25519 => {
-        val pairGenerator = new Ed25519KeyPairGenerator()
-        pairGenerator.init(new KeyGenerationParameters(new SecureRandom(), 255))
-        val keys = pairGenerator.generateKeyPair()
-        val publicKey = keys.getPublic.asInstanceOf[Ed25519PublicKeyParameters]
-        val keypair = new KeyPair(publicKey, keys.getPrivate)
-        keypair.cLPublicKey = new CLPublicKey(publicKey.getEncoded, algo)
-        keypair
+       val keyPair=  Crypto.newKeyPair(algo.toString.toLowerCase(),algo.toString.toLowerCase())
+        new KeyPair(keyPair.getPrivate,Crypto.toCLPublicKey(keyPair.getPublic))
       }
       case KeyAlgorithm.SECP256K1 => {
-        val eCParameterSpec = ECNamedCurveTable.getParameterSpec("secp256k1")
-        val domParams = new ECDomainParameters(eCParameterSpec.getCurve, eCParameterSpec.getG, eCParameterSpec.getN, eCParameterSpec.getH, eCParameterSpec.getSeed)
-        val keyParams = new ECKeyGenerationParameters(domParams, new SecureRandom())
-        val pairGenerator = new ECKeyPairGenerator()
-        pairGenerator.init(keyParams)
-        val keys = pairGenerator.generateKeyPair()
-        val pubKey = keys.getPublic.asInstanceOf[ECPublicKeyParameters]
-        val keypair = new KeyPair(keys.getPublic, keys.getPrivate)
-        keypair.cLPublicKey = new CLPublicKey(pubKey.getQ.getEncoded(true), algo)
-        keypair
+        val keyPair=  Crypto.newKeyPair("ECDSA","secp256k1")
+        new KeyPair(keyPair.getPrivate,Crypto.toCLPublicKey(keyPair.getPublic))
       }
-      case _ => throw IllegalArgumentException("unsuported CLPublickey algorithm")
     }
   }
+
+
+
+
 }

@@ -1,9 +1,8 @@
 package com.casper.sdk.json.deserialize
 
+import com.casper.sdk.crypto.hash.Hash
 import com.casper.sdk.types.cltypes.CLPublicKey
 import com.fasterxml.jackson.core.JsonParser
-import com.casper.sdk.domain.deploy.Hash
-
 import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
 
 import java.io.IOException

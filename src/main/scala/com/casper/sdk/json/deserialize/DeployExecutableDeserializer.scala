@@ -1,6 +1,7 @@
 package com.casper.sdk.json.deserialize
 
-import com.casper.sdk.domain.deploy.*
+import com.casper.sdk.domain.deploy._
+import com.casper.sdk.crypto.hash.Hash
 import com.casper.sdk.domain.deploy.{DeployNamedArg, ModuleBytes, StoredContractByHash}
 import com.casper.sdk.util.JsonConverter
 import com.fasterxml.jackson.core.{JsonParser, ObjectCodec, TreeNode}

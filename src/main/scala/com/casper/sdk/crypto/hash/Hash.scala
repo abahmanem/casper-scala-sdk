@@ -1,10 +1,10 @@
-package com.casper.sdk.domain.deploy
+package com.casper.sdk.crypto.hash
 
 import com.casper.sdk.json.deserialize.HashDeserializer
 import com.casper.sdk.json.serialize.HashSerializer
 import com.casper.sdk.util.HexUtils
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.annotation.{JsonDeserialize, JsonSerialize}
+
 /**
  * Hash class
  *
@@ -23,4 +23,6 @@ case class Hash(
    * @param stringHash
    */
   def this(stringHash: String) = this(HexUtils.fromHex(stringHash))
+
+  override def toString: String = HexUtils.toHex(hash).get
 }

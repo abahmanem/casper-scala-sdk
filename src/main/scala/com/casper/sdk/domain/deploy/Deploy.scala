@@ -1,7 +1,7 @@
 package com.casper.sdk.domain.deploy
 
 import com.casper.sdk.crypto.KeyPair
-import com.casper.sdk.crypto.hash.Blake2b256
+import com.casper.sdk.crypto.hash.{Blake2b256, Hash}
 import com.casper.sdk.domain.deploy._
 import com.casper.sdk.serialization.domain.deploy.{DeployExecutableByteSerializer, DeployHeaderByteSerializer}
 import com.casper.sdk.types.cltypes.{AccountHash, CLPublicKey, Signature}
@@ -20,7 +20,7 @@ import scala.collection.mutable.ArrayBuilder
  */
 
 case class Deploy(
-                   val hash: Hash,
+                   val hash: Option[Hash],
                    val header: DeployHeader,
                    val payment: DeployExecutable,
                    val session: DeployExecutable,
@@ -69,7 +69,7 @@ object Deploy {
     val bHash = deployBodyHash(payment, session)
     val deployHeader = DeployHeader(header.account, header.timestamp, header.ttl, header.gas_price,
       Some(Hash(bHash)), header.dependencies, header.chain_name)
-    new Deploy(Hash(deployHeaderHash(deployHeader)), deployHeader, payment, session, Seq.empty)
+    new Deploy(Some(Hash(deployHeaderHash(deployHeader))), deployHeader, payment, session, Seq.empty)
   }
 
   /**
@@ -96,8 +96,8 @@ object Deploy {
 
   def signDeploy(deploy: Deploy, keyPair: KeyPair): Deploy = {
     require(keyPair != null)
-    val signature = keyPair.sign(deploy.hash.hash)
-    deploy.addApproval(new DeployApproval(keyPair.cLPublicKey, new Signature(signature, keyPair.cLPublicKey.keyAlgorithm)))
+    val signature = keyPair.sign(deploy.hash.get.hash)
+    deploy.addApproval(new DeployApproval(keyPair.publicKey, new Signature(signature, keyPair.publicKey.keyAlgorithm)))
     deploy
   }
 

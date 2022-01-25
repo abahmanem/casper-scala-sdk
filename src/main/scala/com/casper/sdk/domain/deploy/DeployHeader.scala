@@ -1,8 +1,7 @@
 package com.casper.sdk.domain.deploy
 
-import com.casper.sdk.crypto.hash.Blake2b256
+import com.casper.sdk.crypto.hash.{Blake2b256, Hash}
 import com.casper.sdk.types.cltypes.CLPublicKey
-import com.casper.sdk.domain.deploy.Hash
 import com.casper.sdk.json.deserialize.TimeStampDeSerializer
 import com.casper.sdk.json.deserialize.TTLDeserializer
 import com.casper.sdk.json.serialize.TimeStampSerializer
@@ -35,8 +34,4 @@ case class DeployHeader(
                          var dependencies: Seq[Hash],
                          chain_name: String
                        )
-{
-
- 
- }
 

@@ -119,5 +119,6 @@ enum Method(val name: String) {
                     ],
    */
   case STATE_GET_DICTIONARY_ITEM extends Method("state_get_dictionary_item")
+  case ACCOUNT_PUT_DEPLOY extends Method("account_put_deploy")
   case RPC_SCHEMA extends Method("rpc.discover")
  }

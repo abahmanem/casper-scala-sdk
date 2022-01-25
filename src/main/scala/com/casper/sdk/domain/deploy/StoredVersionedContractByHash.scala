@@ -1,5 +1,7 @@
 package com.casper.sdk.domain.deploy
 
+import com.casper.sdk.crypto.hash.Hash
+
 /**
  * StoredVersionedContractByHash entity object
  *

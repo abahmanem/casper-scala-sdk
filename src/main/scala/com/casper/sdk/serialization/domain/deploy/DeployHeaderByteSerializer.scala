@@ -22,11 +22,7 @@ class DeployHeaderByteSerializer extends BytesSerializable[DeployHeader] {
       .addAll(CLValue.U64(BigInt(value.timestamp)).bytes)
       .addAll(CLValue.U64(BigInt(value.ttl)).bytes)
       .addAll(CLValue.U64(value.gas_price).bytes)
-    if (value.body_hash.isDefined){
-  println("Fffffffffffffffff "+value.body_hash.get)
-      builder.addAll(value.body_hash.get.hash)
-
-    }
+    if (value.body_hash.isDefined)      builder.addAll(value.body_hash.get.hash)
     builder.addAll(CLValue.U32(value.dependencies.size).bytes)
     for (dep <- value.dependencies) builder.addAll(dep.hash)
     builder.addAll(CLValue.U32(value.chain_name.getBytes(StandardCharsets.UTF_8).length).bytes)

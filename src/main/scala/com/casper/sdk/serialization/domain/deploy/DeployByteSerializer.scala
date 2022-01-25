@@ -20,7 +20,7 @@ class DeployByteSerializer extends BytesSerializable[Deploy] {
     val deployHeaderByteSerializer = new DeployHeaderByteSerializer()
 
     builder.addAll(deployHeaderByteSerializer.toBytes(value.header))
-      .addAll(value.hash.hash)
+      .addAll(value.hash.get.hash)
       .addAll(deployExecutableByteSerializer.toBytes(value.payment))
       .addAll(deployExecutableByteSerializer.toBytes(value.session))
       .addAll(CLValue.U32(value.approvals.size).bytes)

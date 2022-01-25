@@ -1,6 +1,7 @@
 package com.casper.sdk.json.serialize
 
-import com.casper.sdk.domain.deploy.{DeployTransfer, _}
+import  com.casper.sdk.crypto.hash.Hash
+import com.casper.sdk.domain.deploy._
 import com.casper.sdk.types.cltypes.{CLPublicKey, CLValue}
 import com.casper.sdk.util.JsonConverter
 import org.scalatest.funsuite.AnyFunSuite
