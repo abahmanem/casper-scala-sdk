@@ -43,8 +43,8 @@ In your maven pom file add :
 
 ### Key Management
 
-* [CLPublicKey](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/Serialization.md#serialization)
-* [KeyPair](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/Serialization.md#example)
+* [CLPublicKey](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/Keys.md#working-with-public-keys)
+* [KeyPair](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/Keys.md#Working-with-key-pairs)
 
 
 ### Casper-Scala-Sdk RPC
