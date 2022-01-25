@@ -35,6 +35,18 @@ import scala.math.BigInt.int2bigInt
 
 object TestnetTester extends App {
 
+val  bb = Array[Byte](125,-102,-96,-72,100,19,-41,-1,  -102,
+  -111,105,24,44,83,-16,-70,-54,-88,13,52,-62,17,-83,-85,0,126,-44,
+  -121, 106,-15,112, 119)
+
+val pp = new CLPublicKey(bb,KeyAlgorithm.ED25519)
+
+println(pp.formatAsHexAccount.get)
+
+ println( CLPublicKey("017d9aa0b86413d7ff9a9169182c53f0bacaa80d34c211adab007ed4876af17077").get.bytes)
+val a  = CLPublicKey("017d9aa0b86413d7ff9a9169182c53f0bacaa80d34c211adab007ed4876af17077").get.bytes
+
+  a.foreach(println)
 
   val x = JsonConverter.fromJson[Hash]("\"babc9370c6bf12c8ecb5f86490cef813f9aaa8719324f6f0319ce5dc574a58cc\"")
   println(x.toString)

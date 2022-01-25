@@ -41,6 +41,12 @@ In your maven pom file add :
 * [Serialization standards](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/Serialization.md#serialization)
 * [Examples](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/Serialization.md#example)
 
+### Key Management
+
+* [CLPublicKey](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/Serialization.md#serialization)
+* [KeyPair](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/Serialization.md#example)
+
+
 ### Casper-Scala-Sdk RPC
 
 * [getPeers](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-peers)
