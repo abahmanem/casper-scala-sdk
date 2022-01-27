@@ -13,6 +13,8 @@ class KeyPairTest extends AnyFunSuite {
 
   test("Test Load keyPair from ed25519 private pem file") {
 
+   
+    
     val keyPair = KeyPair.loadFromPem(getClass.getResource("/crypto/ed25519/secret.pem").getPath)
     info("assert publickey is not null")
     assert(keyPair.publicKey != null)

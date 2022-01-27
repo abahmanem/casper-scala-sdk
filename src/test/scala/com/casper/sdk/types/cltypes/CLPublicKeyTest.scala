@@ -6,6 +6,12 @@ import org.scalatest.funsuite.AnyFunSuite
 import scala.io.Source
 
 class CLPublicKeyTest extends AnyFunSuite {
+
+
+  val  bytes = Array[Byte](125,-102,-96,-72,100,19,-41,-1,  -102,
+    -111,105,24,44,83,-16,-70,-54,-88,13,52,-62,17,-83,-85,0,126,-44,
+    -121, 106,-15,112, 119)
+
   val hexED25519 = "01d9bf2148748a85c89da5aad8ee0b0fc2d105fd39d41a4c796536354f0ae2900c"
   val keyED25519 =  CLPublicKey(hexED25519).get
 
@@ -15,6 +21,13 @@ class CLPublicKeyTest extends AnyFunSuite {
 
   val ed25519Pem = Source.fromURL(getClass.getResource("/crypto/ED25519_public_key.pem")).mkString
   val secp256K1Pem = Source.fromURL(getClass.getResource("/crypto/SECP256K1_public_key.pem")).mkString
+
+  val key = new CLPublicKey(bytes,KeyAlgorithm.ED25519)
+
+  test("Test CLPublicKey from byets contructor") {
+    assert(key.formatAsHexAccount.get.toLowerCase == "017d9aa0b86413d7ff9a9169182c53f0bacaa80d34c211adab007ed4876af17077".toLowerCase)
+    assert(key.keyAlgorithm == KeyAlgorithm.ED25519)
+  }
 
   test("Test CLPublicKey KeyAlgorithm = ED25519") {
     assert(keyED25519.keyAlgorithm == KeyAlgorithm.ED25519)
