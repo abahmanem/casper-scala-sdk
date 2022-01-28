@@ -5,6 +5,9 @@ import org.bouncycastle.crypto.digests.Blake2bDigest
 
 import java.nio.charset.StandardCharsets
 
+/**
+ * Blake2b256 Hash object utility
+ */
 object Blake2b256 {
   /**
    * gives a byte hashed array from a byte array

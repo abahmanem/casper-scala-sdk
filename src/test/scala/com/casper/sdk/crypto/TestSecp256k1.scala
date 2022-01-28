@@ -1,33 +1,35 @@
-package com.casper.sdk.rpc
+package com.casper.sdk.crypto
 
-import com.casper.sdk.CasperSdk
-import com.casper.sdk.crypto.hash.{Blake2b256, Hash}
-import com.casper.sdk.domain.deploy.{Deploy, DeployHeader, DeployNamedArg, ModuleBytes, StoredVersionedContractByName, DeployTransfer}
-import com.casper.sdk.serialization.domain.deploy.DeployHeaderByteSerializer
-import com.casper.sdk.serialization.domain.deploy.DeployExecutableByteSerializer
-
+import com.casper.sdk.crypto.util.SECP256K1
+import com.casper.sdk.domain.deploy._
 import com.casper.sdk.types.cltypes.{CLPublicKey, CLValue}
 import com.casper.sdk.util.{HexUtils, JsonConverter}
 
-import com.casper.sdk.util.implicits.idInstance
-import scala.collection.mutable.ArrayBuilder
-
-object TestSecp256k1 extends App{
+object TestSecp256k1 extends App {
 
 
   //rpc client
-  val client = new CasperSdk("http://65.21.227.180:7777/rpc")
+  val hash = HexUtils.fromHex("a6123f83c46b3df729487cf71294c8a99e9e47d2c0d3400a6c09803fdb278606")
+
+  val key = CLPublicKey("0203b6f49ad0594b8e1c5116b41d230084f80e0f1941f63013315d738d1a0df0993b").get
+
+  val sig = HexUtils.fromHex("029b97209f36e4765fcaec026e717e04cf0821d8709dede4a776691733b11d98df6d7745c16621eacec7459462da98ff525684028e8a63056c4e49e879b1b93831")
+
+  println("OOOOOOOOOOO " + SECP256K1.verify(hash, sig, key.bytes))
 
 
   //keys
-  val keys = com.casper.sdk.crypto.KeyPair. loadFromPem(getClass.getResource("/crypto/secp256k1/put_deploy_secret_key.pem").getPath)
+  val keys = com.casper.sdk.crypto.KeyPair.loadFromPem(getClass.getResource("/crypto/secp256k1/put_deploy_secret_key.pem").getPath)
+
+  //keys
+  //
 
 
   //header
   val header = new DeployHeader(
     CLPublicKey("02038debf99b9850210d5e5a3c3748db03cc31fc236197010931909350c32acf1689").get,
     System.currentTimeMillis(),
-    5400000L,
+    1800000L,
     1,
     None,
     Seq.empty,
@@ -39,7 +41,7 @@ object TestSecp256k1 extends App{
   //payment component
 
   val arg0 = new DeployNamedArg("amount", CLValue.U512(5000000000L))
-  val payment = new ModuleBytes("".getBytes() , Seq(Seq(arg0)))
+  val payment = new ModuleBytes("".getBytes(), Seq(Seq(arg0)))
 
   //create session component
   val arg1 = new DeployNamedArg("amount", CLValue.U512(5000000000L))
@@ -54,7 +56,7 @@ object TestSecp256k1 extends App{
   val session = new DeployTransfer(Seq(Seq(arg1, arg01, arg02)))
 
 
- //create unsigned deploy
+  //create unsigned deploy
   val deploy = Deploy.createUnsignedDeploy(header, payment, session)
 
   //sign it

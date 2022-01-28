@@ -58,7 +58,6 @@ object BCConvert {
    */
   def getPrivateKey(key: AsymmetricKeyParameter): java.security.PrivateKey = converter.getPrivateKey(toPrivateKeyInfo(key))
 
-
   /**
    * PrivateKeyInfo to java.security.PrivateKey
    *

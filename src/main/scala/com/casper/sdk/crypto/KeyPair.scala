@@ -1,6 +1,6 @@
 package com.casper.sdk.crypto
 
-import com.casper.sdk.crypto.util.{Crypto, Pem}
+import com.casper.sdk.crypto.util.{Crypto, SECP256K1}
 import com.casper.sdk.types.cltypes.{CLPublicKey, KeyAlgorithm}
 import com.casper.sdk.util.{ByteUtils, HexUtils}
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo
@@ -26,13 +26,13 @@ case class KeyPair(privateKey : PrivateKey, publicKey: CLPublicKey) {
    *
    * @return
    */
-  def privateToPem: String = Pem.toPem(privateKey)
+  def privateToPem: String = Crypto.toPem(privateKey)
 
   /**
    *
    * @return
    */
-  def publicToPem: String = Pem.toPem(Crypto.fromCLPublicKey(publicKey))
+  def publicToPem: String = Crypto.toPem(Crypto.fromCLPublicKey(publicKey))
 
   /**
    * sign a message
@@ -42,10 +42,17 @@ case class KeyPair(privateKey : PrivateKey, publicKey: CLPublicKey) {
    */
   def sign(msg: Array[Byte]): Array[Byte] = {
     require(msg != null)
-    val sig = Signature.getInstance(privateKey.getAlgorithm, BouncyCastleProvider.PROVIDER_NAME)
-    sig.initSign(privateKey)
-    sig.update(msg)
-    sig.sign()
+
+    publicKey.keyAlgorithm match {
+      case  KeyAlgorithm.SECP256K1 =>   SECP256K1.sign(msg,this)
+      case  KeyAlgorithm.ED25519 => {
+        val sig = Signature.getInstance(privateKey.getAlgorithm, BouncyCastleProvider.PROVIDER_NAME)
+        sig.initSign(privateKey)
+        sig.update(msg)
+        sig.sign()
+
+      }
+    }
   }
 }
 
@@ -68,8 +75,8 @@ object KeyPair{
         case pvkeyInfo: PrivateKeyInfo => {
           val privKey = Crypto.converter.getPrivateKey(pvkeyInfo)
           val privkeyparam = PrivateKeyFactory.createKey(pvkeyInfo)
-          val pubkkeyparam = privkeyparam.asInstanceOf[Ed25519PrivateKeyParameters].generatePublicKey()
-          val pair = new KeyPair(privKey, new CLPublicKey(pubkkeyparam.getEncoded, KeyAlgorithm.ED25519))
+          val pubkeyparam = privkeyparam.asInstanceOf[Ed25519PrivateKeyParameters].generatePublicKey()
+          val pair = new KeyPair(privKey, new CLPublicKey(pubkeyparam.getEncoded, KeyAlgorithm.ED25519))
           pair
         }
         case pemKeyPair: org.bouncycastle.openssl.PEMKeyPair => {
@@ -101,8 +108,5 @@ object KeyPair{
       }
     }
   }
-
-
-
 
 }

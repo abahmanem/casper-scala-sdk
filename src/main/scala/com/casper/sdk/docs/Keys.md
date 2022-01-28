@@ -52,3 +52,5 @@ import com.casper.sdk.crypto.KeyPair
 
 val keyPair  = KeyPair.loadFromPem("/crypto/ed25519/secret.pem")
 ```
+
+

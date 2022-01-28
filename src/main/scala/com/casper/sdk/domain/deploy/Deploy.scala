@@ -51,6 +51,7 @@ object Deploy {
    * @return header hash
    */
   def deployHeaderHash(header: DeployHeader): Array[Byte] = {
+    require(header!=null)
     val serializer = new DeployHeaderByteSerializer()
     Blake2b256.hash(serializer.toBytes(header))
   }
@@ -65,10 +66,9 @@ object Deploy {
    * @return unsigned Deploy
    */
   def createUnsignedDeploy(header: DeployHeader, payment: DeployExecutable, session: DeployExecutable): Deploy = {
-    val hHash = deployHeaderHash(header)
-    val bHash = deployBodyHash(payment, session)
+    require(header!=null)
     val deployHeader = DeployHeader(header.account, header.timestamp, header.ttl, header.gas_price,
-      Some(Hash(bHash)), header.dependencies, header.chain_name)
+      Some(Hash(deployBodyHash(payment, session))), header.dependencies, header.chain_name)
     new Deploy(Some(Hash(deployHeaderHash(deployHeader))), deployHeader, payment, session, Seq.empty)
   }
 

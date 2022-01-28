@@ -1,8 +1,8 @@
 package com.casper.sdk.types.cltypes
 
-import com.casper.sdk.crypto.hash.Blake2b256
-import com.casper.sdk.crypto.util.{Crypto, Pem}
 import com.casper.sdk.crypto.KeyPair
+import com.casper.sdk.crypto.hash.Blake2b256
+import com.casper.sdk.crypto.util.{Crypto, SECP256K1}
 import com.casper.sdk.json.deserialize.CLPublicKeyDeserializer
 import com.casper.sdk.json.serialize.CLPublicKeySerializer
 import com.casper.sdk.types.cltypes.CLPublicKey.dropAlgorithmBytes
@@ -27,6 +27,7 @@ import java.nio.file.{FileSystems, Files, Paths}
 import java.security.{KeyFactory, PublicKey, SecureRandom, Signature}
 
 
+
 /**
  * CLPublicKey : Casper system public key
  *
@@ -34,7 +35,7 @@ import java.security.{KeyFactory, PublicKey, SecureRandom, Signature}
  */
 @JsonSerialize(`using` = classOf[CLPublicKeySerializer])
 @JsonDeserialize(`using` = classOf[CLPublicKeyDeserializer])
- class CLPublicKey(
+class CLPublicKey(
                    val bytes: Array[Byte],
                    val keyAlgorithm: KeyAlgorithm
                  ) extends Tag {
@@ -48,7 +49,7 @@ import java.security.{KeyFactory, PublicKey, SecureRandom, Signature}
     try {
       Some(HexUtils.toHex(formatAsByteAccount).get)
     } catch {
-      case ex: Exception => None
+      case _: Exception => None
     }
   }
 
@@ -68,14 +69,14 @@ import java.security.{KeyFactory, PublicKey, SecureRandom, Signature}
     keyAlgorithm match {
       case KeyAlgorithm.ED25519 => {
         val pubKeyInfo = new SubjectPublicKeyInfo(new AlgorithmIdentifier(EdECObjectIdentifiers.id_Ed25519), bytes)
-        Pem.toPem(pubKeyInfo)
+        Crypto.toPem(pubKeyInfo)
       }
       case KeyAlgorithm.SECP256K1 => {
         val eCParameterSpec = ECNamedCurveTable.getParameterSpec("secp256k1")
         val domParam = new ECDomainParameters(eCParameterSpec.getCurve, eCParameterSpec.getG, eCParameterSpec.getN, eCParameterSpec.getH, eCParameterSpec.getSeed)
         val q = eCParameterSpec.getCurve.decodePoint(bytes)
         val pk: ECPublicKeyParameters = new ECPublicKeyParameters(q, domParam);
-        Pem.toPem(pk)
+        Crypto.toPem(pk)
       }
       case null => throw new IllegalArgumentException("algorithm not handled")
     }
@@ -89,26 +90,22 @@ import java.security.{KeyFactory, PublicKey, SecureRandom, Signature}
    * @return true if the signature is valid and false if not
    */
   def verifySignature(msg: Array[Byte], signature: Array[Byte]): Boolean = {
-    require(msg!=null && signature!=null)
-
-
-    val publicKey = Crypto.fromCLPublicKey(this)
-
-    val sig = Signature.getInstance(publicKey.getAlgorithm, BouncyCastleProvider.PROVIDER_NAME)
-
-    sig.initVerify(publicKey)
-    sig.update(msg)
-    sig.verify(signature)
-
+    require(msg != null && signature != null)
     /*
+        val publicKey = Crypto.fromCLPublicKey(this)
+
+        val sig = Signature.getInstance(publicKey.getAlgorithm, BouncyCastleProvider.PROVIDER_NAME)
+
+        sig.initVerify(publicKey)
+        sig.update(msg)
+        sig.verify(signature)
+    */
     keyAlgorithm match {
       case KeyAlgorithm.ED25519 => {
         Ed25519.verify(signature, 0, bytes, 0, msg, 0, msg.length)
       }
       case KeyAlgorithm.SECP256K1 => SECP256K1.verify(msg, signature, bytes)
     }
-
-     */
   }
 
   /**
@@ -117,6 +114,18 @@ import java.security.{KeyFactory, PublicKey, SecureRandom, Signature}
    * @return
    */
   def tag = 1
+
+
+  override def hashCode(): Int = 31 * java.util.Objects.hash(keyAlgorithm) + java.util.Arrays.hashCode(bytes)
+
+
+  override def equals(obj: scala.Any): Boolean = obj match {
+    case pubKey: CLPublicKey => pubKey.keyAlgorithm == keyAlgorithm && java.util.Arrays.equals(bytes, pubKey.bytes)
+    case _ => false
+  }
+
+
+  override def toString: String = formatAsHexAccount.get
 }
 
 /**
@@ -133,7 +142,7 @@ object CLPublicKey {
     try {
       Some(new CLPublicKey(dropAlgorithmBytes(HexUtils.fromHex(hex)), KeyAlgorithm.fromId(hex.charAt(1).asDigit)))
     } catch {
-      case e: Exception => None
+      case _: Exception => None
     }
   }
 
