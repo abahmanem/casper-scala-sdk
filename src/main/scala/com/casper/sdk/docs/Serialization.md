@@ -62,7 +62,7 @@ More examples on CLType and CLValue serialization can be found in this test file
 ### Serialization of DeployExecutable objects
 
 ```scala
-val serializer = new DeployExecutableByteSerializer()
+val serializer = new DeployExecutableByteSerializer
 ```
 
 - ModuleBytes 

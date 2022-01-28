@@ -21,7 +21,7 @@ class CasperSdkTest extends AnyFunSuite {
     val caught =
       intercept[RPCIOException] {
         val sdk = new CasperSdk("http://1.2.3.4:7777/rpc")
-        val peers = sdk.getPeers()
+        val peers = sdk.getPeers
       }
     assert(caught.getMessage == null)
   }
@@ -32,7 +32,7 @@ class CasperSdkTest extends AnyFunSuite {
    * Test  getPeers
    */
   test("Testnet Network Peers list is not empty") {
-    val peers = client.getPeers()
+    val peers = client.getPeers
     info("Peers List size : " + peers.size)
     assert(!peers.isEmpty)
   }
@@ -154,7 +154,7 @@ class CasperSdkTest extends AnyFunSuite {
    */
 
   test("Get Node Status") {
-    val nodeSatatus = client.getStatus()
+    val nodeSatatus = client.getStatus
     //assert(nodeSatatus.peers.size == client.getPeers().size)
     info("assert node pub key is : 01cd807fb41345d8dD5A61da7991e1468173acbEE53920E4DFe0D28Cb8825AC664")
     assert(nodeSatatus.our_public_signing_key.formatAsHexAccount.get.toLowerCase == "01cd807fb41345d8dD5A61da7991e1468173acbEE53920E4DFe0D28Cb8825AC664".toLowerCase)

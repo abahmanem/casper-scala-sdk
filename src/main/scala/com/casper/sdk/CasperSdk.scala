@@ -23,7 +23,7 @@ class CasperSdk(url: String)(implicit id: IdInstance) extends RPCCommand(new Htt
    *
    * @return : List[Peer]
    */
-  def getPeers(): Seq[Peer] = call[Seq[Peer]](Method.INFO_GET_PEERS, Seq.empty)
+  def getPeers: Seq[Peer] = call[Seq[Peer]](Method.INFO_GET_PEERS, Seq.empty)
 
   /**
    * Retrieves a state root hash at a given block
@@ -55,7 +55,7 @@ class CasperSdk(url: String)(implicit id: IdInstance) extends RPCCommand(new Htt
    *
    * @return : Node Status
    */
-  def getStatus(): NodeStatus = call[NodeStatus](Method.INFO_GET_STATUS, Seq.empty)
+  def getStatus: NodeStatus = call[NodeStatus](Method.INFO_GET_STATUS, Seq.empty)
 
 
   /**
@@ -122,7 +122,7 @@ class CasperSdk(url: String)(implicit id: IdInstance) extends RPCCommand(new Htt
    *
    * @return : Json String with RPCSchema infos
    */
-  def getRpcSchema(): String = call[String](Method.RPC_SCHEMA, Seq.empty)
+  def getRpcSchema: String = call[String](Method.RPC_SCHEMA, Seq.empty)
 
   /**
    * put deploy

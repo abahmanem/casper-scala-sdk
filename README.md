@@ -130,7 +130,7 @@ val client = new CasperSdk("http://node_ip_address:7777/rpc")
 Retrieves  a list of Peers.
 
 ```scala
-val peersList = client.getPeers()
+val peersList = client.getPeers
 
 ```
 
@@ -181,7 +181,7 @@ val deploy = getDeploy("5545207665f6837F44a6BCC274319280B73a6f0997F957A993e60f87
 Retrieves a NodeStatus object.
 
 ````scala
- val nodeSatatus = client.getStatus()
+ val nodeSatatus = client.getStatus
 ````
 
 ### Get BlockTransfers

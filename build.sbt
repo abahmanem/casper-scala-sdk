@@ -13,19 +13,18 @@ libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" 
 
 //bouncycastle crypto library
 libraryDependencies += "org.bouncycastle" % "bcprov-jdk15on" % "1.69"
-
 libraryDependencies += "org.bouncycastle" % "bcpkix-jdk15on" % "1.69"
-
 libraryDependencies += "org.bouncycastle" % "bcprov-ext-jdk15on" % "1.69"
 
 //scala cats library
 libraryDependencies += "org.typelevel" %% "cats-core" % "2.6.1"
-
 libraryDependencies += "org.scala-lang" % "scala-reflect" % "2.13.6"
 
 //OkHttp3 library
 libraryDependencies += "com.squareup.okhttp3" % "okhttp" % "4.9.2"
 
+//apache codec library
+libraryDependencies += "commons-codec" % "commons-codec" % "1.15"
 
 libraryDependencies += "com.rfksystems" % "blake2b" % "1.0.0"
 

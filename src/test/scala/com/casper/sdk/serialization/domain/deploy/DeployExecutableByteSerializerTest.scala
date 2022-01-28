@@ -11,7 +11,7 @@ import org.scalatest.funsuite.AnyFunSuite
  * DeployExecutableByteSerializerTest
  */
 class DeployExecutableByteSerializerTest extends AnyFunSuite {
-  val serializer = new DeployExecutableByteSerializer()
+  val serializer = new DeployExecutableByteSerializer
 
   test("Test serialize ModuleBytes ") {
     val args: DeployNamedArg = new DeployNamedArg("payment", CLValue.U512(BigInt.apply("9999999999")))

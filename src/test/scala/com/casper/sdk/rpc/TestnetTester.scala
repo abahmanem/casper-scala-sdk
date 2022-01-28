@@ -17,7 +17,6 @@ import org.bouncycastle.crypto.params.Ed25519PublicKeyParameters
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.openssl.PEMWriter
 import org.scalactic.Prettifier.default
-import scodec.bits.{ByteVector, hex}
 
 import java.io.{File, FileWriter, StringWriter}
 import java.math.BigInteger
