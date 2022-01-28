@@ -1,9 +1,8 @@
 name := "casper-scala-sdk"
 
-version := "1.0.1"
+version := "1.2.0"
 
 scalaVersion := "3.0.2"
-//scalaVersion := "2.13.7"
 
 //scalaTest framework
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.10"
@@ -13,25 +12,25 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.10" % "test"
 libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.13.0"
 
 //bouncycastle crypto library
-libraryDependencies += "org.bouncycastle" % "bcprov-jdk15on" % "1.69"  //exclude("org.bouncycastle", "httpclient")
+libraryDependencies += "org.bouncycastle" % "bcprov-jdk15on" % "1.69"
+
 libraryDependencies += "org.bouncycastle" % "bcpkix-jdk15on" % "1.69"
-//libraryDependencies += "org.bouncycastle" % "bcpkix-jdk14" % "1.69" excludeAll ExclusionRule(organization = "org.bouncycastle")
+
 libraryDependencies += "org.bouncycastle" % "bcprov-ext-jdk15on" % "1.69"
+
 //scala cats library
 libraryDependencies += "org.typelevel" %% "cats-core" % "2.6.1"
+
 libraryDependencies += "org.scala-lang" % "scala-reflect" % "2.13.6"
 
 //OkHttp3 library
 libraryDependencies += "com.squareup.okhttp3" % "okhttp" % "4.9.2"
 
-libraryDependencies += "org.scodec" %% "scodec-bits" % "1.1.29"
-
-libraryDependencies += "commons-codec" % "commons-codec" % "1.15"
 
 libraryDependencies += "com.rfksystems" % "blake2b" % "1.0.0"
 
 //publish
-/*
+
 ThisBuild / organization := "io.caspercommunity"
 ThisBuild / organizationName := "caspercommunity"
 ThisBuild / organizationHomepage := Some(url("https://caspercommunity.io/"))
@@ -69,4 +68,3 @@ ThisBuild / publishTo := {
   else Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 ThisBuild / publishMavenStyle := true
-*/
