@@ -15,24 +15,11 @@ object HexUtils {
    * @param sep
    * @return
    */
-  def toHex(bytes: Array[Byte]): Option[String] = {
-    try {
-      Some(Hex.encodeHexString(bytes))
-    } catch {
-      case e: Exception => None
-    }
+  def toHex(bytes: Array[Byte]): Option[String] = try {
+    Some(Hex.encodeHexString(bytes))
+  } catch {
+    case e: Exception => None
   }
-
-  //String = Hex.encodeHexString(bytes)
-
-  /**
-   *
-   * @param hex
-   * @param f
-   * @tparam T
-   * @return
-   */
-  def hextoT[T](hex: String, f: BigInt => T) = f(BigInt(hex, 16))
 
   /**
    * convert hex string into byte array
