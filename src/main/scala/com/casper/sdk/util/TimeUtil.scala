@@ -80,12 +80,19 @@ object TimeUtil {
     var minutes = TimeUnit.MILLISECONDS.toMinutes(millis) % 60
     var seconds = TimeUnit.MILLISECONDS.toSeconds(millis) % 60
     val milliseconds = millis % 1000
+    val day = "d"
+    val hour = "h"
+    val minute = "m"
+    val second = "s"
+    val mills = "ms"
 
-    if (days > 0 && hours > 0) sb.append(days + "d ") else if (days > 0 && hours == 0) sb.append(days + "d")
-    if (hours > 0 && minutes > 0) sb.append(hours + "h ") else if (hours > 0 && minutes == 0) sb.append(hours + "h")
-    if (minutes > 0 && seconds > 0) sb.append(minutes + "m ") else if (minutes > 0 && seconds == 0) sb.append(minutes + "m")
-    if (seconds > 0 && milliseconds > 0) sb.append(seconds + "s ") else if (seconds > 0 && milliseconds == 0) sb.append(seconds + "s")
-    if (milliseconds > 0) sb.append(milliseconds + "ms")
+    sb.append(if (days > 0 && hours > 0) s"$days$day " else if (days > 0 && hours == 0) s"$days$day" else "")
+      .append(if (hours > 0 && minutes > 0) s"$hours$hour " else if (hours > 0 && minutes == 0) s"$hours$hour" else "")
+      .append(if (minutes > 0 && seconds > 0) s"$minutes$minute " else if (minutes > 0 && seconds == 0) s"$minutes$minute" else "")
+      .append(if (seconds > 0 && milliseconds > 0) s"$seconds$second " else if (seconds > 0 && milliseconds == 0) s"$seconds$second" else "")
+      .append(if (seconds > 0 && milliseconds > 0) s"$seconds$second " else if (seconds > 0 && milliseconds == 0) s"$seconds$second" else "")
+      .append(if (milliseconds > 0) s"$milliseconds$mills" else "")
+
     sb.toString()
   }
 }

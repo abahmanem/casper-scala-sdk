@@ -1,6 +1,6 @@
 package com.casper.sdk.serialization.domain.deploy
 
-import com.casper.sdk.domain.deploy.*
+import com.casper.sdk.domain.deploy._
 import com.casper.sdk.serialization.BytesSerializable
 import com.casper.sdk.types.cltypes
 import com.casper.sdk.types.cltypes.CLValue
@@ -47,20 +47,27 @@ class DeployExecutableByteSerializer extends BytesSerializable[DeployExecutable]
           case Some(a) => builder.addOne(0x01.toByte).addAll(CLValue.U32(storedVersionedContractByHash.version.get).bytes)
         }
       }
-        case storedVersionedContractByName: StoredVersionedContractByName => {
-          builder.addAll(CLValue.String(storedVersionedContractByName.name).bytes)
-          storedVersionedContractByName.version match {
-            case None => builder.addOne(0x00.toByte)
-            case Some(a) => builder.addOne(0x01.toByte).addAll(CLValue.U32(storedVersionedContractByName.version.get).bytes)
-          }
+      case storedVersionedContractByName: StoredVersionedContractByName => {
+        builder.addAll(CLValue.String(storedVersionedContractByName.name).bytes)
+        storedVersionedContractByName.version match {
+          case None => builder.addOne(0x00.toByte)
+          case Some(a) => builder.addOne(0x01.toByte).addAll(CLValue.U32(storedVersionedContractByName.version.get).bytes)
         }
+      }
       case transfer: DeployTransfer =>
     }
     builder.addAll(argsToBytes(value.args))
     builder.result()
   }
 
+  /**
+   * bytes serialization of args field
+   *
+   * @param list
+   * @return
+   */
   def argsToBytes(list: Seq[Seq[DeployNamedArg]]): Array[Byte] = {
+    require(list != null && !list.isEmpty)
     val builder = new ArrayBuilder.ofByte
     builder.addAll(CLValue.U32(list(0).size).bytes)
     val argSerializer = new DeployNamedArgByteSerializer()
