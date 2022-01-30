@@ -7,7 +7,7 @@ Scala SDK provides following classes for key management:
     - ED25519
     - SECP256K1
 
-- KeyPair : this class is a holder of the pair represented by a  CLPublickKEy and the associated private key.
+- KeyPair : this class is a holder of the pair represented by a  CLPublicKey and the associated private key.
 
 ### Working with public keys 
 
