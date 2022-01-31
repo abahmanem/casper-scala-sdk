@@ -238,4 +238,23 @@ class CLValueSerializerTest extends AnyFunSuite {
     assert(JsonConverter.toJson(v)==json)
   }
 
+  test("Serialize a List with Option String CLValue") {
+    val json = """{
+                 |  "cl_type" : {
+                 |    "List" : {
+                 |      "Option" : "String"
+                 |    }
+                 |  },
+                 |  "bytes" : "04000000010600000076616c756531010600000076616c75653200010600000076616c756534",
+                 |  "parsed" : "[\"value1\",\"value2\",\"null\",\"value4\"]"
+                 |}""".stripMargin
+    val v = CLValue.List(CLValue.Option(CLValue.String("value1")),CLValue.Option(CLValue.String("value2")),
+      CLValue.OptionNone(new CLTypeInfo(CLType.String)),
+      CLValue.Option(CLValue.String("value4")))
+    info("CLValue.List(CLValue.Option(CLValue.String(\"value1\")),CLValue.Option(CLValue.String(\"value2\")),\n      CLValue.OptionNone(new CLTypeInfo(CLType.String)),\n      CLValue.Option(CLValue.String(\"value4\"))) serializes to "+json)
+    assert(JsonConverter.toJson(v)==json)
+  }
+
+
+
 }
