@@ -73,8 +73,6 @@ object Crypto {
     }
   }
 
-
-
   /**
    * Writes key objects to pem strings
    *

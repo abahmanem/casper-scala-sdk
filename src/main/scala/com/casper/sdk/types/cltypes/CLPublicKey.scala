@@ -115,16 +115,26 @@ class CLPublicKey(
    */
   def tag = 1
 
-
+  /**
+   * hashCode
+   * @return Int
+   */
   override def hashCode(): Int = 31 * java.util.Objects.hash(keyAlgorithm) + java.util.Arrays.hashCode(bytes)
 
-
+  /**
+   * equals
+   * @param obj
+   * @return Boolean
+   */
   override def equals(obj: scala.Any): Boolean = obj match {
     case pubKey: CLPublicKey => pubKey.keyAlgorithm == keyAlgorithm && java.util.Arrays.equals(bytes, pubKey.bytes)
     case _ => false
   }
 
-
+  /**
+   *  toString
+   * @return String
+   */
   override def toString: String = formatAsHexAccount.get
 }
 
@@ -168,7 +178,7 @@ object CLPublicKey {
     try {
       Some(KeyType.Account.prefix + HexUtils.toHex(Blake2b256.CLPublicKeyToAccountHash(publicKey)))
     } catch {
-      case ex: Exception => None
+      case _: Exception => None
     }
   }
 

@@ -83,7 +83,6 @@ object Deploy {
     val builder = new ArrayBuilder.ofByte
     builder.addAll(serializer.toBytes(payment)).addAll(serializer.toBytes(session))
     Blake2b256.hash(builder.result())
-
   }
 
   /**
@@ -139,7 +138,7 @@ object Deploy {
   }
 
   /**
-   * Deplyo to call a smart contract on the network (ex: delegation)
+   * Deploy to call a smart contract on the network (ex: delegation, undelegation)
    *
    * @param name       name of the smart contract
    * @param entryPoint enty point (function) to call in the smart contract
