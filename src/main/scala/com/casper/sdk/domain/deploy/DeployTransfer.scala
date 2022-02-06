@@ -7,7 +7,7 @@ import com.casper.sdk.types.cltypes.{AccountHash, CLType, CLTypeInfo, CLValue}
  *
  * @param args
  */
-class DeployTransfer(
+case class DeployTransfer(
                       override val args: Seq[Seq[DeployNamedArg]]
                     ) extends DeployExecutable(args) {
   def tag = 5

@@ -80,11 +80,10 @@ class CLPublicKeyTest extends AnyFunSuite {
     assert(caught.getMessage == "this not a public pem file")
   }
 
-  test("Test new CLPublicKey with a non valid hex string  , throws IllegalArgumentException") {
+  test("Test new CLPublicKey with a non valid hex string  , throws NoSuchElementException") {
     val caught: NoSuchElementException = intercept[NoSuchElementException] {
        CLPublicKey("9cfggg77ft07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d06555f0363").get
     }
-  //  assert(caught.getMessage == "Unable to decode: 9cfggg77ft07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d06555f0363")
   }
 
 }
