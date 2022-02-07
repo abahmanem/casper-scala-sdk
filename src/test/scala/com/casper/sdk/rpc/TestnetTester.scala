@@ -36,6 +36,8 @@ object TestnetTester extends App {
 
 
 
+
+
   val client = new CasperSdk("http://65.21.227.180:7777/rpc")
   val dp = client.getDeploy("0fe0adccf645e99b9b58493c843516cd354b189e1c3efe62c4f2768716a41932")
 

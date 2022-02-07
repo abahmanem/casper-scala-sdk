@@ -331,7 +331,6 @@ class CasperSdkTest extends AnyFunSuite {
 
     val caught: IllegalArgumentException = intercept[IllegalArgumentException] {
       client.getBalance("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956", URef("9cC6877ft07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007"))
-
     }
     assert(caught.getMessage.toLowerCase == "9cC6877ft07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007 is not a valid uref".toLowerCase)
   }
