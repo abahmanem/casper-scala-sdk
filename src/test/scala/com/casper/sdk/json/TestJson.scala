@@ -18,4 +18,16 @@ object TestJson extends App {
 
   println(JsonConverter.fromJson_01[A](json).get)
 
+
+
+  val test01 = Test01(Some("abcd"))
+
+  println(JsonConverter.toJson_01(test01).get)
+
+
+  val json01 = JsonConverter.toJson_01(test01).get
+
+  println(JsonConverter.fromJson_01[Test01](json01).get)
+
+
 }
