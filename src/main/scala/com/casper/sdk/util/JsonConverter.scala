@@ -9,7 +9,7 @@ import com.fasterxml.jackson.module.scala.{ClassTagExtensions, DefaultScalaModul
 
 import java.io.{IOException, InputStream, OutputStream}
 import scala.reflect.ClassTag
-
+import scala.util.{Try,Success,Failure}
 /**
  * JsonConverter Utility Object
  */
@@ -33,6 +33,27 @@ object JsonConverter {
    * @return
    */
   def toJson[T](t: T): String =   mapper.writer(prettyPrinter).writeValueAsString(t)
+
+
+  /**
+   * convert a capser type to json
+   *
+   * @param a
+   * @tparam A
+   * @return
+   */
+  def toJson_01[T](t: T): Option[String] = Try {
+ mapper.writer(prettyPrinter).writeValueAsString(t)
+  } match {
+    case Success(x) => Some(x)
+    case Failure (err) => {
+        print("toJson_01 failed due to $err")
+        None
+
+  }
+}
+
+
 
   /**
    *

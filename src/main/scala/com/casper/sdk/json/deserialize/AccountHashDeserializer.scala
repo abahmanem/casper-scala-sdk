@@ -9,7 +9,6 @@ import java.io.IOException
  * Custom fasterXml Deserializer for AccountHash objects
  */
 class AccountHashDeserializer extends JsonDeserializer[AccountHash] {
-  @throws[IOException]
   override def deserialize(parser: JsonParser, ctx: DeserializationContext): AccountHash = {
     new AccountHash(parser.getText)
   }

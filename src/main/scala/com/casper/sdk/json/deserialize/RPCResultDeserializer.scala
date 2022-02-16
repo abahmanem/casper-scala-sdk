@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.util.JSONPObject
 import  com.casper.sdk.crypto.hash.Hash
 
 import java.io.IOException
-
+import scala.util.{Try,Success,Failure}
 /**
  * Custom fasterXml Deserializer for RCPResult Object
  */

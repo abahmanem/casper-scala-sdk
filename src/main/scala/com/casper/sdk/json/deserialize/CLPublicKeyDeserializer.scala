@@ -10,7 +10,6 @@ import java.io.IOException
  * Custom fasterXml Deserializer for CLPublicKey object
  */
 class CLPublicKeyDeserializer extends JsonDeserializer[CLPublicKey] {
-  @throws[IOException]
   override def deserialize(parser: JsonParser, ctx: DeserializationContext): CLPublicKey = {
      CLPublicKey(parser.getText).get
   }

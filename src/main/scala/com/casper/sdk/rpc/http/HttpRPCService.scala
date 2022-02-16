@@ -5,7 +5,7 @@ import com.casper.sdk.rpc.http.ResponseCodeAndBody
 import com.casper.sdk.rpc.{RPCRequest, RPCResult, RPCService}
 import com.casper.sdk.util.JsonConverter
 import com.fasterxml.jackson.databind.node.ObjectNode
-
+import scala.util.{Try,Success,Failure}
 import java.nio.charset.StandardCharsets
 import java.time.Duration
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -72,7 +72,11 @@ class HttpRPCService(var url: String, var httpClient: OkHttpClient) extends RPCS
    * @return ResponseCodeAndBody
    */
   @throws[RPCIOException]
-  def post(request: String): ResponseCodeAndBody = try {
+  def post(request: String): ResponseCodeAndBody =
+
+
+
+    try {
 
     val response = httpClient.newCall(buildHttpRequest(request)).execute()
     ResponseCodeAndBody(response.code(), response.body().string())
