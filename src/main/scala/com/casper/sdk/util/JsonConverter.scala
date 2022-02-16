@@ -88,6 +88,26 @@ object JsonConverter {
   }
 
   /**
+   * Convert a json string into a Casper type
+   *
+   * @param json
+   * @tparam A
+   * @return
+   */
+  def fromJson_01[T: ClassTag](json: String): Option[T] = Try{
+    mapper.readValue(json, implicitly[ClassTag[T]].runtimeClass.asInstanceOf[Class[T]])
+  } match {
+    case Success(x) => Some(x)
+    case Failure(err) => {
+      print("fromJson_01 failed due to $err")
+      None
+
+    }
+  }
+
+
+
+  /**
    * Writes a Casper type object to an  OutputStream
    *
    * @param clObject
