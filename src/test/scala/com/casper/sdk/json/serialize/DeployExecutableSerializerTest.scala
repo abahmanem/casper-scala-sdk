@@ -40,7 +40,7 @@ class DeployExecutableSerializerTest extends AnyFunSuite {
     val arg1 = new DeployNamedArg("bar", CLValue.U512(BigInt.apply("24512121212")))
     val arg2 = new DeployNamedArg("foo", CLValue.U64(-5487))
     val storedVersionedContractByName = new StoredVersionedContractByName ("casper-test", Some(1425474), "entry-point",Seq(Seq(arg1,arg2)))
-    assert(JsonConverter.toJson(storedVersionedContractByName)==json)
+    assert(JsonConverter.toJson(storedVersionedContractByName).get==json)
   }
 
 
@@ -78,7 +78,7 @@ class DeployExecutableSerializerTest extends AnyFunSuite {
     val arg2 = new DeployNamedArg("foo", CLValue.ByteArray("test".getBytes))
     val args1 =  Seq(Seq(arg1,arg2))
     val storedVersionedContractByHash = new StoredVersionedContractByHash(Some(new Hash("b348fdd0d0b3f66468687df93141b5924f6bb957d5893c08b60d5a78d0b9a423")), None, "entry-point",args1)
-    assert(JsonConverter.toJson(storedVersionedContractByHash)==json)
+    assert(JsonConverter.toJson(storedVersionedContractByHash).get==json)
   }
 
 
@@ -110,7 +110,7 @@ class DeployExecutableSerializerTest extends AnyFunSuite {
 
     val args1 =  Seq(Seq(new DeployNamedArg("bar", CLValue.U8(12)),DeployNamedArg("foo", CLValue.String("Hello!!"))))
     val storedContractByHash = new StoredContractByHash(Some(new Hash("b348fdd0d0b3f66468687df93141b5924f6bb957d5893c08b60d5a78d0b9a423")),  "entry-point",args1)
-    assert(JsonConverter.toJson(storedContractByHash)==json)
+    assert(JsonConverter.toJson(storedContractByHash).get==json)
   }
 
 
@@ -141,7 +141,7 @@ class DeployExecutableSerializerTest extends AnyFunSuite {
 
     val args1 =  Seq(Seq(new DeployNamedArg("bar", CLValue.Unit()),new DeployNamedArg("foo", CLValue.U512(1452785) )))
     val StoredContractByName = new StoredContractByName("casper-test",  "entry-point",args1)
-    assert(JsonConverter.toJson(StoredContractByName)==json)
+    assert(JsonConverter.toJson(StoredContractByName).get==json)
   }
 
 
@@ -163,6 +163,6 @@ class DeployExecutableSerializerTest extends AnyFunSuite {
 
     val args =  Seq(Seq(new DeployNamedArg("amount", CLValue.I32(1000) )))
     val deployTransfer = new DeployTransfer(args)
-    assert(JsonConverter.toJson(deployTransfer)==json)
+    assert(JsonConverter.toJson(deployTransfer).get==json)
   }
 }

@@ -10,15 +10,12 @@ class HexUtilsTest  extends AnyFunSuite {
 
   test("HexUtils  fromHex Test ") {
    val bytes= HexUtils.fromHex("01")
-   assert( java.util.Arrays.equals(Array.fill(1)(1.toByte),bytes))
+   assert( java.util.Arrays.equals(Array.fill(1)(1.toByte),bytes.get))
   }
 
-  test("gHexUtils  fromHex Test with illegal hex litteral, throws IllegalArgumentException") {
-
-    val caught: IllegalArgumentException = intercept[IllegalArgumentException] {
-      HexUtils.fromHex("cx0114")
-    }
-    assert(caught.getMessage.toLowerCase == "Unable to decode: cx0114".toLowerCase)
+  test("HexUtils  fromHex Test with illegal hex litteral give None") {
+ val bytes = HexUtils.fromHex("cx0114")
+    assert(!bytes.isDefined)
   }
 
 }

@@ -21,7 +21,7 @@ class DeployNamedArgSerializerTest extends AnyFunSuite {
                  |]""".stripMargin
 
     val arg1 =  new DeployNamedArg("amount", CLValue.I32(1000) )
-    assert(JsonConverter.toJson(arg1)==json)
+    assert(JsonConverter.toJson(arg1).get==json)
   }
 
   test("DeployNamedArgSerializerTest with a list of DeployNamedArg"){
@@ -48,7 +48,7 @@ class DeployNamedArgSerializerTest extends AnyFunSuite {
 
     val arg1 =  new DeployNamedArg("amount", CLValue.I32(1000) )
     val arg2 =  new DeployNamedArg("amount", CLValue.String("test") )
-    assert(JsonConverter.toJson(Seq(Seq(arg1,arg2)))==json)
+    assert(JsonConverter.toJson(Seq(Seq(arg1,arg2))).get==json)
   }
 
 

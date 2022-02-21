@@ -16,7 +16,7 @@ object HexUtils {
    * @return
    */
   def toHex(bytes: Array[Byte]): Option[String] = try {
-    Some(Hex.encodeHexString(bytes))
+    Option.apply(Hex.encodeHexString(bytes))
   } catch {
     case e: Exception => None
   }
@@ -27,10 +27,10 @@ object HexUtils {
    * @param hex : hex string
    * @return byte array
    */
-  def fromHex(hex: String): Array[Byte] = try {
-    Hex.decodeHex(hex.toCharArray)
+  def fromHex(hex: String): Option[Array[Byte]] = try {
+    Option.apply(Hex.decodeHex(hex.toCharArray))
   }
   catch {
-    case x: DecoderException => throw new IllegalArgumentException("Unable to decode: " + hex, x)
+    case x: Exception => None
   }
 }

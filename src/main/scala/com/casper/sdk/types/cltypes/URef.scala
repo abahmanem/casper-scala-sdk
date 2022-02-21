@@ -3,7 +3,7 @@ package com.casper.sdk.types.cltypes
 import com.casper.sdk.json.deserialize.URefDeserializer
 import com.casper.sdk.util.HexUtils
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-
+import scala.util.{Try, Success, Failure}
 /**
  * Unforgeatable Reference
  *
@@ -21,7 +21,6 @@ class URef(
    * @return
    */
   def format: String = String.format(URef.UREF_PREFIX + "-%s-%03d", HexUtils.toHex(bytes).get, accessRights.bits)
-
   override def tag = 2
 }
 
@@ -29,7 +28,6 @@ class URef(
  * Companion object
  */
 object URef {
-
   val UREF_PREFIX = "uref"
 
   /**
@@ -37,7 +35,18 @@ object URef {
    * @param uref
    * @return
    */
-  def apply(uref: String): URef =  new URef(URef.parseUref(uref), URef.getAccessRight(uref))
+  def apply(uref: String): Option[URef] =  {
+    Try {
+     Option.apply(new URef(URef.parseUref(uref).get, URef.getAccessRight(uref)))
+    } match {
+      case Success(x) => x
+      case Failure(err) =>        None
+    }
+
+
+
+
+  }
 
   /**
    * extract AccessRight from Uref String
@@ -58,13 +67,39 @@ object URef {
    * @param uref
    * @return
    */
-  private def parseUref(uref: String): Array[Byte] = {
-    val opt = uref.split("-")
-    opt(0) match {
-      case UREF_PREFIX => HexUtils.fromHex(opt(1))
-      case _ => throw new IllegalArgumentException(uref + " is not a valid uref")
+  private def parseUref(uref: String): Option[Array[Byte]] = {
+    require(uref!=null)
+    Try {
+
+      val opt = uref.split("-")
+      opt(0) match {
+        case UREF_PREFIX => Option.apply(HexUtils.fromHex(opt(1)).get)
+        case _ => None
+      }
+
+    } match {
+      case Success(x) => x
+      case Failure(err) => {
+
+        None
+
+      }
     }
+
+
+
+
+
+
+
+/*
+    opt(0) match {
+      case UREF_PREFIX => Option.apply(HexUtils.fromHex(opt(1)).get)
+      case _ => None //throw new IllegalArgumentException(uref + " is not a valid uref")
+    }
+ */
   }
+
 }
 
 

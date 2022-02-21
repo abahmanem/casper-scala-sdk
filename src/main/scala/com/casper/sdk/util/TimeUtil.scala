@@ -30,10 +30,10 @@ object TimeUtil {
    * @param epochMilliTime
    * @return
    */
-  def timeStampString(epochMilliTime: Long): String = {
+  def timeStampString(epochMilliTime: Long): Option[String] = {
     val instant = Instant.ofEpochMilli(epochMilliTime)
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneId.of("UTC"))
-    formatter.format(instant)
+    Option.apply(formatter.format(instant))
   }
 
   /**
@@ -42,7 +42,7 @@ object TimeUtil {
    * @param ttl TTL string
    * @return milliseconds
    */
-  def ttlToMillis(ttl: String): Long = {
+  def ttlToMillis(ttl: String): Option[Long] = {
     var value: Long = 0
     val p = ttl.split(' ')
     try {
@@ -57,13 +57,15 @@ object TimeUtil {
           value += (v.replace("h", "")).toLong * 3600000
         else if (v.contains("d"))
           value += (v.replace("d", "")).toLong * 3600000 * 24
-        else throw new IllegalArgumentException(ttl + " is not a supported TTL format")
       }
     }
     catch {
-      case e: NumberFormatException => throw new IllegalArgumentException(ttl + " is not a supported TTL format")
+      case e: NumberFormatException => None
     }
-    value
+    value match {
+      case 0 => None
+      case _ => Option.apply(value)
+    }
   }
 
   /**
@@ -72,27 +74,29 @@ object TimeUtil {
    * @param millis
    * @return human readable String TTL
    */
-  def MillisToTtl(millis: Long): String = {
-    if (millis < 0) throw new IllegalArgumentException("Millis must be greater than zero!")
-    val sb = new StringBuilder("")
-    var days = TimeUnit.MILLISECONDS.toDays(millis)
-    var hours = TimeUnit.MILLISECONDS.toHours(millis) % 24
-    var minutes = TimeUnit.MILLISECONDS.toMinutes(millis) % 60
-    var seconds = TimeUnit.MILLISECONDS.toSeconds(millis) % 60
-    val milliseconds = millis % 1000
-    val day = "d"
-    val hour = "h"
-    val minute = "m"
-    val second = "s"
-    val mills = "ms"
+  def MillisToTtl(millis: Long): Option[String] = {
+    if (millis < 0) None
+    else {
+      val sb = new StringBuilder("")
+      var days = TimeUnit.MILLISECONDS.toDays(millis)
+      var hours = TimeUnit.MILLISECONDS.toHours(millis) % 24
+      var minutes = TimeUnit.MILLISECONDS.toMinutes(millis) % 60
+      var seconds = TimeUnit.MILLISECONDS.toSeconds(millis) % 60
+      val milliseconds = millis % 1000
+      val day = "d"
+      val hour = "h"
+      val minute = "m"
+      val second = "s"
+      val mills = "ms"
 
-    sb.append(if (days > 0 && hours > 0) s"$days$day " else if (days > 0 && hours == 0) s"$days$day" else "")
-      .append(if (hours > 0 && minutes > 0) s"$hours$hour " else if (hours > 0 && minutes == 0) s"$hours$hour" else "")
-      .append(if (minutes > 0 && seconds > 0) s"$minutes$minute " else if (minutes > 0 && seconds == 0) s"$minutes$minute" else "")
-      .append(if (seconds > 0 && milliseconds > 0) s"$seconds$second " else if (seconds > 0 && milliseconds == 0) s"$seconds$second" else "")
-      .append(if (seconds > 0 && milliseconds > 0) s"$seconds$second " else if (seconds > 0 && milliseconds == 0) s"$seconds$second" else "")
-      .append(if (milliseconds > 0) s"$milliseconds$mills" else "")
+      sb.append(if (days > 0 && hours > 0) s"$days$day " else if (days > 0 && hours == 0) s"$days$day" else "")
+        .append(if (hours > 0 && minutes > 0) s"$hours$hour " else if (hours > 0 && minutes == 0) s"$hours$hour" else "")
+        .append(if (minutes > 0 && seconds > 0) s"$minutes$minute " else if (minutes > 0 && seconds == 0) s"$minutes$minute" else "")
+        .append(if (seconds > 0 && milliseconds > 0) s"$seconds$second " else if (seconds > 0 && milliseconds == 0) s"$seconds$second" else "")
+        .append(if (seconds > 0 && milliseconds > 0) s"$seconds$second " else if (seconds > 0 && milliseconds == 0) s"$seconds$second" else "")
+        .append(if (milliseconds > 0) s"$milliseconds$mills" else "")
 
-    sb.toString()
+      Option.apply(sb.toString())
+    }
   }
 }

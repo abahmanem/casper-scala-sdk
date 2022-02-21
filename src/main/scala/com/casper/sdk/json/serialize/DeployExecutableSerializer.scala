@@ -18,8 +18,7 @@ class DeployExecutableSerializer extends JsonSerializer[DeployExecutable] {
       case storedVersionedContractByHash: StoredVersionedContractByHash => writeStoredVersionedContractByHash(storedVersionedContractByHash, gen)
       case storedVersionedContractByName: StoredVersionedContractByName => writeStoredVersionedContractByName(storedVersionedContractByName, gen)
       case transfer: DeployTransfer => writeDeployTransfer(transfer, gen)
-      case _=> throw new IllegalArgumentException("Unsuported Deploy typte"+value)
-    }
+     }
 
     /**
      * serialize  DeployTransfer

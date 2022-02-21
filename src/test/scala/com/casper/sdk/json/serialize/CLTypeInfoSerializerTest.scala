@@ -14,14 +14,14 @@ class CLTypeInfoSerializerTest extends AnyFunSuite {
     val json = """"U64""""
     val cLTypeInfo =  new CLTypeInfo(CLType.U64)
     info("new  CLTypeInfo(CLType.U64) json serialization =  " + json )
-    assert(JsonConverter.toJson(cLTypeInfo) == json)
+    assert(JsonConverter.toJson(cLTypeInfo).get == json)
   }
 
   test("Serialize CLTypeInfo with String") {
     val json = """"String""""
     val cLTypeInfo =  new CLTypeInfo(CLType.String)
     info("new  CLTypeInfo(CLType.String) json serialization =  " + json )
-    assert(JsonConverter.toJson(cLTypeInfo) == json)
+    assert(JsonConverter.toJson(cLTypeInfo).get == json)
   }
 
 
@@ -31,7 +31,7 @@ class CLTypeInfoSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
     val cLTypeInfo =  new CLByteArrayTypeInfo(124)
     info("new  new CLByteArrayTypeInfo(124) json serialization =  " + json )
-    assert(JsonConverter.toJson(cLTypeInfo) == json)
+    assert(JsonConverter.toJson(cLTypeInfo).get == json)
   }
 
 
@@ -41,7 +41,7 @@ class CLTypeInfoSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
     val cLTypeInfo =  new CLOptionTypeInfo(new CLTypeInfo(CLType.I64))
     info("new  new CLOptionTypeInfo(new CLTypeInfo(CLType.I64)) json serialization =  " + json )
-    assert(JsonConverter.toJson(cLTypeInfo) == json)
+    assert(JsonConverter.toJson(cLTypeInfo).get == json)
   }
   
 }

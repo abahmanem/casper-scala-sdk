@@ -56,5 +56,4 @@ object SECP256K1 {
     signer.update(msg, 0, msg.length)
     signer.verifySignature(signature)
   }
-
 }

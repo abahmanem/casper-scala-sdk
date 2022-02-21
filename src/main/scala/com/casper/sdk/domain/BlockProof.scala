@@ -9,6 +9,6 @@ import com.casper.sdk.types.cltypes.CLPublicKey
  * @param signature
  */
 case class BlockProof(
-                       public_key: CLPublicKey, 
+                       public_key: Option[CLPublicKey],
                        signature: String
                      )

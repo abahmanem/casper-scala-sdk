@@ -3,7 +3,7 @@ package com.casper.sdk.types.cltypes
 import com.casper.sdk.json.deserialize.AccountHashDeserializer
 import com.casper.sdk.util.HexUtils
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-
+import scala.util.{Failure, Success, Try}
 /**
  * AccountHash entitiy class
  *
@@ -20,13 +20,6 @@ case class AccountHash(
    * @return
    */
   def format: String = String.format(AccountHash.ACCOUNT_PREFIX + "%s", HexUtils.toHex(bytes).get)
-
-  /**
-   * Constructor using s String Uref value
-   *
-   * @param uref
-   */
-  def this(account: String) = this(AccountHash.parseAccount(account))
 }
 
 /**
@@ -34,12 +27,39 @@ case class AccountHash(
  */
 object AccountHash {
   val ACCOUNT_PREFIX = "account-hash-"
+
+  /**
+   *
+   * @param account
+   * @return
+   */
+  def apply(account: String) : Option[AccountHash] = Try {
+    if(parseAccount(account)==null)throw IllegalArgumentException("not a valid account")
+    new AccountHash(parseAccount(account))
+    } match {
+      case Success(x) => Some(x)
+      case Failure(err) => None
+      }
+
+  /**
+   * pare an account String
+   * @param account
+   * @return
+   */
+
   def parseAccount(account: String): Array[Byte] = {
-    val prefix = account.substring(0, 13)
-    prefix match {
-      case ACCOUNT_PREFIX => HexUtils.fromHex(account.replace(prefix, ""))
-      case _ => throw new IllegalArgumentException(account + " is not a valid account")
+    require(account!=null)
+    Try {
+      val prefix = account.substring(0, 13)
+      prefix match {
+        case ACCOUNT_PREFIX => HexUtils.fromHex(account.replace(prefix, "")).get
+        case _ => throw IllegalArgumentException("not a valid account")
+      }
+    } match {
+      case Success(x) => x
+      case Failure(err) => null
     }
   }
 }
+
 

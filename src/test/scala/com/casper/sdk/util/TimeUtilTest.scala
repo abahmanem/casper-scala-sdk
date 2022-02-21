@@ -20,39 +20,33 @@ class TimeUtilTest extends AnyFunSuite {
 
   test("Test timeStampString from millis") {
     info("TimeUtil.timeStampString(1605573564072L)==\"2020-11-17T00:39:24.072Z\"")
-    assert(TimeUtil.timeStampString(1605573564072L) == "2020-11-17T00:39:24.072Z")
+    assert(TimeUtil.timeStampString(1605573564072L).get == "2020-11-17T00:39:24.072Z")
   }
 
   test("Test ttlToMillis ") {
 
     info("TimeUtil.ttlToMillis (\"30m\") ==1800000L")
-    assert(TimeUtil.ttlToMillis("30m") == 1800000L)
+    assert(TimeUtil.ttlToMillis("30m").get == 1800000L)
     info("TimeUtil.ttlToMillis (\"30m\") ==1800000L")
-    assert(TimeUtil.ttlToMillis("1h 30m") == 5400000L)
+    assert(TimeUtil.ttlToMillis("1h 30m").get == 5400000L)
   }
 
-  test("Test ttlToMillis with a non supported TTL , Thorws IllegalArgumentException ") {
-
-    val caught: IllegalArgumentException = intercept[IllegalArgumentException] {
-      info("TimeUtil.ttlToMillis (\"3041mn\") throws IllegalArgumentException")
-      TimeUtil.ttlToMillis("3041mn")
-    }
-    assert(caught.getMessage == "3041mn is not a supported TTL format")
+  test("Test ttlToMillis with a non supported TTL gives None String Option ") {
+    info("TimeUtil.ttlToMillis (\"3041mn\") gives None String Option")
+    val time = TimeUtil.ttlToMillis("3041mn")
+    assert(!time.isDefined)
   }
 
   test("Test MillisToTtl") {
     info("TimeUtil.MillisToTtl (1800000L)==\"30m\"")
-    assert(TimeUtil.MillisToTtl(1800000L) == "30m")
-
+    assert(TimeUtil.MillisToTtl(1800000L).get == "30m")
     info("TimeUtil.MillisToTtl (5400000L)==\"1h 30m\"")
-    assert(TimeUtil.MillisToTtl(5400000L) == "1h 30m")
+    assert(TimeUtil.MillisToTtl(5400000L).get == "1h 30m")
   }
 
-  test("Test MillisToTtl with negative millis ,  Thorws IllegalArgumentException") {
-    val caught: IllegalArgumentException = intercept[IllegalArgumentException] {
-      info("TimeUtil.MillisToTtl (-5L) throws IllegalArgumentException")
-      TimeUtil.MillisToTtl(-5L)
-    }
-    assert(caught.getMessage == "Millis must be greater than zero!")
+  test("Test MillisToTtl with negative millis ,  gives None String Option") {
+    info("TimeUtil.MillisToTtl (-5L) gives None String Option ")
+    val time = TimeUtil.MillisToTtl(-5L)
+    assert(!time.isDefined)
   }
 }

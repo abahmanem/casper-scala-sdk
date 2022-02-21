@@ -6,9 +6,11 @@ import com.fasterxml.jackson.databind.util.StdConverter
 /**
  * Custom serializer for TTL
  */
-class TTLSerializer extends StdConverter[Long, String] {
+class TTLSerializer extends StdConverter[Option[Long], String] {
 
-  override def convert(value: Long): String = {
-    TimeUtil.MillisToTtl(value)
+  override def convert(value: Option[Long]): String = {
+    if (value.isDefined)
+    TimeUtil.MillisToTtl(value.get).get
+    else ""
   }
 }

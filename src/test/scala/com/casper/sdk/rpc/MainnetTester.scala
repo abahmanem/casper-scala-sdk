@@ -5,12 +5,26 @@ import com.casper.sdk.CasperSdk
 import com.casper.sdk.domain.deploy.{DeployNamedArg, DeployTransfer}
 import com.casper.sdk.domain.deploy
 import com.casper.sdk.util.{ByteUtils, JsonConverter}
-import com.casper.sdk.util.implicits.idInstance
+
 
 import com.casper.sdk.types.cltypes.{AccessRight, AccountHash, CLValue, URef}
 import org.scalactic.Prettifier.default
 object MainnetTester  extends  App {
 
-  val client = new CasperSdk("http://65.21.202.120:7777/rpc")
-  val stateRootHash = client.getStateRootHash("7ededrtzg9fffff700e6baed36e8cb99400da0449fae6c95c")
+  val client = new CasperSdk("http://65.108.1.10:7777/rpc")
+  val perrs = client.getPeers
+
+  val rst = client.getStateRootHash("")
+
+  val blc = client.getBlock("4f813f035477f0a497a41956d6b3b6ba17909a2a030e55b0ed30d88a43371d98")
+  val deploy = client.getDeploy("541db942d6bf519f57e685c30e84047f2b59b0715f54d10ab0b5a6d0d0e80632")
+
+  println(perrs)
+  println(rst)
+  println(blc)
+
+  println(deploy)
+
+  println(JsonConverter.toJson(deploy.get))
+
 }

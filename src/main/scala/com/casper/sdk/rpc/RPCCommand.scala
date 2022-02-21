@@ -1,46 +1,72 @@
 package com.casper.sdk.rpc
 
-import cats.Id
-import com.casper.sdk.rpc.exceptions.*
+import com.casper.sdk.rpc.exceptions._
 import com.casper.sdk.rpc.http.HttpRPCService
-import com.casper.sdk.util.IdInstance
-
-import scala.reflect.*
+import com.casper.sdk.util.JsonConverter
+import scala.reflect.ClassTag
+import scala.reflect
+import scala.util.{Failure, Success, Try}
+import scala.concurrent.{Await, Future}
+import concurrent.duration.DurationInt
 
 /**
  * RPC client class
  *
  */
-trait RPCCommand(rpcService: RPCService)(implicit id: IdInstance) {
+trait RPCCommand(rpcService: RPCService) {
 
 
   /**
    * Performs the RPC call
+   *
    * @param method
    * @param params
    * @tparam T
    * @return Casper Result Type T
    */
-  def call[T: ClassTag](method: Method, params: Any*): T = {
-
-    val res = rpcService.send[T](RPCRequest(RPCRequest.id.incrementAndGet(), method.name, params: _*))
-    res.error match {
-      case None =>
-        res.result match {
-          case Some(null) => id.pure(None)
-          case result => id.pure(result)
-        }
-      case Some(err) => id.throwError(RPCException(s"An error occured when invoking RPC method: ${method.name} with params: $params", err))
-    }
-    match
-    {
-      case Some(x) if x != null => id.pure(x)
-      case Some(_) => id.throwError(RPCException(s"No result was returned when invoking RPC method: $method with params: $params", RPCError.NO_RESULTS))
-      case None => id.throwError(RPCException(s"No result was returned when invoking RPC method: $method with params: $params", RPCError.NO_RESULTS))
-    }
+  def call[T: ClassTag](method: Method, params: Any*): Try[T] = {
+    val res: Option[RPCResult[T]] = rpcService.send[T](RPCRequest(RPCRequest.id.incrementAndGet(), method.name, params: _*))
+    result(res, method, params)
   }
 
-  //TODO implement async calls
-  //def callAsync[T: ClassTag](method: String, params: Any*) : T = {}
 
+  /**
+   * non blocking RPC call
+   *
+   * @param method : rpc method
+   * @param params : parameters
+   * @tparam T : Casper type
+   * @return Try[T]
+   */
+  def callAsync[T: ClassTag](method: Method, params: Any*): Try[T] = {
+    val res: Future[Option[RPCResult[T]]] = rpcService.sendAsync[T](RPCRequest(RPCRequest.id.incrementAndGet(), method.name, params: _*))
+    val ress = Await.result(res, 10.seconds)
+    result(ress, method, params)
+  }
+
+
+  /**
+   * exctract Try[T] from  Option[RPCResult[T]
+   *
+   * @param res
+   * @param method
+   * @param params
+   * @tparam T
+   * @return Try[T]
+   */
+  def result[T: ClassTag](res: Option[RPCResult[T]], method: Method, params: Any*): Try[T] = {
+    res match {
+      case Some(x) => {
+        x.error match {
+          case None =>
+            x.result match {
+              case Some(x) if x!=null =>  Success(x)
+              case Some(_)|Some(null)| None => Failure(RPCException(s"No result was returned when invoking RPC method: $method with params: $params", RPCError.NO_RESULTS))
+            }
+          case Some(err) => Failure(RPCException(s"An error occured when invoking RPC method: ${method.name} with params: $params", err))
+        }
+      }
+      case None => Failure(RPCException(s"No result was returned when invoking RPC method: $method with params: $params", RPCError.NO_RESULTS))
+    }
+  }
 }

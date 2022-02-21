@@ -22,7 +22,7 @@ case class Hash(
    *
    * @param stringHash
    */
-  def this(stringHash: String) = this(HexUtils.fromHex(stringHash))
+  def this(stringHash: String) = this(HexUtils.fromHex(stringHash).get)
 
   override def toString: String = HexUtils.toHex(hash).get
 }

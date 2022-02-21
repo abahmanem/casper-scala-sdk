@@ -15,7 +15,7 @@ object TestSecp256k1 extends App {
 
   val sig = HexUtils.fromHex("029b97209f36e4765fcaec026e717e04cf0821d8709dede4a776691733b11d98df6d7745c16621eacec7459462da98ff525684028e8a63056c4e49e879b1b93831")
 
-  println("OOOOOOOOOOO " + SECP256K1.verify(hash, sig, key.bytes))
+  println("OOOOOOOOOOO " + SECP256K1.verify(hash.get, sig.get, key.bytes))
 
 
   //keys
@@ -27,9 +27,9 @@ object TestSecp256k1 extends App {
 
   //header
   val header = new DeployHeader(
-    CLPublicKey("02038debf99b9850210d5e5a3c3748db03cc31fc236197010931909350c32acf1689").get,
-    System.currentTimeMillis(),
-    1800000L,
+    CLPublicKey("02038debf99b9850210d5e5a3c3748db03cc31fc236197010931909350c32acf1689"),
+    Option.apply(System.currentTimeMillis()), Option.apply(1800000L),
+
     1,
     None,
     Seq.empty,
@@ -60,7 +60,7 @@ object TestSecp256k1 extends App {
   val deploy = Deploy.createUnsignedDeploy(header, payment, session)
 
   //sign it
-  val signedDeploy = Deploy.signDeploy(deploy, keys)
+  val signedDeploy = Deploy.signDeploy(deploy, keys.get)
 
 
   //json call (use with postman)

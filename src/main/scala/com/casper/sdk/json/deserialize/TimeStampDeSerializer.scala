@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.util.StdConverter
 /**
  * Custom Json Converter for TimeStamp field
  */
-class TimeStampDeSerializer extends  StdConverter[String,Long] {
-  override def convert(value: String): Long = {
-    TimeUtil.ToEpochMs(value).get
+class TimeStampDeSerializer extends  StdConverter[String,Option[Long]] {
+  override def convert(value: String): Option[Long] = {
+    TimeUtil.ToEpochMs(value)
   }
 }

@@ -20,7 +20,7 @@ class CLValueSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
     val v = CLValue.Option(CLValue.String("Hello, World!"))
     info("CLValue.Option(CLValue.String(\"Hello, World!\")) serializes to "+json)
-    assert(JsonConverter.toJson(v)==json)
+    assert(JsonConverter.toJson(v).get==json)
   }
 
 
@@ -32,7 +32,7 @@ class CLValueSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
     val v = CLValue.Bool(true)
     info("CLValue.Bool(true) serializes to "+json)
-    assert(JsonConverter.toJson(v)==json)
+    assert(JsonConverter.toJson(v).get==json)
   }
 
   test("Serialize String value") {
@@ -43,7 +43,7 @@ class CLValueSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
     val v = CLValue.String("Hello, world!")
     info("CLValue.String(\"Hello, world!\") serializes to "+json)
-    assert(JsonConverter.toJson(v)==json)
+    assert(JsonConverter.toJson(v).get==json)
   }
 
 
@@ -55,7 +55,7 @@ class CLValueSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
     val v = CLValue.U8(7)
     info("CLValue.U8(7) serializes to "+json)
-    assert(JsonConverter.toJson(v)==json)
+    assert(JsonConverter.toJson(v).get==json)
   }
 
   test("Serialize U512 value") {
@@ -66,7 +66,7 @@ class CLValueSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
     val v = CLValue.U512(458745874)
     info("CLValue.U512(458745874) serializes to "+json)
-    assert(JsonConverter.toJson(v)==json)
+    assert(JsonConverter.toJson(v).get==json)
   }
 
   test("Serialize U32 value") {
@@ -77,7 +77,7 @@ class CLValueSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
     val v = CLValue.U32(45874)
     info("CLValue.U32(45874) serializes to "+json)
-    assert(JsonConverter.toJson(v)==json)
+    assert(JsonConverter.toJson(v).get==json)
   }
 
   test("Serialize I32 value") {
@@ -88,7 +88,7 @@ class CLValueSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
     val v = CLValue.I32(10000)
     info("CLValue.I32(10000) serializes to "+json)
-    assert(JsonConverter.toJson(v)==json)
+    assert(JsonConverter.toJson(v).get==json)
   }
 
   test("Serialize I64 value") {
@@ -99,7 +99,7 @@ class CLValueSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
     val v = CLValue.I64(-541287)
     info("CLValue.I64(-541287) serializes to "+json)
-    assert(JsonConverter.toJson(v)==json)
+    assert(JsonConverter.toJson(v).get==json)
   }
 
   test("Serialize U128 value") {
@@ -110,7 +110,7 @@ class CLValueSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
     val v = CLValue.U128(154287551)
     info("CLValue.U128(458745874) serializes to "+json)
-    assert(JsonConverter.toJson(v)==json)
+    assert(JsonConverter.toJson(v).get==json)
   }
 
   test("Serialize U256 value") {
@@ -121,7 +121,7 @@ class CLValueSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
     val v = CLValue.U256(BigInt.apply("4545487556545454545454"))
     info("CLValue.U256(BigInt.apply(\"4545487556545454545454\")) serializes to "+json)
-    assert(JsonConverter.toJson(v)==json)
+    assert(JsonConverter.toJson(v).get==json)
   }
 
 
@@ -136,7 +136,7 @@ class CLValueSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
     val v = CLValue.List(CLValue.String("abc"),CLValue.String("defg") , CLValue.String("hijklmnopq"))
     info("CLValue.List(CLValue.String(\"abc\"),CLValue.String(\"defg\") , CLValue.String(\"hijklmnopq\")) serializes to "+json)
-    assert(JsonConverter.toJson(v)==json)
+    assert(JsonConverter.toJson(v).get==json)
   }
 
 
@@ -152,7 +152,7 @@ class CLValueSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
     val v = CLValue.Tuple1(CLValue.String("abcef"))
     info("CLValue.Tuple1(CLValue.String(\"abcef\")) serializes to "+json)
-    assert(JsonConverter.toJson(v)==json)
+    assert(JsonConverter.toJson(v).get==json)
   }
 
 
@@ -169,7 +169,7 @@ class CLValueSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
     val v = CLValue.Tuple2(CLValue.String("abc"), CLValue.U512(2))
     info("CLValue.Tuple2(CLValue.String(\"abc\"), CLValue.U512(2)) serializes to "+json)
-    assert(JsonConverter.toJson(v)==json)
+    assert(JsonConverter.toJson(v).get==json)
   }
 
 
@@ -191,7 +191,7 @@ class CLValueSerializerTest extends AnyFunSuite {
 
       CLValue.Option(CLValue.String("abc")), CLValue.U512(2))
     info("CLValue.Tuple3(CLValue.PublicKey(\"01a018bf278f32fdb7b06226071ce399713ace78a28d43a346055060a660ba7aa9\") ,\n\n    CLValue.Option(CLValue.String(\"abc\")), CLValue.U512(2)) serializes to "+json)
-    assert(JsonConverter.toJson(v)==json)
+    assert(JsonConverter.toJson(v).get==json)
   }
 
   test("Serialize Result with OK CLValue") {
@@ -207,7 +207,7 @@ class CLValueSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
     val v = CLValue.Ok(CLValue.String("goodresult"),new CLTypeInfo (CLType.String))
     info("CLValue.Ok(CLValue.String(\"goodresult\"),new CLTypeInfo (CLType.String)) serializes to "+json)
-    assert(JsonConverter.toJson(v)==json)
+    assert(JsonConverter.toJson(v).get==json)
   }
 
   test("Serialize Result with Err CLValue") {
@@ -223,7 +223,7 @@ class CLValueSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
     val v = CLValue.Err(CLValue.String("uh, something wnet wrong!!"),new CLTypeInfo (CLType.String))
     info("CLValue.Err(CLValue.String(\"uh, something wnet wrong!!\"),new CLTypeInfo (CLType.String)) serializes to "+json)
-    assert(JsonConverter.toJson(v)==json)
+    assert(JsonConverter.toJson(v).get==json)
   }
 
 
@@ -235,7 +235,7 @@ class CLValueSerializerTest extends AnyFunSuite {
                  |}""".stripMargin
     val v =  CLValue.Key("transfer-e330a31701205e3871cb4f7e14d3ff26074735c84b0e54b7a75f553a8405d182")
     info(" CLValue.Key(\"transfer-e330a31701205e3871cb4f7e14d3ff26074735c84b0e54b7a75f553a8405d182\") serializes to "+json)
-    assert(JsonConverter.toJson(v)==json)
+    assert(JsonConverter.toJson(v).get==json)
   }
 
   test("Serialize a List with Option String CLValue") {
@@ -252,9 +252,6 @@ class CLValueSerializerTest extends AnyFunSuite {
       CLValue.OptionNone(new CLTypeInfo(CLType.String)),
       CLValue.Option(CLValue.String("value4")))
     info("CLValue.List(CLValue.Option(CLValue.String(\"value1\")),CLValue.Option(CLValue.String(\"value2\")),\n      CLValue.OptionNone(new CLTypeInfo(CLType.String)),\n      CLValue.Option(CLValue.String(\"value4\"))) serializes to "+json)
-    assert(JsonConverter.toJson(v)==json)
+    assert(JsonConverter.toJson(v).get==json)
   }
-
-
-
 }

@@ -8,7 +8,7 @@ import org.scalatest.funsuite.AnyFunSuite
  */
 class SignatureTest extends AnyFunSuite {
   val hex = "012dbf03817a51794a8e19e0724884075e6d1fbec326b766ecfa6658b41f81290da85e23b24e88b1c8d9761185c961daee1adab0649912a6477bcd2e69bd91bd08"
-  val signature = new Signature(hex)
+  val signature = Signature(hex).get
 
   test("Test Signature KeyAlgorithm = ED25519") {
     assert(signature.keyAlgorithm == KeyAlgorithm.ED25519)
@@ -22,10 +22,8 @@ class SignatureTest extends AnyFunSuite {
     assert(signature.formatAsHexAccount.get .toLowerCase == hex.toLowerCase)
   }
 
-  test("Test new Signature with a non valid hex string  , throws IllegalArgumentException") {
-    val caught: IllegalArgumentException = intercept[IllegalArgumentException] {
-      new Signature("erftt78817a51794a8e19e0724884075e6d1fbec326b766ecfa6658b41f81290da85e23b24e88b1c8d9761185c961daee1adab0649912a6477bcd2e69bd91bd08")
-    }
-    assert(caught.getMessage == "Unable to decode: erftt78817a51794a8e19e0724884075e6d1fbec326b766ecfa6658b41f81290da85e23b24e88b1c8d9761185c961daee1adab0649912a6477bcd2e69bd91bd08")
+  test("Test new Signature with a non valid hex string  gives None") {
+    val sig =   Signature("erftt78817a51794a8e19e0724884075e6d1fbec326b766ecfa6658b41f81290da85e23b24e88b1c8d9761185c961daee1adab0649912a6477bcd2e69bd91bd08")
+    assert(!sig.isDefined)
   }
 }

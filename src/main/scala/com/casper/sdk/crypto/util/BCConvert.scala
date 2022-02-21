@@ -8,7 +8,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter
 
 import java.security.Security
-
+import scala.util.{Success, Try}
 /**
  * Conversions between BouncyCastle classes and JCA
  */
@@ -32,8 +32,14 @@ object BCConvert {
    * @param key : AsymmetricKeyParameter
    * @return PrivateKeyInfo
    */
-  def toPrivateKeyInfo(key: AsymmetricKeyParameter): PrivateKeyInfo = PrivateKeyInfoFactory.createPrivateKeyInfo(key)
-
+  def toPrivateKeyInfo(key: AsymmetricKeyParameter): Option[PrivateKeyInfo] =
+    Try {
+      PrivateKeyInfoFactory.createPrivateKeyInfo(key)
+    }
+    match {
+      case Success(x) =>Some(x)
+      case _ => None
+    }
   /**
    * converts java.security.Key to AsymmetricKeyParameter
    *
@@ -41,12 +47,10 @@ object BCConvert {
    * @return AsymmetricKeyParameter
    */
 
-  def toAsymmetricKeyParameter(key: java.security.Key): AsymmetricKeyParameter = key match {
-    case privateKey: java.security.PrivateKey => PrivateKeyFactory.createKey(key.getEncoded)
-
-    case publicKey: java.security.PublicKey => PublicKeyFactory.createKey(key.getEncoded)
-
-    case _ => throw new IllegalArgumentException(s"Not supported: ${key.getClass}")
+  def toAsymmetricKeyParameter(key: java.security.Key): Option[AsymmetricKeyParameter] = key match {
+    case privateKey: java.security.PrivateKey => Option.apply(PrivateKeyFactory.createKey(key.getEncoded))
+    case publicKey: java.security.PublicKey => Option.apply(PublicKeyFactory.createKey(key.getEncoded))
+    case _ => None
   }
 
 
@@ -56,7 +60,16 @@ object BCConvert {
    * @param key : AsymmetricKeyParameter
    * @return java.security.PrivateKey
    */
-  def getPrivateKey(key: AsymmetricKeyParameter): java.security.PrivateKey = converter.getPrivateKey(toPrivateKeyInfo(key))
+  def getPrivateKey(key: AsymmetricKeyParameter): Option[java.security.PrivateKey] =
+    Try {
+      converter.getPrivateKey(toPrivateKeyInfo(key).get)
+    }
+    match {
+      case Success(x) =>Some(x)
+      case _ => None
+    }
+
+
 
   /**
    * PrivateKeyInfo to java.security.PrivateKey
@@ -64,6 +77,12 @@ object BCConvert {
    * @param key : PrivateKeyInfo
    * @return java.security.PrivateKey
    */
-  def getPrivateKey(keyInfo: PrivateKeyInfo): java.security.PrivateKey = converter.getPrivateKey(keyInfo)
-
+  def getPrivateKey(keyInfo: PrivateKeyInfo): Option[java.security.PrivateKey] =
+    Try {
+      converter.getPrivateKey(keyInfo)
+    }
+    match {
+      case Success(x) =>Some(x)
+      case _ => None
+    }
 }

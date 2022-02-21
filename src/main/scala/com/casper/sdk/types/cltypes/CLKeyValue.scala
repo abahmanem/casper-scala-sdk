@@ -65,7 +65,7 @@ object CLKeyValue{
    def apply (key:String) : CLKeyValue =
      {
        require(key!=null)
-       new CLKeyValue(HexUtils.fromHex(key.substring(key.lastIndexOf("-")+1)),KeyType.getByPrefix(key.substring(0,key.lastIndexOf("-"))),parsedValue(key))
+       new CLKeyValue(HexUtils.fromHex(key.substring(key.lastIndexOf("-")+1)).get,KeyType.getByPrefix(key.substring(0,key.lastIndexOf("-"))),parsedValue(key))
      }
     /**
    * compute parsed value from string key

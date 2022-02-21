@@ -42,4 +42,11 @@ class RPCResult[T: ClassTag](
    * @param result
    */
   def this(result: T) = this("2.0", 1, Some(result), None)
+
+
+  /**
+   * Custom constructor with an RCPError
+   * @param err
+   */
+  def this(err: RPCError) = this("2.0", 1, None, Some(err))
 }

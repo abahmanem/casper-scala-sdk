@@ -13,6 +13,10 @@ class DeployApprovalByteSerializer extends BytesSerializable[DeployApproval] {
   def toBytes(value: DeployApproval): Array[Byte] = {
     require(value != null)
     val builder = new ArrayBuilder.ofByte
-    builder.addAll(value.signer.formatAsByteAccount).addAll(value.signature.formatAsByteAccount).result()
+    //signer and signature are both present
+    if (value.signature.isDefined && value.signer.isDefined)
+      builder.addAll(value.signer.get.formatAsByteAccount).addAll(value.signature.get.formatAsByteAccount).result()
+    else
+      builder.result()
   }
 }

@@ -20,16 +20,15 @@ trait RPCService {
    * @tparam T : Casper type  item to be returned by the request
    * @return deserialized JSON-RPC response
    */
-  @throws[IOException]
-  def send[T: ClassTag](request: RPCRequest): RPCResult[T]
+  def send[T: ClassTag](request: RPCRequest): Option[RPCResult[T]]
 
   /**
-   * Performs a asynchronous JSON-RPC request
+   * Performs an asynchronous JSON-RPC request
    *
    * @param request : request to perform
    * @tparam T : Casper type  item to be returned by the request
    * @return Future that will be completed when a result is returned or if the request  has failed
    */
-  @throws[IOException]
-  def sendAsync[T: ClassTag](request: RPCRequest): Future[RPCResult[T]]
+
+  def sendAsync[T: ClassTag](request: RPCRequest): Future[Option[RPCResult[T]]]
 }

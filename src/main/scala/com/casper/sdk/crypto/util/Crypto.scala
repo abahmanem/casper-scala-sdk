@@ -1,6 +1,7 @@
 package com.casper.sdk.crypto.util
 
 import com.casper.sdk.types.cltypes.{CLPublicKey, KeyAlgorithm}
+import com.casper.sdk.util.JsonConverter.mapper
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair
 import org.bouncycastle.crypto.params.{AsymmetricKeyParameter, Ed25519PublicKeyParameters}
 import org.bouncycastle.crypto.util.SubjectPublicKeyInfoFactory
@@ -15,6 +16,8 @@ import org.bouncycastle.openssl.jcajce.{JcaPEMKeyConverter, JcaPEMWriter}
 import java.io.{IOException, StringWriter}
 import java.security.spec.ECGenParameterSpec
 import java.security._
+import scala.reflect.ClassTag
+import scala.util.{Failure, Success, Try}
 
 object Crypto {
 
@@ -28,11 +31,16 @@ object Crypto {
    * @param ecurve
    * @return
    */
-  def newKeyPair(algo: String, ellipticCurve: String) = {
-    val keyPairGenerator = KeyPairGenerator.getInstance(algo, BouncyCastleProvider.PROVIDER_NAME)
-    val ecGenParameterSpec = new ECGenParameterSpec(ellipticCurve)
-    keyPairGenerator.initialize(ecGenParameterSpec, new SecureRandom())
-    keyPairGenerator.generateKeyPair()
+  def newKeyPair(algo: String, ellipticCurve: String) : Option[KeyPair]= {
+    Try {
+      val keyPairGenerator = KeyPairGenerator.getInstance(algo, BouncyCastleProvider.PROVIDER_NAME)
+      val ecGenParameterSpec = new ECGenParameterSpec(ellipticCurve)
+      keyPairGenerator.initialize(ecGenParameterSpec, new SecureRandom())
+      keyPairGenerator.generateKeyPair()
+    } match {
+      case Success(x) => Some(x)
+      case Failure(err) => None
+    }
   }
 
   /**
@@ -40,11 +48,11 @@ object Crypto {
    * @param publicKey
    * @return
    */
-  def toCLPublicKey(publicKey: PublicKey): CLPublicKey = {
+  def toCLPublicKey(publicKey: PublicKey): Option[CLPublicKey] = {
     require(publicKey != null)
     publicKey match {
-      case bcec: BCECPublicKey => new CLPublicKey(bcec.getQ.getEncoded(true), KeyAlgorithm.SECP256K1)
-      case bced: BCEdDSAPublicKey => new CLPublicKey(bced.getPointEncoding, KeyAlgorithm.ED25519)
+      case bcec: BCECPublicKey => Option.apply(new CLPublicKey(bcec.getQ.getEncoded(true), KeyAlgorithm.SECP256K1))
+      case bced: BCEdDSAPublicKey => Option.apply(new CLPublicKey(bced.getPointEncoding, KeyAlgorithm.ED25519))
     }
   }
 
@@ -53,22 +61,30 @@ object Crypto {
    * @param cLpublicKey
    * @return
    */
-  def fromCLPublicKey(cLpublicKey: CLPublicKey): PublicKey = {
+  def fromCLPublicKey(cLpublicKey: CLPublicKey): Option[PublicKey] = {
     require(cLpublicKey != null)
     cLpublicKey.keyAlgorithm match {
       case KeyAlgorithm.ED25519 => {
         val params = Ed25519PublicKeyParameters(cLpublicKey.bytes)
         val info = SubjectPublicKeyInfoFactory.createSubjectPublicKeyInfo(params)
-        converter.getPublicKey(info)
-
+        Try {
+          converter.getPublicKey(info)
+        } match {
+          case Success(x) => Some(x)
+          case Failure(err) => None
+        }
       }
       case KeyAlgorithm.SECP256K1 => {
         val keyFactory = KeyFactory.getInstance("ECDSA", BouncyCastleProvider.PROVIDER_NAME)
         val ecSpec = ECNamedCurveTable.getParameterSpec("secp256k1")
         val point = ecSpec.getCurve().decodePoint(cLpublicKey.bytes)
         val pubSpec = new ECPublicKeySpec(point, ecSpec)
-        keyFactory.generatePublic(pubSpec)
-
+        Try {
+          keyFactory.generatePublic(pubSpec)
+        } match {
+          case Success(x) => Some(x)
+          case Failure(err) =>  None
+        }
       }
     }
   }
@@ -81,25 +97,23 @@ object Crypto {
    * @return Pem String
    */
   @throws[IOException]
-  def toPem(data: AnyRef): String = {
+  def toPem(data: AnyRef): Option[String] = {
     val stringWriter = new StringWriter(4096)
     val writer = new JcaPEMWriter(stringWriter)
-    try {
-      data match {
 
-        case keyPair: AsymmetricCipherKeyPair => writer.writeObject(new PEMKeyPair(BCConvert.toSubjectPublicKeyInfo(keyPair.getPublic), BCConvert.toPrivateKeyInfo(keyPair.getPrivate)))
-        case key: AsymmetricKeyParameter if key.isPrivate => writer.writeObject(BCConvert.toPrivateKeyInfo(key))
+    Try {
+      data match {
+        case keyPair: AsymmetricCipherKeyPair => writer.writeObject(new PEMKeyPair(BCConvert.toSubjectPublicKeyInfo(keyPair.getPublic), BCConvert.toPrivateKeyInfo(keyPair.getPrivate).get))
+        case key: AsymmetricKeyParameter if key.isPrivate => writer.writeObject(BCConvert.toPrivateKeyInfo(key).get)
         case key: AsymmetricKeyParameter if !key.isPrivate => writer.writeObject(BCConvert.toSubjectPublicKeyInfo(key))
         case _ => writer.writeObject(data)
-
       }
       writer.flush()
       stringWriter.toString
-    } finally {
-      writer.close()
+    }
+    match {
+      case Success(x) => Some(x)
+      case _ => None
     }
   }
 }
-
-
-

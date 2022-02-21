@@ -13,22 +13,21 @@ object ByteUtils {
    * @return
    */
   def join(parts: Array[Byte]*): Array[Byte] = {
-    assert(parts != null)
+    require(parts != null)
     parts.toArray.flatten
   }
 
   /**
    *
    * Serialize U128,U256 and U512 casper types
+   *
    * @param value
    * @param maxBytes
    * @return Array[Byte]
    */
   def serializeArbitraryWidthNumber(value: BigInt, maxBytes: Int): Array[Byte] = {
-    assert(value != null)
+    require(value != null && value.toByteArray.length <= maxBytes)
     var bytes = value.toByteArray
-    if (bytes.length > maxBytes) throw IllegalArgumentException(value.toString() + " bytes length should be less than " + maxBytes)
-    //drop leading 0s
     if (bytes.length > 1 && bytes(0) == 0) {
       bytes = bytes.drop(0)
     }
@@ -46,9 +45,8 @@ object ByteUtils {
    */
 
   def serializeFixedWidthNumber(value: BigInt, maxBytes: Int): Array[Byte] = {
-    assert(value != null)
+    require(value != null && value.toByteArray.length <= maxBytes)
     val bytes = value.toByteArray
-    if (bytes.length > maxBytes) throw IllegalArgumentException(value.toString() + " bytes length should be less than " + maxBytes)
     var res = new Array[Byte](maxBytes)
     if (bytes.length < maxBytes) {
       res = Array.tabulate(maxBytes) { i =>

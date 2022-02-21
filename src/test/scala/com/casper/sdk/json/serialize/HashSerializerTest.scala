@@ -15,7 +15,7 @@ class HashSerializerTest extends AnyFunSuite {
     val pubkey =  CLPublicKey("017d96b9A63ABCB61C870a4f55187A0a7AC24096Bdb5Fc585c12a686a4D892009e")
     val hash = new Hash(pubkey.get.bytes)
     info("new Hash(new CLPublicKey(\"017d96b9A63ABCB61C870a4f55187A0a7AC24096Bdb5Fc585c12a686a4D892009e\")) json serialization =  " + json )
-    assert(JsonConverter.toJson(hash) == json)
+    assert(JsonConverter.toJson(hash) .get== json)
   }
 
 }

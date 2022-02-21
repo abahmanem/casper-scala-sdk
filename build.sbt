@@ -1,12 +1,14 @@
 name := "casper-scala-sdk"
 
-version := "1.2.0"
+version := "1.2.1"
 
 scalaVersion := "3.0.2"
 
 //scalaTest framework
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.10"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.10" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest-funspec" % "3.2.10" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest-flatspec" % "3.2.10" % "test"
 
 //fasterXml library
 libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.13.0"
@@ -27,6 +29,11 @@ libraryDependencies += "com.squareup.okhttp3" % "okhttp" % "4.9.2"
 libraryDependencies += "commons-codec" % "commons-codec" % "1.15"
 
 libraryDependencies += "com.rfksystems" % "blake2b" % "1.0.0"
+
+
+
+
+
 
 //publish
 /*

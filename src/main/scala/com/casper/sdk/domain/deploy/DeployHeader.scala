@@ -22,13 +22,13 @@ import scala.collection.mutable.ArrayBuilder
  * @param chain_name
  */
 case class DeployHeader(
-                         account: CLPublicKey,
+                         account: Option[CLPublicKey],
                          @JsonSerialize(converter = classOf[TimeStampSerializer])
                          @JsonDeserialize(converter = classOf[TimeStampDeSerializer])
-                         timestamp: Long,
+                         timestamp: Option[Long],
                          @JsonSerialize(converter =  classOf[TTLSerializer])
                          @JsonDeserialize(converter =  classOf[TTLDeserializer])
-                         ttl: Long,
+                         ttl: Option[Long],
                          gas_price: Int,
                          body_hash: Option[Hash]=None,
                          var dependencies: Seq[Hash],

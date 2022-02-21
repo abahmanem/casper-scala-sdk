@@ -7,8 +7,8 @@ import com.fasterxml.jackson.databind.util.StdConverter
  * Custom Json Converter for TTl field
  */
 
-class TTLDeserializer extends  StdConverter[String,Long] {
-  override def convert(value: String): Long = {
+class TTLDeserializer extends  StdConverter[String,Option[Long]] {
+  override def convert(value: String): Option[Long] = {
     TimeUtil.ttlToMillis(value)
   }
 }

@@ -14,7 +14,7 @@ class DeployExecutableDeserializerTest extends AnyFunSuite {
   test("DeployExecutableDeserializer test ModuleBytes ") {
 
     val str = """{"ModuleBytes":{"module_bytes":"","args":[["amount",{"cl_type":"U512","bytes":"04005670E3","parsed":"3815790080"}]]}}"""
-    val modulesBytes = JsonConverter.fromJson[DeployExecutable](str)
+    val modulesBytes = JsonConverter.fromJson[DeployExecutable](str).get
     assert(modulesBytes.getClass.getSimpleName=="ModuleBytes")
   }
 
@@ -34,7 +34,7 @@ class DeployExecutableDeserializerTest extends AnyFunSuite {
                |        ]
                |        }
                |} """.stripMargin
-    val storedContractByHash = JsonConverter.fromJson[DeployExecutable](str)
+    val storedContractByHash = JsonConverter.fromJson[DeployExecutable](str).get
     assert(storedContractByHash.getClass.getSimpleName=="StoredContractByHash")
   }
 
@@ -54,7 +54,7 @@ class DeployExecutableDeserializerTest extends AnyFunSuite {
            |        ]
            |        }
            |} """.stripMargin
-    val storedContractByName = JsonConverter.fromJson[DeployExecutable](str)
+    val storedContractByName = JsonConverter.fromJson[DeployExecutable](str).get
     assert(storedContractByName.getClass.getSimpleName=="StoredContractByName")
 
   }
@@ -76,7 +76,7 @@ class DeployExecutableDeserializerTest extends AnyFunSuite {
                |        ]
                |        }
                |} """.stripMargin
-    val storedVersionedContractByHash = JsonConverter.fromJson[DeployExecutable](str)
+    val storedVersionedContractByHash = JsonConverter.fromJson[DeployExecutable](str).get
     assert(storedVersionedContractByHash.getClass.getSimpleName=="StoredVersionedContractByHash")
   }
   test("DeployExecutableDeserializer test StoredVersionedContractByName ") {
@@ -96,7 +96,7 @@ class DeployExecutableDeserializerTest extends AnyFunSuite {
                |        ]
                |        }
                |} """.stripMargin
-    val storedVersionedContractByName = JsonConverter.fromJson[DeployExecutable](str)
+    val storedVersionedContractByName = JsonConverter.fromJson[DeployExecutable](str).get
     assert(storedVersionedContractByName.getClass.getSimpleName=="StoredVersionedContractByName")
   }
 
@@ -116,7 +116,7 @@ class DeployExecutableDeserializerTest extends AnyFunSuite {
                 |        ]
                 |        }
                 |    }""".stripMargin
-    val transfert = JsonConverter.fromJson[DeployExecutable](str)
+    val transfert = JsonConverter.fromJson[DeployExecutable](str).get
     assert(transfert.getClass.getSimpleName=="DeployTransfer")
   }
 }

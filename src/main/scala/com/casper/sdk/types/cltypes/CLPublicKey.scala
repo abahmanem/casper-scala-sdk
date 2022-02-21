@@ -5,7 +5,7 @@ import com.casper.sdk.crypto.hash.Blake2b256
 import com.casper.sdk.crypto.util.{Crypto, SECP256K1}
 import com.casper.sdk.json.deserialize.CLPublicKeyDeserializer
 import com.casper.sdk.json.serialize.CLPublicKeySerializer
-import com.casper.sdk.types.cltypes.CLPublicKey.dropAlgorithmBytes
+import com.casper.sdk.types.cltypes.CLPublicKey
 import com.casper.sdk.types.cltypes.KeyAlgorithm
 import com.casper.sdk.util.{ByteUtils, HexUtils}
 import com.fasterxml.jackson.databind.annotation.{JsonDeserialize, JsonSerialize}
@@ -26,7 +26,7 @@ import java.io._
 import java.nio.file.{FileSystems, Files, Paths}
 import java.security.{KeyFactory, PublicKey, SecureRandom, Signature}
 
-
+import scala.util.{Failure, Success, Try}
 
 /**
  * CLPublicKey : Casper system public key
@@ -65,7 +65,7 @@ class CLPublicKey(
    *
    * @param path
    */
-  def toPemString(): String = {
+  def toPemString(): Option[String] = {
     keyAlgorithm match {
       case KeyAlgorithm.ED25519 => {
         val pubKeyInfo = new SubjectPublicKeyInfo(new AlgorithmIdentifier(EdECObjectIdentifiers.id_Ed25519), bytes)
@@ -78,7 +78,7 @@ class CLPublicKey(
         val pk: ECPublicKeyParameters = new ECPublicKeyParameters(q, domParam);
         Crypto.toPem(pk)
       }
-      case null => throw new IllegalArgumentException("algorithm not handled")
+      case null => None
     }
   }
 
@@ -91,15 +91,6 @@ class CLPublicKey(
    */
   def verifySignature(msg: Array[Byte], signature: Array[Byte]): Boolean = {
     require(msg != null && signature != null)
-    /*
-        val publicKey = Crypto.fromCLPublicKey(this)
-
-        val sig = Signature.getInstance(publicKey.getAlgorithm, BouncyCastleProvider.PROVIDER_NAME)
-
-        sig.initVerify(publicKey)
-        sig.update(msg)
-        sig.verify(signature)
-    */
     keyAlgorithm match {
       case KeyAlgorithm.ED25519 => {
         Ed25519.verify(signature, 0, bytes, 0, msg, 0, msg.length)
@@ -149,12 +140,14 @@ object CLPublicKey {
    * @return CLPublicKey
    */
   def apply(hex: String): Option[CLPublicKey] = {
-    try {
-      Some(new CLPublicKey(dropAlgorithmBytes(HexUtils.fromHex(hex)), KeyAlgorithm.fromId(hex.charAt(1).asDigit)))
-    } catch {
-      case _: Exception => None
+    Try {
+      new CLPublicKey(dropAlgorithmBytes(HexUtils.fromHex(hex).get), KeyAlgorithm.fromId(hex.charAt(1).asDigit).get)
     }
-  }
+    match {
+      case Success(x) =>Some(x)
+      case _ => None
+      }
+    }
 
 
   /**
@@ -175,21 +168,21 @@ object CLPublicKey {
    * @return
    */
   def accountHash(publicKey: CLPublicKey): Option[String] = {
-    try {
-      Some(KeyType.Account.prefix + HexUtils.toHex(Blake2b256.CLPublicKeyToAccountHash(publicKey)))
-    } catch {
-      case _: Exception => None
+    Try {
+      KeyType.Account.prefix + HexUtils.toHex(Blake2b256.CLPublicKeyToAccountHash(publicKey))
+    }
+    match {
+      case Success(x) =>Some(x)
+      case _ => None
     }
   }
-
-
   /**
    * load CLPublic key from pem file
    *
    * @param path
    * @return
    */
-  def fromPemFile(path: String): CLPublicKey = {
+  def fromPemFile(path: String): Option[CLPublicKey] = {
     require(path != null)
     val converter = new JcaPEMKeyConverter().setProvider(new BouncyCastleProvider());
     Option(new PEMParser(new FileReader(path)).readObject()) match {
@@ -198,16 +191,17 @@ object CLPublicKey {
           val pkey = converter.getPublicKey(pubkeyInfo)
           pkey match {
             case ed: BCEdDSAPublicKey => {
-              new CLPublicKey(ed.getPointEncoding(), KeyAlgorithm.ED25519)
+             Option.apply(new CLPublicKey(ed.getPointEncoding(), KeyAlgorithm.ED25519))
             }
             case ec: BCECPublicKey => {
-              new CLPublicKey(ec.getQ().getEncoded(true), KeyAlgorithm.SECP256K1)
+              Option.apply(new CLPublicKey(ec.getQ().getEncoded(true), KeyAlgorithm.SECP256K1))
             }
           }
         }
-        case _ => throw new IllegalArgumentException("this not a public pem file")
+        case _ => None
       }
-      case None => throw new IOException("could not read public  key File")
+      case None => None
     }
   }
+
 }

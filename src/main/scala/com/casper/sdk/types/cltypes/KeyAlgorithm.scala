@@ -46,11 +46,11 @@ object KeyAlgorithm {
    * @param id
    * @return
    */
-  def fromId(id: Int): KeyAlgorithm = {
+  def fromId(id: Int): Option[KeyAlgorithm] = {
 
     KeyAlgorithm.values.find(_.bits == id) match {
-      case Some(a) => a
-      case _ => throw new IllegalArgumentException("CLPublicKey : Unknown algorithm Id " + id)
+      case Some(a) => Some(a)
+      case _ => None //throw new IllegalArgumentException("CLPublicKey : Unknown algorithm Id " + id)
     }
   }
 }

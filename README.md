@@ -5,7 +5,7 @@
 
 Scala client library for interracting with CasperLabs nodes. 
 
-Current version :1.2.0
+Current version :1.2.1
 
 # How to install
 
@@ -15,7 +15,7 @@ In your build.sbt, add :
 
 
 ```scala
- libraryDependencies += "io.caspercommunity" %% "casper-scala-sdk" % "1.2.0"
+ libraryDependencies += "io.caspercommunity" %% "casper-scala-sdk" % "1.2.1"
 ```
 
 ## Maven
@@ -26,7 +26,7 @@ In your maven pom file add :
 <dependency>
   <groupId>io.caspercommunity</groupId>
   <artifactId>casper-scala-sdk_${scala.version}</artifactId>
-  <version>1.2.0</version>
+  <version>1.2.1</version>
 </dependency>  
 
 ```
@@ -117,7 +117,6 @@ This will generate : casper-scala-sdk_${scala.version}{version}.jar.
 Pass the url of the node  to constructor 
 
 ```scala
-import com.casper.sdk.util.implicits.*
 
 val client = new CasperSdk("http://node_ip_address:7777/rpc")
 
@@ -130,7 +129,8 @@ val client = new CasperSdk("http://node_ip_address:7777/rpc")
 Retrieves  a list of Peers.
 
 ```scala
-val peersList = client.getPeers
+val tryPeers:Try[Seq[Peer]] = client.getPeers
+val listOfPeers = peersList.getOrElse(List.empty[Peer])
 
 ```
 
@@ -139,7 +139,7 @@ val peersList = client.getPeers
 Retrieves  the state root hash String.
 
 ```scala
- val stateRootHash = client.getStateRootHash("")
+ val tryStateRootHash:Try[Seq[String]] = client.getStateRootHash("")
 ```
 
 ### Get Block 
@@ -152,7 +152,7 @@ call parameters :
 - block hash
 
 ```scala
-val block = client.getBlock("74dce8911A3EDf0f872dC11F0a63Ca9fE1b55b7188a9Feaaf431518bF9c508B4")
+val tryBlock:Try[Seq[Block]] = client.getBlock("74dce8911A3EDf0f872dC11F0a63Ca9fE1b55b7188a9Feaaf431518bF9c508B4")
 ```
     
    #### using block height : 
@@ -162,7 +162,7 @@ call parameters :
 
 
 ```scala
-val block = client.getBlockByHeight(371608)
+val tryBlock:Try[Seq[Block]] = client.getBlockByHeight(371608)
 ```
 
 ### Get Deploy
@@ -173,7 +173,7 @@ call parameters :
 - deploy hash
 
 ```scala
-val deploy = getDeploy("5545207665f6837F44a6BCC274319280B73a6f0997F957A993e60f878A736678")
+val tryDeploy:Try[Seq[Deploy]] = getDeploy("5545207665f6837F44a6BCC274319280B73a6f0997F957A993e60f878A736678")
 ```
 
 ###  Get Node Status
@@ -181,7 +181,7 @@ val deploy = getDeploy("5545207665f6837F44a6BCC274319280B73a6f0997F957A993e60f87
 Retrieves a NodeStatus object.
 
 ````scala
- val nodeSatatus = client.getStatus
+ val tryNodeSatatus:Try[Seq[NodeSatatus]] = client.getStatus
 ````
 
 ### Get BlockTransfers
@@ -192,7 +192,7 @@ call parameters :
 - block hash
 
 ```scala
-val transfers = client.getBlockTransfers("a623841478381D78C769636582305ef724f561d7314B4daED19A3EA6373Dd778")
+val tryTransfers = client.getBlockTransfers("a623841478381D78C769636582305ef724f561d7314B4daED19A3EA6373Dd778")
 ```
 
 ### Get current auction state
@@ -203,7 +203,7 @@ call parameters :
 - block hash 
 
 ```scala
-val auctionInfo = client.getAuctionInfo("3a4EfA0AA223bF713bEDB5fa8D6dEc29a008C923aec0ACB02A3e4e449b9E01a8")
+val tryAuctionInfo = client.getAuctionInfo("3a4EfA0AA223bF713bEDB5fa8D6dEc29a008C923aec0ACB02A3e4e449b9E01a8")
 ```
 
 can also be called without parameters : 
@@ -220,7 +220,7 @@ call parameters :
 - switch block (last block within an era) hash 
 
 ```scala
-val erasummury = client.getEraInfoBySwitchBlock("1e46B4c173dB70fDE0E867FF679ACa24e1c5Bea3C4333af94e53B4E3BC548B6B")
+val tryErasummury = client.getEraInfoBySwitchBlock("1e46B4c173dB70fDE0E867FF679ACa24e1c5Bea3C4333af94e53B4E3BC548B6B")
 ```
 
 ### Get StateItem
@@ -237,8 +237,10 @@ call parameters :
 - contract hash
 
 ````scala
-val storedValue = client.getStateItem("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956","hash-4dd10a0b2a7672e8ec964144634ddabb91504fe50b8461bac23584423318887d",Seq.empty)
-val contract = storedValue.Contract
+val tryStoredValue = client.getStateItem("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956","hash-4dd10a0b2a7672e8ec964144634ddabb91504fe50b8461bac23584423318887d",Seq.empty)
+var contract : Contrat = null
+if (tryStoredValue.isSuccess)
+   contract =tryStoredValue.get.Contract
 ````
 
   #### An account  :
@@ -249,8 +251,11 @@ call parameters :
 - account hash
 
 ````scala
-val storedValue = client.getStateItem("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956","account-hash-46dE97966cfc2F00C326e654baD000AB7a5E26bEBc316EF4D74715335cF32A88",Seq.empty)
-val account = storedValue.Account
+val tryStoredValue = client.getStateItem("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956","account-hash-46dE97966cfc2F00C326e654baD000AB7a5E26bEBc316EF4D74715335cF32A88",Seq.empty)
+var account : Account = null
+if (tryStoredValue.isSuccess)
+   account =tryStoredValue.get.Account
+
 ````
 
 #### A CLValue  :
@@ -262,7 +267,9 @@ call parameters :
 
 ````scala
 val storedValue = client.getStateItem("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956","account-hash-46dE97966cfc2F00C326e654baD000AB7a5E26bEBc316EF4D74715335cF32A88",Seq.empty)
-val clValue = storedValue.CLValue
+var clValue : CLValue = null
+if (tryStoredValue.isSuccess)
+   clValue =tryStoredValue.get.CLValue
 ````
 
 ### Get DictionaryItem
@@ -276,9 +283,11 @@ call parameters :
 - seed uref hash
 
 ```scala
-val storedVvalue = client.getDictionaryItem("8180307A39A8583a4a164154C360FB9Ab9B15A5B626295635A62DFc7A82e66a3",
+val tryStoredVvalue = client.getDictionaryItem("8180307A39A8583a4a164154C360FB9Ab9B15A5B626295635A62DFc7A82e66a3",
       "a8261377ef9cf8e741dd6858801c71e38c9322e66355586549b75ab24bdd73f2","uref-F5ea525E6493B41DC3c9b196ab372b6F3f00cA6F1EEf8fe0544e7d044E5480Ba-007")
-val clValue = storedValue.CLValue
+var clValue : CLValue = null
+if (tryStoredValue.isSuccess)
+   clValue =tryStoredValue.get.CLValue
 ```
 
 ### Get Balance
@@ -291,7 +300,7 @@ call parameters :
 - account uref hash
 
 ```scala
- val  balance = client.getBalance("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956",new URef("uref-9cC6877ft07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007"))
+ val  tryBalance = client.getBalance("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956",new URef("uref-9cC6877ft07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007"))
 
 ```
 

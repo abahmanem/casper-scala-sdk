@@ -40,7 +40,7 @@ class CLValue(
    * @param clType
    * @param parsed
    */
-  def this(hexBytes: String, clType: CLTypeInfo, parsed: Any) = this(HexUtils.fromHex(hexBytes), clType, parsed)
+  def this(hexBytes: String, clType: CLTypeInfo, parsed: Any) = this(HexUtils.fromHex(hexBytes).get, clType, parsed)
 
 }
 
@@ -102,7 +102,7 @@ object CLValue {
   //U512
   def U512(value: BigInt): CLValue = {
     require(value != null)
-    new CLValue(ByteUtils.serializeArbitraryWidthNumber(value, 64), CLTypeInfo(CLType.U512), value)
+    new CLValue(ByteUtils.serializeArbitraryWidthNumber(value, 64),CLTypeInfo(CLType.U512), value)
   }
 
   //String
@@ -143,7 +143,9 @@ object CLValue {
   //URef
   def URef(value: String): CLValue = {
     require(value != null)
-    URef(com.casper.sdk.types.cltypes.URef(value))
+    if(com.casper.sdk.types.cltypes.URef(value).isDefined)
+    URef(com.casper.sdk.types.cltypes.URef(value).get)
+    else null
   }
 
 
@@ -182,18 +184,29 @@ object CLValue {
 
   //List
   def List(values: CLValue*): CLValue = {
+    import util.control.Breaks._
     require(values != null && !values.isEmpty)
     val builder = new ArrayBuilder.ofByte
     var parsed = Array.empty[Any]
     val elementCountBytes = U32(values.size).bytes
     builder.addAll(elementCountBytes)
     val cl_typeInfo0 = values(0).cl_infoType
+    var isListOfSameElements = true
+
     for (value <- values) {
-      if(!value.cl_infoType.equals(cl_typeInfo0)) throw  IllegalArgumentException("a list of CLValues must have elements of the same type")
-      builder.addAll(value.bytes)
-      parsed = parsed.:+(value.parsed)
+      breakable {
+        if (!value.cl_infoType.equals(cl_typeInfo0)) {
+          isListOfSameElements = false
+          break
+        } else {
+          builder.addAll(value.bytes)
+          parsed = parsed.:+(value.parsed)
+        }
+      }
     }
-    new CLValue(builder.result(), if (values.isEmpty) new CLTypeInfo(CLType.Unit) else new CLListTypeInfo(values(0).cl_infoType), parsed)
+    if (isListOfSameElements)
+      new CLValue(builder.result(), if (values.isEmpty) new CLTypeInfo(CLType.Unit) else new CLListTypeInfo(values(0).cl_infoType), parsed)
+    else null
   }
   // Result Ok
 

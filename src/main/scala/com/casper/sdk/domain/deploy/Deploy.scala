@@ -8,6 +8,7 @@ import com.casper.sdk.types.cltypes.{AccountHash, CLPublicKey, Signature}
 import com.casper.sdk.util.HexUtils
 
 import scala.collection.mutable.ArrayBuilder
+import scala.util.{Failure, Success, Try}
 
 /**
  * Deploy entity class
@@ -93,11 +94,16 @@ object Deploy {
    * @return Deploy
    */
 
-  def signDeploy(deploy: Deploy, keyPair: KeyPair): Deploy = {
+  def signDeploy(deploy: Deploy, keyPair: KeyPair): Option[Deploy] = {
     require(keyPair != null)
-    val signature = keyPair.sign(deploy.hash.get.hash)
-    deploy.addApproval(new DeployApproval(keyPair.publicKey, new Signature(signature, keyPair.publicKey.keyAlgorithm)))
-    deploy
+    Try {
+      val signature = keyPair.sign(deploy.hash.get.hash)
+      deploy.addApproval(new DeployApproval(keyPair.publicKey, Some(new Signature(signature, keyPair.publicKey.get.keyAlgorithm))))
+      deploy
+    } match {
+      case Success(x) => Some(x)
+      case Failure(err) => None
+    }
   }
 
 
@@ -115,7 +121,7 @@ object Deploy {
    * @return a  Unsigne dDeploy
    */
   def transfer(from: CLPublicKey, to: CLPublicKey, amount: Long, fees: BigInt, chaine: String, id: BigInt, gas: Int = 1, ttl: Long = 1800000): Deploy = {
-    val header = new DeployHeader(from, System.currentTimeMillis(), ttl, gas, None, Seq.empty, chaine)
+    val header = new DeployHeader(Some(from), Option.apply(System.currentTimeMillis()), Option.apply(ttl), gas, None, Seq.empty, chaine)
     createUnsignedDeploy(header, ModuleBytes(fees), DeployTransfer(amount, new AccountHash(to.bytes), id))
   }
 
@@ -133,7 +139,7 @@ object Deploy {
    * @return an  Unsigned Deploy
    */
   def contract(wasm: Array[Byte], from: CLPublicKey, fees: BigInt, chaine: String, gas: Int = 1, ttl: Long = 1800000): Deploy = {
-    val header = new DeployHeader(from, System.currentTimeMillis(), ttl, gas, None, Seq.empty, chaine)
+    val header = new DeployHeader(Some(from), Option.apply(System.currentTimeMillis()), Option.apply(ttl), gas, None, Seq.empty, chaine)
     createUnsignedDeploy(header, ModuleBytes(fees), new ModuleBytes(wasm, Seq.empty))
   }
 
@@ -152,7 +158,7 @@ object Deploy {
    */
 
   def contractByNameCall(name: String, entryPoint: String, args: Seq[DeployNamedArg], from: CLPublicKey, fees: BigInt, chaine: String, gas: Int = 1, ttl: Long = 1800000): Deploy = {
-    val header = new DeployHeader(from, System.currentTimeMillis(), ttl, gas, None, Seq.empty, chaine)
+    val header = new DeployHeader(Some(from), Option.apply(System.currentTimeMillis()), Option.apply(ttl), gas, None, Seq.empty, chaine)
     createUnsignedDeploy(header, ModuleBytes(fees), new StoredContractByName(name, entryPoint, Seq(args)))
   }
 
@@ -171,7 +177,7 @@ object Deploy {
    */
 
   def contractByHashCall(hash: Option[Hash], entryPoint: String, args: Seq[DeployNamedArg], from: CLPublicKey, fees: BigInt, chaine: String, gas: Int = 1, ttl: Long = 1800000): Deploy = {
-    val header = new DeployHeader(from, System.currentTimeMillis(), ttl, gas, None, Seq.empty, chaine)
+    val header = new DeployHeader(Some(from), Option.apply(System.currentTimeMillis()), Option.apply(ttl), gas, None, Seq.empty, chaine)
     createUnsignedDeploy(header, ModuleBytes(fees), new StoredContractByHash(hash, entryPoint, Seq(args)))
   }
 
@@ -191,7 +197,7 @@ object Deploy {
    * @return an  Unsigned Deploy
    */
   def versionnedContractByNameCall(name: String, entryPoint: String, version: Int, args: Seq[DeployNamedArg], from: CLPublicKey, fees: BigInt, chaine: String, gas: Int = 1, ttl: Long = 1800000): Deploy = {
-    val header = new DeployHeader(from, System.currentTimeMillis(), ttl, gas, None, Seq.empty, chaine)
+    val header = new DeployHeader(Some(from), Option.apply(System.currentTimeMillis()), Option.apply(ttl), gas, None, Seq.empty, chaine)
     createUnsignedDeploy(header, ModuleBytes(fees), new StoredVersionedContractByName(name, Some(version), entryPoint, Seq(args)))
   }
 
@@ -211,9 +217,8 @@ object Deploy {
    * @return an  Unsigned Deploy
    */
   def versionnedContractByHashCall(hash: Option[Hash], entryPoint: String, version: Int, args: Seq[DeployNamedArg], from: CLPublicKey, fees: BigInt, chaine: String, gas: Int = 1, ttl: Long = 1800000): Deploy = {
-    val header = new DeployHeader(from, System.currentTimeMillis(), ttl, gas, None, Seq.empty, chaine)
+    val header = new DeployHeader(Some(from), Option.apply(System.currentTimeMillis()), Option.apply(ttl), gas, None, Seq.empty, chaine)
     createUnsignedDeploy(header, ModuleBytes(fees), new StoredVersionedContractByHash(hash, Some(version), entryPoint, Seq(args)))
   }
-
 }
 
