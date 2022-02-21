@@ -16,7 +16,7 @@ CasperSdk(url : string)
 ---
 ## Get Deploy
 ```scala
-getDeploy(deployHash : String): Deploy
+getDeploy(deployHash : String): Try[Deploy]
 ```
 Returns a Deploy entity 
 ### Parameters
@@ -28,7 +28,7 @@ Returns a Deploy entity
 ---
 ## Get Block by hash
 ```scala
-getBlock(blockHash: String) : Block
+getBlock(blockHash: String) : Try[Block]
 ```
 Returns a Block object 
 ### Parameters
@@ -39,7 +39,7 @@ Returns a Block object
 ---
 ## Get Block by height
 ```scala
-getBlockByHeight(blockHeight: BigInt) : Block
+getBlockByHeight(blockHeight: BigInt) : Try[Block]
 ```
 Returns a Block entity object
 ### Parameters
@@ -52,21 +52,21 @@ Returns a Block entity object
 ---
 ## Get peers
 ```scala 
-getPeers(): Seq[Peer]
+getPeers(): Try[Seq[Peer]]
 ```
 Returns a Sequence of Peer object entity
 
 ---
 ## Get Status
 ```scala
-def getStatus(): NodeStatus
+def getStatus(): Try[NodeStatus]
 ```
 Returns the current Status of the node
 
 ---
 ## Get Auction State
 ```scala
-def getAuctionInfo(blockHash: String): AuctionState
+def getAuctionInfo(blockHash: String): Try[AuctionState]
 ```
 Returns AuctionState  containing the bids and validators at a given block (block hash).
 if called without a parameter, it returns the  AuctionState of the most recently added block
@@ -79,7 +79,7 @@ if called without a parameter, it returns the  AuctionState of the most recently
 ---
 ## Get State_Root_Hash
 ```scala
-getStateRootHash(blockHash: String)
+getStateRootHash(blockHash: String): Try[String]
 ```
 Returns state root hash `String` by the given block hash or the one for the latest added block 
 ### Parameters
@@ -92,7 +92,7 @@ Returns state root hash `String` by the given block hash or the one for the late
 ---
 ## Get Account balance
 ```scala
-def getBalance(stateRootHash: String, accountUref: URef) : Long
+def getBalance(stateRootHash: String, accountUref: Option[URef]): Try[Long] 
 ```
 Returns Account balance 
 ### Parameters
@@ -105,7 +105,7 @@ Returns Account balance
 ---
 ## Get  State Item
 ```scala
-def getStateItem(stateRootHash: String, key: String, path: Seq[Any] = Seq.empty): StoredValue
+def getStateItem(stateRootHash: String, key: String, path: Seq[Any] = Seq.empty): Try[StoredValue]
 ```
 Returns StoredValue object entity for the given state root hash, casper-type key and path
 ### Parameters
@@ -118,7 +118,7 @@ Returns StoredValue object entity for the given state root hash, casper-type key
 ---
 ## Get Block transfers
 ```scala
-def getBlockTransfers(blockHash: String): Seq[Transfer]
+def getBlockTransfers(blockHash: String): Try[Seq[Transfer]] 
 ```
 Returns a sequence of Transfer objects for the block 
 ### Parameters
@@ -129,7 +129,7 @@ Returns a sequence of Transfer objects for the block
 ---
 ## Get Era Summary by Switch Block Hash
 ```scala
-def getEraInfoBySwitchBlock(blockHash: String): EraSummary
+def getEraInfoBySwitchBlock(blockHash: String): Try[EraSummary] 
 ```
 Returns an EraSummary object for the given block hash
 ### Parameters
@@ -140,7 +140,7 @@ Returns an EraSummary object for the given block hash
 ---
 ## Get Dictionary Item
 ```scala
-def getDictionaryItem(stateRootHash: String, itemKey: String, uref: String): StoredValue
+def getDictionaryItem(stateRootHash: String, itemKey: String, uref: String): Try[StoredValue]  
 ```
 Returns an item from a Dictionary as StoredValue object.
 
@@ -156,9 +156,9 @@ Returns an item from a Dictionary as StoredValue object.
 ## Put Deploy 
 ```scala
 
-def putDeploy(deploy:Deploy): Hash
+def putDeploy(deploy:Deploy): Try[Hash]
 ```
-Sends a deploy to casper network.
+Sends a deploy to the casper network.
 Returns a Hash object representing the deploy hash.
 
 
