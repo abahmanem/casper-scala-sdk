@@ -139,7 +139,7 @@ val listOfPeers = peersList.getOrElse(List.empty[Peer])
 Retrieves  the state root hash String.
 
 ```scala
- val tryStateRootHash:Try[Seq[String]] = client.getStateRootHash("")
+ val tryStateRootHash:Try[String] = client.getStateRootHash("")
 ```
 
 ### Get Block 
@@ -152,7 +152,7 @@ call parameters :
 - block hash
 
 ```scala
-val tryBlock:Try[Seq[Block]] = client.getBlock("74dce8911A3EDf0f872dC11F0a63Ca9fE1b55b7188a9Feaaf431518bF9c508B4")
+val tryBlock:Try[Block] = client.getBlock("74dce8911A3EDf0f872dC11F0a63Ca9fE1b55b7188a9Feaaf431518bF9c508B4")
 ```
     
    #### using block height : 
@@ -162,7 +162,7 @@ call parameters :
 
 
 ```scala
-val tryBlock:Try[Seq[Block]] = client.getBlockByHeight(371608)
+val tryBlock:Try[Block] = client.getBlockByHeight(371608)
 ```
 
 ### Get Deploy
@@ -173,7 +173,7 @@ call parameters :
 - deploy hash
 
 ```scala
-val tryDeploy:Try[Seq[Deploy]] = getDeploy("5545207665f6837F44a6BCC274319280B73a6f0997F957A993e60f878A736678")
+val tryDeploy:Try[Deploy] = getDeploy("5545207665f6837F44a6BCC274319280B73a6f0997F957A993e60f878A736678")
 ```
 
 ###  Get Node Status
@@ -181,7 +181,7 @@ val tryDeploy:Try[Seq[Deploy]] = getDeploy("5545207665f6837F44a6BCC274319280B73a
 Retrieves a NodeStatus object.
 
 ````scala
- val tryNodeSatatus:Try[Seq[NodeSatatus]] = client.getStatus
+ val tryNodeSatatus:Try[NodeSatatus] = client.getStatus
 ````
 
 ### Get BlockTransfers
