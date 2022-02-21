@@ -24,53 +24,21 @@ object JsonConverter {
   mapper.writer(prettyPrinter)
   mapper.setSerializationInclusion(Include.NON_NULL)
 
+
   /**
-   * convert a capser type to json
+   * Deserialize into a List of T
+   * @param json
+   * @tparam T : Casper generic type
+   * @return List[T]
+   */
+  def toList[T: ClassTag](json: String): List[T] = mapper.readValue(json)
+
+  /**
+   * convert a casper type to json
    *
    * @param a
    * @tparam A
-   * @return
-   */
-  def toJson_[T](t: T): String = mapper.writer(prettyPrinter).writeValueAsString(t)
-
-  /**
-   *
-   * @param json
-   * @param m
-   * @tparam V
-   * @return
-   */
-  //def toMap[V](json: String)(implicit m: JavaTypeable[V]): Map[String, V] = fromJson[Map[String, V]](json)
-
-
-  /**
-   *
-   * @param json
-   * @param m
-   * @tparam V
-   * @return
-   */
-  def toList[V: ClassTag](json: String): List[V] =
-    mapper.readValue(json)
-
-  /**
-   * Convert a json string into a Casper type
-   *
-   * @param json
-   * @tparam A
-   * @return
-   */
-  def fromJson_[T: ClassTag](json: String): T = {
-    mapper.readValue(json, implicitly[ClassTag[T]].runtimeClass.asInstanceOf[Class[T]])
-  }
-
-
-  /**
-   * convert a capser type to json
-   *
-   * @param a
-   * @tparam A
-   * @return
+   * @return Option[String]
    */
   def toJson[T](t: T): Option[String] = Try {
     mapper.writer(prettyPrinter).writeValueAsString(t)
@@ -79,17 +47,15 @@ object JsonConverter {
     case Failure(err) => {
       print("Json serialization failed due to $err")
       None
-
     }
   }
-
 
   /**
    * Convert a json string into a Casper type
    *
    * @param json
-   * @tparam A
-   * @return
+   * @tparam T :casper type
+   * @return : Option[T]
    */
   def fromJson[T: ClassTag](json: String): Option[T] = Try {
     mapper.readValue(json, implicitly[ClassTag[T]].runtimeClass.asInstanceOf[Class[T]])

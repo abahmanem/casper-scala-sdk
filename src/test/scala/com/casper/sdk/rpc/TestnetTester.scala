@@ -47,6 +47,8 @@ import org.apache.commons.codec.binary.Hex
 import scala.util.{Try, Success, Failure}
 
 object TestnetTester extends AnyFlatSpec with App with Matchers with TryValues {
+
+
   val client = new CasperSdk("http://65.21.227.180:7777/rpc")
   //Header
   val header = new DeployHeader(
