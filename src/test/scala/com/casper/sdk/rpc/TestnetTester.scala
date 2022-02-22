@@ -48,6 +48,7 @@ import scala.util.{Try, Success, Failure}
 
 object TestnetTester extends AnyFlatSpec with App with Matchers with TryValues {
 
+print(KeyPair.create(KeyAlgorithm.ED25519).get.publicToPem.get)
 
   val client = new CasperSdk("http://65.21.227.180:7777/rpc")
   //Header

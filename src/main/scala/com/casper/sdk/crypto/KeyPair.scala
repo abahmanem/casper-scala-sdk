@@ -33,7 +33,13 @@ case class KeyPair(privateKey: PrivateKey, publicKey: Option[CLPublicKey]) {
    *
    * @return
    */
-  def publicToPem: Option[String] = Crypto.toPem(Crypto.fromCLPublicKey(publicKey.get))
+  def publicToPem: Option[String] = Try {
+    Crypto.toPem(Crypto.fromCLPublicKey(publicKey.get).get)
+  }
+  match {
+    case Success(x) => x
+    case _ => None
+  }
 
   /**
    * sign a message
