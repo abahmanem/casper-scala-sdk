@@ -95,7 +95,7 @@ class HttpRPCService(var url: String, var httpClient: OkHttpClient) extends RPCS
       })
       promise.future
     }
-
+     
     var future = new CompletableFuture[Option[RPCResult[T]]]
     response onComplete {
       case Success(res) => {

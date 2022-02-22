@@ -25,8 +25,8 @@ trait RPCCommand(rpcService: RPCService) {
    * @return Casper Result Type T
    */
   def call[T: ClassTag](method: Method, params: Any*): Try[T] = {
-    val res: Option[RPCResult[T]] = rpcService.send[T](RPCRequest(RPCRequest.id.incrementAndGet(), method.name, params: _*))
-    result(res, method, params)
+    val option: Option[RPCResult[T]] = rpcService.send[T](RPCRequest(RPCRequest.id.incrementAndGet(), method.name, params: _*))
+    result(option, method, params)
   }
 
 
@@ -39,9 +39,9 @@ trait RPCCommand(rpcService: RPCService) {
    * @return Try[T]
    */
   def callAsync[T: ClassTag](method: Method, params: Any*): Try[T] = {
-    val res: Future[Option[RPCResult[T]]] = rpcService.sendAsync[T](RPCRequest(RPCRequest.id.incrementAndGet(), method.name, params: _*))
-    val ress = Await.result(res, 10.seconds)
-    result(ress, method, params)
+    val future: Future[Option[RPCResult[T]]] = rpcService.sendAsync[T](RPCRequest(RPCRequest.id.incrementAndGet(), method.name, params: _*))
+    val await = Await.result(future, 10.seconds)
+    result(await, method, params)
   }
 
 
