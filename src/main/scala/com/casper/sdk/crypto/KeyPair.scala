@@ -83,27 +83,23 @@ object KeyPair {
     require(path != null)
     Option(new PEMParser(new FileReader(path)).readObject()) match {
       case Some(obj) => obj match {
-        case pvkeyInfo: PrivateKeyInfo => {
-          Try {
-            val privKey = Crypto.converter.getPrivateKey(pvkeyInfo)
-            val privkeyparam = PrivateKeyFactory.createKey(pvkeyInfo)
-            val pubkeyparam = privkeyparam.asInstanceOf[Ed25519PrivateKeyParameters].generatePublicKey()
-            new KeyPair(privKey, Some(new CLPublicKey(pubkeyparam.getEncoded, KeyAlgorithm.ED25519)))
-          }
-          match {
-            case Success(x) => Some(x)
-            case _ => None
-          }
+        case pvkeyInfo: PrivateKeyInfo => Try {
+          val privKey = Crypto.converter.getPrivateKey(pvkeyInfo)
+          val privkeyparam = PrivateKeyFactory.createKey(pvkeyInfo)
+          val pubkeyparam = privkeyparam.asInstanceOf[Ed25519PrivateKeyParameters].generatePublicKey()
+          new KeyPair(privKey, Some(new CLPublicKey(pubkeyparam.getEncoded, KeyAlgorithm.ED25519)))
         }
-        case pemKeyPair: org.bouncycastle.openssl.PEMKeyPair => {
-          Try {
-            val keypair = Crypto.converter.getKeyPair(pemKeyPair.asInstanceOf[PEMKeyPair])
-            new KeyPair(keypair.getPrivate, Crypto.toCLPublicKey(keypair.getPublic))
-          }
-          match {
-            case Success(x) => Some(x)
-            case _ => None
-          }
+        match {
+          case Success(x) => Some(x)
+          case _ => None
+        }
+        case pemKeyPair: org.bouncycastle.openssl.PEMKeyPair => Try {
+          val keypair = Crypto.converter.getKeyPair(pemKeyPair.asInstanceOf[PEMKeyPair])
+          new KeyPair(keypair.getPrivate, Crypto.toCLPublicKey(keypair.getPublic))
+        }
+        match {
+          case Success(x) => Some(x)
+          case _ => None
         }
         case _ => None
       }
@@ -120,13 +116,21 @@ object KeyPair {
   def create(algo: KeyAlgorithm): Option[KeyPair] = {
     require(algo != null)
     algo match {
-      case KeyAlgorithm.ED25519 => {
+      case KeyAlgorithm.ED25519 => Try {
         val keyPair = Crypto.newKeyPair(algo.toString.toLowerCase(), algo.toString.toLowerCase()).get
-        Option.apply(new KeyPair(keyPair.getPrivate, Crypto.toCLPublicKey(keyPair.getPublic)))
+        new KeyPair(keyPair.getPrivate, Crypto.toCLPublicKey(keyPair.getPublic))
       }
-      case KeyAlgorithm.SECP256K1 => {
+      match {
+        case Success(x) => Some(x)
+        case _ => None
+      }
+      case KeyAlgorithm.SECP256K1 => Try {
         val keyPair = Crypto.newKeyPair("ECDSA", "secp256k1").get
-        Option.apply(new KeyPair(keyPair.getPrivate, Crypto.toCLPublicKey(keyPair.getPublic)))
+        new KeyPair(keyPair.getPrivate, Crypto.toCLPublicKey(keyPair.getPublic))
+      }
+      match {
+        case Success(x) => Some(x)
+        case _ => None
       }
     }
   }
