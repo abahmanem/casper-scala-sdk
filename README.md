@@ -126,7 +126,7 @@ val client = new CasperSdk("http://node_ip_address:7777/rpc")
 
 ### Get network peers list  
 
-Retrieves  a list of Peers.
+Retrieves  the list of connected peers.
 
 ```scala
 val tryPeers:Try[Seq[Peer]] = client.getPeers
