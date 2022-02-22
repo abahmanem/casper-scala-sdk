@@ -33,7 +33,7 @@ libraryDependencies += "com.rfksystems" % "blake2b" % "1.0.0"
 
 
 //publish
-
+/*
 
 ThisBuild / organization := "io.caspercommunity"
 ThisBuild / organizationName := "caspercommunity"
@@ -70,3 +70,4 @@ ThisBuild / publishTo := {
   else Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 ThisBuild / publishMavenStyle := true
+*/
