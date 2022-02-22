@@ -30,17 +30,19 @@ class DeployExecutableByteSerializer extends BytesSerializable[DeployExecutable]
       }
 
       case storedContractByName: StoredContractByName => {
-
         builder.addAll(CLValue.String(storedContractByName.name).bytes)
         builder.addAll(CLValue.String(storedContractByName.entry_point).bytes)
       }
 
-      case storedContractByHash: StoredContractByHash =>
-        builder.addAll(storedContractByHash.hash.get.hash)
-          .addAll(CLValue.U32(storedContractByHash.entry_point.getBytes(StandardCharsets.UTF_8).length).bytes)
-          .addAll(storedContractByHash.entry_point.getBytes(StandardCharsets.UTF_8))
+      case storedContractByHash: StoredContractByHash => {
 
+        if(storedContractByHash.hash.isDefined) builder.addAll(storedContractByHash.hash.get.hash)
+        builder.addAll(CLValue.U32(storedContractByHash.entry_point.getBytes(StandardCharsets.UTF_8).length).bytes)
+          .addAll(storedContractByHash.entry_point.getBytes(StandardCharsets.UTF_8))
+      }
       case storedVersionedContractByHash: StoredVersionedContractByHash => {
+
+        if(storedVersionedContractByHash.hash.isDefined)
         builder.addAll(storedVersionedContractByHash.hash.get.hash)
         storedVersionedContractByHash.version match {
           case None => builder.addOne(0x00.toByte)
