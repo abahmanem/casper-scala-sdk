@@ -22,7 +22,7 @@ case class NodeStatus(
                        starting_state_root_hash: String,
                        peers: Seq[Peer],
                        last_added_block_info: BlockInfo,
-                       our_public_signing_key: CLPublicKey,
+                       our_public_signing_key: Option[CLPublicKey],
                        round_length: String,
                        next_upgrade: NextUpgrade,
                        build_version: String,

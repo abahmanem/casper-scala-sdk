@@ -9,6 +9,6 @@ import com.casper.sdk.types.cltypes.CLPublicKey
  * @param weight
  */
 case class ValidatorWeight(
-                            public_key: CLPublicKey,
+                            public_key: Option[CLPublicKey],
                             weight: String
                           )

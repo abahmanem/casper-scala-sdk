@@ -154,7 +154,7 @@ class CasperSdkTest extends AnyFlatSpec with Matchers with TryValues {
     val nodeSatatus = client.getStatus
     assert(nodeSatatus.isSuccess)
     info("assert node pub key is : 01cd807fb41345d8dD5A61da7991e1468173acbEE53920E4DFe0D28Cb8825AC664")
-    assert(nodeSatatus.success.value.our_public_signing_key.formatAsHexAccount.get.toLowerCase == "01cd807fb41345d8dD5A61da7991e1468173acbEE53920E4DFe0D28Cb8825AC664".toLowerCase)
+    assert(nodeSatatus.success.value.our_public_signing_key.get.formatAsHexAccount.get.toLowerCase == "01cd807fb41345d8dD5A61da7991e1468173acbEE53920E4DFe0D28Cb8825AC664".toLowerCase)
     info("assert network is : casper-test ")
     assert(nodeSatatus.success.value.chainspec_name == "casper-test")
   }

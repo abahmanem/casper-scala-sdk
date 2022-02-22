@@ -10,7 +10,7 @@ import com.casper.sdk.types.cltypes.URef
  * @param groups
  */
 case class ContractPackage(
-                            accessKey : URef,
+                            accessKey : Option[URef],
                             contractVersions : Seq[String],
                             disabledVersions : Seq[String],
                             groups:Seq[Group]

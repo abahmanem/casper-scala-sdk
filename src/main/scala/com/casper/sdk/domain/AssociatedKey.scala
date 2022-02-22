@@ -9,6 +9,6 @@ import com.casper.sdk.types.cltypes.AccountHash
  * @param weight
  */
 case class AssociatedKey(
-                          account_hash: AccountHash,
+                          account_hash: Option[AccountHash],
                           weight:Int
                         )

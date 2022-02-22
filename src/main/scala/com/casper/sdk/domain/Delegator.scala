@@ -11,7 +11,7 @@ import com.casper.sdk.types.cltypes.{CLPublicKey, URef}
  * @param delegatee
  */
 case class Delegator(
-                      public_key: CLPublicKey,
+                      public_key: Option[CLPublicKey],
                       staked_amount: BigInt,
                       bonding_purse: URef,
                       delegatee: String

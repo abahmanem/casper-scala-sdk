@@ -10,6 +10,6 @@ import com.casper.sdk.types.cltypes.CLPublicKey
  */
 
 case class Bid(
-                public_key: CLPublicKey,
+                public_key: Option[CLPublicKey],
                 bid: BidInfo,
                )

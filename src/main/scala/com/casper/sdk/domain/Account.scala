@@ -13,7 +13,7 @@ import  com.casper.sdk.domain._
  * @param action_thresholds
  */
 case class Account(
-                    account_hash : AccountHash,
+                    account_hash :Option[AccountHash],
                     named_keys : Seq[NamedKey],
                     main_purse: URef,
                     associated_keys : Seq[AssociatedKey],
