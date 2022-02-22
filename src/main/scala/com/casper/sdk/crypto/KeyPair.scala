@@ -128,7 +128,6 @@ object KeyPair {
         val keyPair = Crypto.newKeyPair("ECDSA", "secp256k1").get
         Option.apply(new KeyPair(keyPair.getPrivate, Crypto.toCLPublicKey(keyPair.getPublic)))
       }
-      case null => None
     }
   }
 }

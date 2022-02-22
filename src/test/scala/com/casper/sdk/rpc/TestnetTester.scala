@@ -48,7 +48,11 @@ import scala.util.{Try, Success, Failure}
 
 object TestnetTester extends AnyFlatSpec with App with Matchers with TryValues {
 
-print(KeyPair.create(KeyAlgorithm.ED25519).get.publicToPem.get)
+//print(KeyPair.create(KeyAlgorithm.ED25519).get.privateToPem.get)
+
+  val keyPair1 = KeyPair.loadFromPem(getClass.getResource("/crypto/ed25519/secret.pem").getPath)
+  info("assert publickey is not null")
+  assert(keyPair1.get.publicKey != null)
 
   val client = new CasperSdk("http://65.21.227.180:7777/rpc")
   //Header
