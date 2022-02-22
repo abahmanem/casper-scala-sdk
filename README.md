@@ -130,7 +130,7 @@ Retrieves  a list of Peers.
 
 ```scala
 val tryPeers:Try[Seq[Peer]] = client.getPeers
-val listOfPeers = peersList.getOrElse(List.empty[Peer])
+val listOfPeers = tryPeers.getOrElse(List.empty[Peer])
 
 ```
 
