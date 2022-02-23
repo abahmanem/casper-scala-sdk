@@ -22,8 +22,6 @@ object TimeUtil {
   catch {
     case e: DateTimeParseException => None
   }
-
-
   /**
    * converts milliseconds to timestamp  eg : ": "2020-11-17T00:39:24.072Z"
    *
@@ -31,9 +29,12 @@ object TimeUtil {
    * @return
    */
   def timeStampString(epochMilliTime: Long): Option[String] = {
-    val instant = Instant.ofEpochMilli(epochMilliTime)
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneId.of("UTC"))
-    Option.apply(formatter.format(instant))
+    if (epochMilliTime < 0) None
+    else {
+      val instant = Instant.ofEpochMilli(epochMilliTime)
+      val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneId.of("UTC"))
+      Some(formatter.format(instant))
+    }
   }
 
   /**
@@ -57,6 +58,8 @@ object TimeUtil {
           value += (v.replace("h", "")).toLong * 3600000
         else if (v.contains("d"))
           value += (v.replace("d", "")).toLong * 3600000 * 24
+        else if (v.contains("day"))
+          value += (v.replace("day", "")).toLong * 3600000 * 24
       }
     }
     catch {
@@ -64,7 +67,7 @@ object TimeUtil {
     }
     value match {
       case 0 => None
-      case _ => Option.apply(value)
+      case _ => Some(value)
     }
   }
 
@@ -96,7 +99,7 @@ object TimeUtil {
         .append(if (seconds > 0 && milliseconds > 0) s"$seconds$second " else if (seconds > 0 && milliseconds == 0) s"$seconds$second" else "")
         .append(if (milliseconds > 0) s"$milliseconds$mills" else "")
 
-      Option.apply(sb.toString())
+      Some(sb.toString())
     }
   }
 }
