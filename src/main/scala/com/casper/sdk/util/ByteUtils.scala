@@ -28,8 +28,11 @@ object ByteUtils {
   def serializeArbitraryWidthNumber(value: BigInt, maxBytes: Int): Array[Byte] = {
     require(value != null && value.toByteArray.length <= maxBytes)
     var bytes = value.toByteArray
+    //remove leading zeros
     if (bytes.length > 1 && bytes(0) == 0) {
-      bytes = bytes.drop(0)
+      val dest :  Array[Byte] =  new Array[Byte](bytes.length-1)
+      Array.copy(bytes, 1, dest, 0, bytes.length - 1)
+      bytes = dest
     }
     //Little-Endian byte order
     bytes = bytes.reverse

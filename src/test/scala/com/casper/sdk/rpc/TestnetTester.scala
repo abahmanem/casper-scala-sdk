@@ -48,6 +48,12 @@ import scala.util.{Try, Success, Failure}
 
 object TestnetTester extends AnyFlatSpec with App with Matchers with TryValues {
 
+
+
+  val u512 = CLValue.U512(2500000000L)
+
+  println(HexUtils.toHex(u512.bytes).get)
+
 //print(KeyPair.create(KeyAlgorithm.ED25519).get.privateToPem.get)
 
   val keyPair1 = KeyPair.loadFromPem(getClass.getResource("/crypto/ed25519/secret.pem").getPath)

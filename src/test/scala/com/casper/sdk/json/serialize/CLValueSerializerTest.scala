@@ -116,7 +116,7 @@ class CLValueSerializerTest extends AnyFunSuite {
   test("Serialize U256 value") {
     val json = """{
                  |  "cl_type" : "U256",
-                 |  "bytes" : "0a2e1a2022a7d14f69f600",
+                 |  "bytes" : "092e1a2022a7d14f69f6",
                  |  "parsed" : "4545487556545454545454"
                  |}""".stripMargin
     val v = CLValue.U256(BigInt.apply("4545487556545454545454"))
