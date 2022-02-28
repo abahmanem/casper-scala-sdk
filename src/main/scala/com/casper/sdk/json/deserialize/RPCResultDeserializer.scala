@@ -44,7 +44,7 @@ class RPCResultDeserializer extends JsonDeserializer[RPCResult[?]] {
           case Method.STATE_GET_AUCTION_INFO => new RPCResult(JsonConverter.fromJson[AuctionState](node.findValue("auction_state").toString).get)
           case Method.STATE_GET_ITEM | Method.STATE_GET_DICTIONARY_ITEM => new RPCResult(JsonConverter.fromJson[StoredValue](node.findValue("stored_value").toString).get)
           case Method.ACCOUNT_PUT_DEPLOY => new RPCResult[Hash](JsonConverter.fromJson[Hash](node.findValue("deploy_hash").toString).get)
-          case Method.RPC_SCHEMA => new RPCResult(node.toString.patch(1, "", 26)) //wipe out the rpc_call attribute
+          case Method.RPC_SCHEMA => new RPCResult(node.toString.patch(1, "", 26)) //get reid of the rpc_call attribute
         }
       }
     }

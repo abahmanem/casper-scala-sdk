@@ -76,7 +76,7 @@ object Deploy {
   /**
    * compute body hash
    *
-   * @return
+   * @return Array[Byte]
    */
   def deployBodyHash(payment: DeployExecutable, session: DeployExecutable): Array[Byte] = {
     require(payment != null && session != null)
@@ -91,7 +91,7 @@ object Deploy {
    *
    * @param deploy  deploy to sign
    * @param keyPair keyPair to sign deploy with
-   * @return Deploy
+   * @return Option[Deploy]
    */
 
   def signDeploy(deploy: Deploy, keyPair: KeyPair): Option[Deploy] = {
