@@ -26,10 +26,10 @@ object Crypto {
 
 
   /**
-   *
-   * @param algo
-   * @param ecurve
-   * @return
+   * create a java.security.KeyPair
+   * @param algo : algorithm (ED25519 /SECP265K1)
+   * @param ecurve : elliptic Curve
+   * @return Option[KeyPair]
    */
   def newKeyPair(algo: String, ellipticCurve: String) : Option[KeyPair]= {
     Try {
@@ -44,9 +44,9 @@ object Crypto {
   }
 
   /**
-   *
-   * @param publicKey
-   * @return
+   * get a CLpublicKey for a java.security.PublicKey
+   * @param publicKey : java.security.PublicKey
+   * @return  : Option[CLPublicKey]
    */
   def toCLPublicKey(publicKey: PublicKey): Option[CLPublicKey] = {
     require(publicKey != null)
@@ -57,9 +57,9 @@ object Crypto {
   }
 
   /**
-   *
+   * get a java.security.PublicKey from a CLPublicKey
    * @param cLpublicKey
-   * @return
+   * @return  java.security.PublicKey
    */
   def fromCLPublicKey(cLpublicKey: CLPublicKey): Option[PublicKey] = {
     require(cLpublicKey != null)

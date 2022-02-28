@@ -16,9 +16,9 @@ import scala.util.{Success, Try}
 
 
 /**
- * KeyPait holder
+ * KeyPair holder
  *
- * @param privateKey private key
+ * @param privateKey private key (java.security.PrivateKey)
  * @param publicKey  CLPublicKey
  */
 case class KeyPair(privateKey: PrivateKey, publicKey: Option[CLPublicKey]) {
@@ -108,9 +108,9 @@ object KeyPair {
   }
 
   /**
-   *
+   * create a new KeyPair from a given algoritm
    * @param algo
-   * @return
+   * @return  Option[KeyPair]
    */
 
   def create(algo: KeyAlgorithm): Option[KeyPair] = {

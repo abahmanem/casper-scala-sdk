@@ -81,10 +81,10 @@ object TestnetTester extends AnyFlatSpec with App with Matchers with TryValues {
   val signedDeploy = Deploy.signDeploy(deploy, keyPair.get)
   println(JsonConverter.toJson(signedDeploy))
 
-  val hash = client.putDeploy(signedDeploy.get)
+  //val hash = client.putDeploy(signedDeploy.get)
 
 
-  println(hash)
+  //println(hash)
   //assert(caught.getMessage == "An error occured when invoking RPC method: chain_get_block with params: " +
   // "ArraySeq(Map(Height -> 8745812)). RPC error code: -32001 , RPC error message: block not known")
 
