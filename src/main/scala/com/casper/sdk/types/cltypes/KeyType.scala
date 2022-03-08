@@ -25,10 +25,10 @@ object KeyType{
    * @param prefix
    * @return
    */
-  def getByPrefix(prefix : String):KeyType=
+  def getByPrefix(prefix : String):Option[KeyType]=
     KeyType.values.find(_.prefix == prefix) match {
-      case Some(a)=> a
-      case _ => throw  IllegalArgumentException(" No key value is defined for prefix " + prefix)
+      case Some(a)=> Some(a)
+      case _ => None //throw  IllegalArgumentException(" No key value is defined for prefix " + prefix)
     }
 
 }

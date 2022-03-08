@@ -50,17 +50,74 @@ object TestnetTester extends AnyFlatSpec with App with Matchers with TryValues {
 
 
 
-  val u512 = CLValue.U512(2500000000L)
+  val str1 = """ {"ModuleBytes" : {
+               |          "module_bytes" : "",
+               |          "args" : [
+               |            [
+               |              "amount",
+               |              {
+               |                "cl_type" : "U512",
+               |                "parsed" : "100000000",
+               |                "bytes" : "0400e1f505"
+               |              }
+               |            ]
+               |          ]
+               |        }
+               |      }}""".stripMargin
 
-  println(HexUtils.toHex(u512.bytes).get)
 
-//print(KeyPair.create(KeyAlgorithm.ED25519).get.privateToPem.get)
+  val md = JsonConverter.fromJson[ModuleBytes](str1)
+  println(md)
 
-  val keyPair1 = KeyPair.loadFromPem(getClass.getResource("/crypto/ed25519/secret.pem").getPath)
-  info("assert publickey is not null")
-  assert(keyPair1.get.publicKey != null)
+  val str2= """{
+              |        "Transfer" : {
+              |          "args" : [
+              |            [
+              |              "amount",
+              |              {
+              |                "cl_type" : "U512",
+              |                "parsed" : "3000000000",
+              |                "bytes" : "04005ed0b2"
+              |              }
+              |            ],
+              |            [
+              |              "target",
+              |              {
+              |                "cl_type" : "PublicKey",
+              |                "parsed" : "02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38",
+              |                "bytes" : "02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38"
+              |              }
+              |            ],
+              |            [
+              |              "id",
+              |              {
+              |                "cl_type" : {
+              |                  "Option" : "U64"
+              |                },
+              |                "bytes" : "010000000000000000",
+              |                "parsed" : 0
+              |              }
+              |            ]
+              |          ]
+              |        }
+              |
+              |} """.stripMargin
+
+  val se = JsonConverter.fromJson[DeployTransfer](str2)
+  println(se)
+
+
+  val seri = new DeployExecutableByteSerializer
+
+  val builder = new ArrayBuilder.ofByte
+  println(HexUtils.toHex(Blake2b256.hash( builder.addAll(seri.toBytes(md.get)).addAll(seri.toBytes(se.get)).result() )).get)
+
+
 
   val client = new CasperSdk("http://65.21.227.180:7777/rpc")
+
+
+  println(client.getPeers.get)
   //Header
   val header = new DeployHeader(
     CLPublicKey("0168688cd4db3bd37efd84b15dc5a1867465df4c429e17fe22954fea88f5b4e1fe"),
@@ -73,13 +130,13 @@ object TestnetTester extends AnyFlatSpec with App with Matchers with TryValues {
   )
 
   // payment
-  val arg0 = new DeployNamedArg("amount", CLValue.U512(2500000000L))
+  val arg0 = new DeployNamedArg("amount", CLValue.U512(1000000000L))
   val payment = new ModuleBytes("".getBytes(), Seq(Seq(arg0)))
 
   //session
-  val arg1 = new DeployNamedArg("amount", CLValue.U512(2500000000L))
-  val arg01 = new DeployNamedArg("target", CLValue.PublicKey("017d9aa0b86413d7ff9a9169182c53f0bacaa80d34c211adab007ed4876af17077"))
-  val arg02 = new DeployNamedArg("id", CLValue.Option(CLValue.U64(1)))
+  val arg1 = new DeployNamedArg("amount", CLValue.U512(3000000000L))
+  val arg01 = new DeployNamedArg("target", CLValue.PublicKey("02021172744b5e6bdc83a591b75765712e068e5d40a3be8ae360274fb26503b4ad38"))
+  val arg02 = new DeployNamedArg("id", CLValue.Option(CLValue.U64(0)))
   val session = new DeployTransfer(Seq(Seq(arg1, arg01, arg02)))
 
   val keyPair = com.casper.sdk.crypto.KeyPair.loadFromPem(getClass.getResource("/crypto/sign_put_deploys_secret.pem").getPath)

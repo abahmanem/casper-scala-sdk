@@ -13,7 +13,7 @@ object Blake2b256 {
    * gives a byte hashed array from a byte array
    *
    * @param input : Array[Byte]
-   * @return hex string  bytes array
+   * @return  hash array   array
    */
   def hash(input: Array[Byte]): Array[Byte] = {
     require(input != null)

@@ -76,6 +76,7 @@ class DeployExecutableByteSerializer extends BytesSerializable[DeployExecutable]
     val seq = list(0)
     for (i <- 0 to seq.size - 1) {
       val subArg = seq(i)
+      println(HexUtils.toHex(argSerializer.toBytes(subArg)))
       builder.addAll(argSerializer.toBytes(subArg))
     }
     builder.result()

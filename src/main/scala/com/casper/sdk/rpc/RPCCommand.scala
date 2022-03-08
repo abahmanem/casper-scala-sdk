@@ -42,7 +42,7 @@ trait RPCCommand(rpcService: RPCService) {
     val future: Future[Option[RPCResult[T]]] = rpcService.sendAsync[T](RPCRequest(RPCRequest.id.incrementAndGet(), method.name, params: _*))
     val await = Await.result(future, 10.seconds)
     result(await, method, params)
-  }
+   }
 
 
   /**

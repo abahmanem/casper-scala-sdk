@@ -102,7 +102,7 @@ object CLValue {
   //U512
   def U512(value: BigInt): CLValue = {
     require(value != null)
-    new CLValue(ByteUtils.serializeArbitraryWidthNumber(value, 64),CLTypeInfo(CLType.U512), value)
+    new CLValue(ByteUtils.serializeArbitraryWidthNumber(value, 64), CLTypeInfo(CLType.U512), value)
   }
 
   //String
@@ -143,8 +143,8 @@ object CLValue {
   //URef
   def URef(value: String): CLValue = {
     require(value != null)
-    if(com.casper.sdk.types.cltypes.URef(value).isDefined)
-    URef(com.casper.sdk.types.cltypes.URef(value).get)
+    if (com.casper.sdk.types.cltypes.URef(value).isDefined)
+      URef(com.casper.sdk.types.cltypes.URef(value).get)
     else null
   }
 
@@ -159,7 +159,9 @@ object CLValue {
   //Key
   def Key(value: String): CLValue = {
     require(value != null)
-    Key(CLKeyValue(value))
+    if (CLKeyValue(value).isDefined)
+      Key(CLKeyValue(value).get)
+    else null
   }
 
 
