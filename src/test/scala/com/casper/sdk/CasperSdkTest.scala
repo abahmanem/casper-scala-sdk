@@ -21,7 +21,7 @@ class CasperSdkTest extends AnyFlatSpec with Matchers with TryValues {
 
   "RPC Call to a non existing node (http://1.2.3.4:7777/rpc)" should "fail" in {
     val sdk = new CasperSdk("http://1.2.3.4:7777/rpc")
-    val peers = sdk.getPeers
+    val peers = sdk.getPeers()
     assert(peers.isFailure)
     peers.failure.exception should have message "An error occured when invoking RPC method: info_get_peers with params: ArraySeq(ArraySeq(List())). RPC error code: 0 , RPC error message: connect timed out"
   }
@@ -32,7 +32,7 @@ class CasperSdkTest extends AnyFlatSpec with Matchers with TryValues {
    * Test  getPeers
    */
   "getPeers " should "succeed" in {
-    val peers = client.getPeers
+    val peers = client.getPeers()
     info("Peers List size : " + peers.get.size)
     assert(!peers.success.value.isEmpty)
   }
@@ -151,7 +151,7 @@ class CasperSdkTest extends AnyFlatSpec with Matchers with TryValues {
    */
 
   "GetStatus " should " succeed " in {
-    val nodeSatatus = client.getStatus
+    val nodeSatatus = client.getStatus()
     assert(nodeSatatus.isSuccess)
     info("assert node pub key is : 01cd807fb41345d8dD5A61da7991e1468173acbEE53920E4DFe0D28Cb8825AC664")
     assert(nodeSatatus.success.value.our_public_signing_key.get.formatAsHexAccount.get.toLowerCase == "01cd807fb41345d8dD5A61da7991e1468173acbEE53920E4DFe0D28Cb8825AC664".toLowerCase)
@@ -362,4 +362,3 @@ class CasperSdkTest extends AnyFlatSpec with Matchers with TryValues {
     assert(hash.success.value.toString == signedDeploy.get.hash.get.toString)
   }
 }
-

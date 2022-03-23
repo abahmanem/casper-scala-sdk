@@ -22,7 +22,7 @@ class CasperSdk(url: String) extends RPCCommand(new HttpRPCService(url)) {
    *
    * @return : List[Peer]
    */
-  def getPeers: Try[Seq[Peer]] = call[Seq[Peer]](Method.INFO_GET_PEERS, Seq.empty)
+  def getPeers(): Try[Seq[Peer]] = call[Seq[Peer]](Method.INFO_GET_PEERS, Seq.empty)
 
 
 
@@ -56,7 +56,7 @@ class CasperSdk(url: String) extends RPCCommand(new HttpRPCService(url)) {
      *
      * @return : Node Status
      */
-    def getStatus: Try[NodeStatus] = call[NodeStatus](Method.INFO_GET_STATUS, Seq.empty)
+    def getStatus(): Try[NodeStatus] = call[NodeStatus](Method.INFO_GET_STATUS, Seq.empty)
 
 
     /**
@@ -129,7 +129,7 @@ class CasperSdk(url: String) extends RPCCommand(new HttpRPCService(url)) {
      *
      * @return : Json String with RPCSchema infos
      */
-    def getRpcSchema: Try[String] = call[String](Method.RPC_SCHEMA, Seq.empty)
+    def getRpcSchema(): Try[String] = call[String](Method.RPC_SCHEMA, Seq.empty)
 
     /**
      * put deploy
@@ -140,5 +140,3 @@ class CasperSdk(url: String) extends RPCCommand(new HttpRPCService(url)) {
     def putDeploy(deploy: Deploy): Try[Hash] = call[Hash](Method.ACCOUNT_PUT_DEPLOY, deploy)
 
 }
-
-

@@ -12,7 +12,7 @@ import org.scalactic.Prettifier.default
 object MainnetTester  extends  App {
 
   val client = new CasperSdk("http://65.108.1.10:7777/rpc")
-  val perrs = client.getPeers
+  val peers = client.getPeers()
 
   val rst = client.getStateRootHash("")
 

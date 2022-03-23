@@ -3,7 +3,7 @@
 
 ## About Casper Scala SDK
 
-Scala client library for interracting with CasperLabs nodes. 
+Scala client library for interracting with CasperLabs nodes.
 
 Current version :1.2.1
 
@@ -110,11 +110,11 @@ sbt package
 This will generate : casper-scala-sdk_${scala.version}{version}.jar.
 
 
-# Usage examples 
+# Usage examples
 
 ## Create a Client
 
-Pass the url of the node  to constructor 
+Pass the url of the node  to constructor
 
 ```scala
 
@@ -129,7 +129,7 @@ val client = new CasperSdk("http://node_ip_address:7777/rpc")
 Retrieves  the list of connected peers.
 
 ```scala
-val tryPeers:Try[Seq[Peer]] = client.getPeers
+val tryPeers:Try[Seq[Peer]] = client.getPeers()
 val listOfPeers = tryPeers.getOrElse(List.empty[Peer])
 
 ```
@@ -142,11 +142,11 @@ Retrieves  the state root hash String.
  val tryStateRootHash:Try[String] = client.getStateRootHash("")
 ```
 
-### Get Block 
+### Get Block
 
 Retrieves a Block object.
 
-   #### using block hash : 
+   #### using block hash :
 
 call parameters :
 - block hash
@@ -154,8 +154,8 @@ call parameters :
 ```scala
 val tryBlock:Try[Block] = client.getBlock("74dce8911A3EDf0f872dC11F0a63Ca9fE1b55b7188a9Feaaf431518bF9c508B4")
 ```
-    
-   #### using block height : 
+
+   #### using block height :
 
 call parameters :
 - block height
@@ -200,24 +200,24 @@ val tryTransfers = client.getBlockTransfers("a623841478381D78C769636582305ef724f
 Retrieves an AutionState object.
 
 call parameters :
-- block hash 
+- block hash
 
 ```scala
 val tryAuctionInfo = client.getAuctionInfo("3a4EfA0AA223bF713bEDB5fa8D6dEc29a008C923aec0ACB02A3e4e449b9E01a8")
 ```
 
-can also be called without parameters : 
+can also be called without parameters :
 
 ```scala
 val auctionInfo = client.getAuctionInfo("")
 ```
 
-### Get EraInfo By Switch Block 
+### Get EraInfo By Switch Block
 
 Retrieves an EraSummury object.
 
 call parameters :
-- switch block (last block within an era) hash 
+- switch block (last block within an era) hash
 
 ```scala
 val tryErasummury = client.getEraInfoBySwitchBlock("1e46B4c173dB70fDE0E867FF679ACa24e1c5Bea3C4333af94e53B4E3BC548B6B")
@@ -227,7 +227,7 @@ val tryErasummury = client.getEraInfoBySwitchBlock("1e46B4c173dB70fDE0E867FF679A
 
 Retrieves a StoredValue object.
 
-It's one of three possible values : 
+It's one of three possible values :
 
    #### A contract :
 
