@@ -56,7 +56,7 @@ class HttpRPCService(var url: String, var httpClient: OkHttpClient) extends RPCS
     } match {
       case Success(x) => x
       case Failure(err) => {
-        Some(new RPCResult(RPCError(0, err.getMessage)))
+        Some(new RPCResult(RPCError(1, err.getMessage)))
       }
     }
 
@@ -135,4 +135,3 @@ object HttpRPCService {
   final val JSON_MEDIA_TYPE: MediaType = MediaType.Companion.get("application/json")
   final val HTTP_DEFAULT_CLIENT = OkHttpClient.Builder().connectTimeout(Duration.ofSeconds(DEFAULT_TIMEOUT_SEC)).build()
 }
-

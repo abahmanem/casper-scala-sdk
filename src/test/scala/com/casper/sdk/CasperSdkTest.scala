@@ -23,7 +23,7 @@ class CasperSdkTest extends AnyFlatSpec with Matchers with TryValues {
     val sdk = new CasperSdk("http://1.2.3.4:7777/rpc")
     val peers = sdk.getPeers()
     assert(peers.isFailure)
-    peers.failure.exception should have message "An error occured when invoking RPC method: info_get_peers with params: ArraySeq(ArraySeq(List())). RPC error code: 0 , RPC error message: connect timed out"
+    peers.failure.exception should have message "An error occured when invoking RPC method: info_get_peers with params: ArraySeq(ArraySeq(List())). RPC error code: 1 , RPC error message: connect timed out"
   }
 
   val client = new CasperSdk("http://65.21.227.180:7777/rpc")
