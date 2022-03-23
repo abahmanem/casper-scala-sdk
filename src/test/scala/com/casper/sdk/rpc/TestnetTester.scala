@@ -67,7 +67,6 @@ object TestnetTester extends AnyFlatSpec with App with Matchers with TryValues {
 
 
   val md = JsonConverter.fromJson[ModuleBytes](str1)
-  println(md)
 
   val str2= """{
               |        "Transfer" : {
@@ -104,20 +103,17 @@ object TestnetTester extends AnyFlatSpec with App with Matchers with TryValues {
               |} """.stripMargin
 
   val se = JsonConverter.fromJson[DeployTransfer](str2)
-  println(se)
 
 
   val seri = new DeployExecutableByteSerializer
 
   val builder = new ArrayBuilder.ofByte
-  println(HexUtils.toHex(Blake2b256.hash( builder.addAll(seri.toBytes(md.get)).addAll(seri.toBytes(se.get)).result() )).get)
 
 
 
   val client = new CasperSdk("http://65.21.227.180:7777/rpc")
 
 
-  println(client.getPeers.get)
   //Header
   val header = new DeployHeader(
     CLPublicKey("0168688cd4db3bd37efd84b15dc5a1867465df4c429e17fe22954fea88f5b4e1fe"),
@@ -142,12 +138,10 @@ object TestnetTester extends AnyFlatSpec with App with Matchers with TryValues {
   val keyPair = com.casper.sdk.crypto.KeyPair.loadFromPem(getClass.getResource("/crypto/sign_put_deploys_secret.pem").getPath)
   val deploy = Deploy.createUnsignedDeploy(header, payment, session)
   val signedDeploy = Deploy.signDeploy(deploy, keyPair.get)
-  println(JsonConverter.toJson(signedDeploy))
 
   //val hash = client.putDeploy(signedDeploy.get)
 
 
-  //println(hash)
   //assert(caught.getMessage == "An error occured when invoking RPC method: chain_get_block with params: " +
   // "ArraySeq(Map(Height -> 8745812)). RPC error code: -32001 , RPC error message: block not known")
 
@@ -166,10 +160,8 @@ object TestnetTester extends AnyFlatSpec with App with Matchers with TryValues {
       "casper-test"
     )
 
-    println(JsonConverter.toJson(header))
 
     val sss = new DeployHeaderByteSerializer()
-    println(HexUtils.toHex(sss.toBytes(header)).get)
 
 
     val arg0 = new DeployNamedArg("amount", CLValue.U512(5000000000L))
@@ -188,7 +180,6 @@ object TestnetTester extends AnyFlatSpec with App with Matchers with TryValues {
 
 
     val session = new DeployTransfer(Seq(Seq(arg1, arg01, arg02)))
-    //println(JsonConverter.toJson(header))
 
 
     val session1 = new StoredVersionedContractByName("test", Some(12542), "entry_point", Seq(Seq(arg1, arg01, arg02)))
@@ -198,15 +189,10 @@ object TestnetTester extends AnyFlatSpec with App with Matchers with TryValues {
     val serializer = DeployExecutableByteSerializer()
     val builder = new ArrayBuilder.ofByte
     //  builder.addAll(serializer.toBytes(payment)).addAll(serializer.toBytes(session))
-    println("SSSSSSS  " + HexUtils.toHex(Deploy.deployBodyHash(payment, session)).get)
     val mm = com.casper.sdk.crypto.KeyPair.loadFromPem("/Users/p35862/pppp.pem")
 
 
     val deploy = Deploy.createUnsignedDeploy(header, payment, session)
-    println("//////////////////////////////////////////////////////////////////////////////////////////////////////////////")
-    println(HexUtils.toHex(Blake2b256.hash(Deploy.deployHeaderHash(deploy.header))).get)
     val signedDeploy = Deploy.signDeploy(deploy, mm)
-    println("//////////////////////////////////////////////////////////////////////////////////////////////////////////////")
-    println(JsonConverter.toJson(signedDeploy))
   */
 }

@@ -15,7 +15,6 @@ object TestSecp256k1 extends App {
 
   val sig = HexUtils.fromHex("029b97209f36e4765fcaec026e717e04cf0821d8709dede4a776691733b11d98df6d7745c16621eacec7459462da98ff525684028e8a63056c4e49e879b1b93831")
 
-  println("OOOOOOOOOOO " + SECP256K1.verify(hash.get, sig.get, key.bytes))
 
 
   //keys
@@ -63,7 +62,5 @@ object TestSecp256k1 extends App {
   val signedDeploy = Deploy.signDeploy(deploy, keys.get)
 
 
-  //json call (use with postman)
-  println(JsonConverter.toJson(signedDeploy))
 
 }

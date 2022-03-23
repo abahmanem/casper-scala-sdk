@@ -31,7 +31,6 @@ class CLValueDeSerializer extends JsonDeserializer[CLValue] {
     val typeNode = treeNode.get("cl_type")
     val clTypeInfo = cLTypeInfo(typeNode)
 
-    // println("OOOOOOOO-- : "+treeNode.get("parsed") + "  "+treeNode.get("parsed").getClass)
     val parsedValue =  parsed(treeNode.get("parsed"), clTypeInfo)
     clTypeInfo match {
       case  clTypeInfo :CLOptionTypeInfo  =>  CLOptionValue(bytesNode, clTypeInfo.asInstanceOf[CLOptionTypeInfo], parsedValue)

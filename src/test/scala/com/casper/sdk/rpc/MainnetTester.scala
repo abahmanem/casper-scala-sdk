@@ -19,12 +19,5 @@ object MainnetTester  extends  App {
   val blc = client.getBlock("4f813f035477f0a497a41956d6b3b6ba17909a2a030e55b0ed30d88a43371d98")
   val deploy = client.getDeploy("541db942d6bf519f57e685c30e84047f2b59b0715f54d10ab0b5a6d0d0e80632")
 
-  println(perrs)
-  println(rst)
-  println(blc)
-
-  println(deploy)
-
-  println(JsonConverter.toJson(deploy.get))
 
 }
