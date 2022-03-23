@@ -191,10 +191,10 @@ object CLPublicKey {
           val pkey = converter.getPublicKey(pubkeyInfo)
           pkey match {
             case ed: BCEdDSAPublicKey => {
-             Option.apply(new CLPublicKey(ed.getPointEncoding(), KeyAlgorithm.ED25519))
+             Option(new CLPublicKey(ed.getPointEncoding(), KeyAlgorithm.ED25519))
             }
             case ec: BCECPublicKey => {
-              Option.apply(new CLPublicKey(ec.getQ().getEncoded(true), KeyAlgorithm.SECP256K1))
+              Option(new CLPublicKey(ec.getQ().getEncoded(true), KeyAlgorithm.SECP256K1))
             }
           }
         }

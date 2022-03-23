@@ -27,7 +27,7 @@ object TestSecp256k1 extends App {
   //header
   val header = new DeployHeader(
     CLPublicKey("02038debf99b9850210d5e5a3c3748db03cc31fc236197010931909350c32acf1689"),
-    Option.apply(System.currentTimeMillis()), Option.apply(1800000L),
+    Option(System.currentTimeMillis()), Option(1800000L),
 
     1,
     None,

@@ -68,7 +68,7 @@ object CLKeyValue {
   def apply(key: String): Option[CLKeyValue] = {
     require(key != null)
     try {
-      Option.apply(new CLKeyValue(HexUtils.fromHex(key.substring(key.lastIndexOf("-") + 1)).get, KeyType.getByPrefix(key.substring(0, key.lastIndexOf("-"))).get, parsedValue(key)))
+      Option(new CLKeyValue(HexUtils.fromHex(key.substring(key.lastIndexOf("-") + 1)).get, KeyType.getByPrefix(key.substring(0, key.lastIndexOf("-"))).get, parsedValue(key)))
     } catch {
       case _: Exception => None
     }

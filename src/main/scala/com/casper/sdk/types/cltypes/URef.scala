@@ -37,7 +37,7 @@ object URef {
    */
   def apply(uref: String): Option[URef] =  {
     Try {
-     Option.apply(new URef(URef.parseUref(uref).get, URef.getAccessRight(uref)))
+     Option(new URef(URef.parseUref(uref).get, URef.getAccessRight(uref)))
     } match {
       case Success(x) => x
       case Failure(err) =>        None
@@ -73,7 +73,7 @@ object URef {
 
       val opt = uref.split("-")
       opt(0) match {
-        case UREF_PREFIX => Option.apply(HexUtils.fromHex(opt(1)).get)
+        case UREF_PREFIX => Option(HexUtils.fromHex(opt(1)).get)
         case _ => None
       }
 
@@ -94,7 +94,7 @@ object URef {
 
 /*
     opt(0) match {
-      case UREF_PREFIX => Option.apply(HexUtils.fromHex(opt(1)).get)
+      case UREF_PREFIX => Option(HexUtils.fromHex(opt(1)).get)
       case _ => None //throw new IllegalArgumentException(uref + " is not a valid uref")
     }
  */

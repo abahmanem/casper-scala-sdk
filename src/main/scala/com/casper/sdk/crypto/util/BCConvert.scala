@@ -48,8 +48,8 @@ object BCConvert {
    */
 
   def toAsymmetricKeyParameter(key: java.security.Key): Option[AsymmetricKeyParameter] = key match {
-    case privateKey: java.security.PrivateKey => Option.apply(PrivateKeyFactory.createKey(key.getEncoded))
-    case publicKey: java.security.PublicKey => Option.apply(PublicKeyFactory.createKey(key.getEncoded))
+    case privateKey: java.security.PrivateKey => Option(PrivateKeyFactory.createKey(key.getEncoded))
+    case publicKey: java.security.PublicKey => Option(PublicKeyFactory.createKey(key.getEncoded))
     case _ => None
   }
 

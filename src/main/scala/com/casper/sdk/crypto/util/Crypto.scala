@@ -51,8 +51,8 @@ object Crypto {
   def toCLPublicKey(publicKey: PublicKey): Option[CLPublicKey] = {
     require(publicKey != null)
     publicKey match {
-      case bcec: BCECPublicKey => Option.apply(new CLPublicKey(bcec.getQ.getEncoded(true), KeyAlgorithm.SECP256K1))
-      case bced: BCEdDSAPublicKey => Option.apply(new CLPublicKey(bced.getPointEncoding, KeyAlgorithm.ED25519))
+      case bcec: BCECPublicKey => Option(new CLPublicKey(bcec.getQ.getEncoded(true), KeyAlgorithm.SECP256K1))
+      case bced: BCEdDSAPublicKey => Option(new CLPublicKey(bced.getPointEncoding, KeyAlgorithm.ED25519))
     }
   }
 
