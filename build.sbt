@@ -42,7 +42,7 @@ libraryDependencies ++= Seq(
 scalacOptions ++= Seq("-Xmax-inlines", "10000")
 
 //publish
-/*
+
 
 ThisBuild / organization := "io.caspercommunity"
 ThisBuild / organizationName := "caspercommunity"
@@ -50,7 +50,7 @@ ThisBuild / organizationHomepage := Some(url("https://caspercommunity.io/"))
 
 ThisBuild / scmInfo := Some(
   ScmInfo(
-    url("https://github.com/caspercommunity/casper-scala-sdk"),
+    url("https://github.com/abahmanem/casper-scala-sdk"),
     "scm:git@github.com:caspercommunityio/casper-scala-sdk"
   )
 )
@@ -79,7 +79,7 @@ ThisBuild / publishTo := {
   else Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 ThisBuild / publishMavenStyle := true
-*/
+
 
 
 

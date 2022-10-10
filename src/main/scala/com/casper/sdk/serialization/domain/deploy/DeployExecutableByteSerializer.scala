@@ -50,7 +50,7 @@ class DeployExecutableByteSerializer extends BytesSerializable[DeployExecutable]
   }.toOption
 
   /**
-   * bytes serialization of args field
+   * bytes serialization of args fields
    *
    * @param list
    * @return

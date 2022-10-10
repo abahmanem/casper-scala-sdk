@@ -19,7 +19,7 @@ class DeployHeaderByteSerializer extends BytesSerializable[DeployHeader] {
     val builder = new ArrayBuilder.ofByte
     builder.addAll(new CLPublicKeyByteSerializer().toBytes(value.account.get).getOrElse(Array.emptyByteArray))
     builder.addAll(CLValue.getBytes(CLValue.U64(TimeUtil.ToEpochMs(value.timestamp).getOrElse(0L))))
-    builder.addAll(CLValue.getBytes(CLValue.U64(TimeUtil.ttlToMillis(value.ttl).getOrElse(0L))))
+    builder.addAll(CLValue.getBytes(CLValue.U64(TimeUtil.ttlToMillis(value.ttl).getOrElse(0L)))).addAll(CLValue.getBytes(CLValue.U64(value.gas_price)))
       .addAll(value.body_hash.get.hash)
     builder.addAll(CLValue.getBytes(CLValue.U32(value.dependencies.size)))
     for (dep <- value.dependencies) builder.addAll(dep.hash)
