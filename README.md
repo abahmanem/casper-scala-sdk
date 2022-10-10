@@ -5,7 +5,7 @@
 
 Scala client library for interracting with CasperLabs nodes.
 
-Current version :1.2.1
+Current version :1.2.2
 
 # How to install
 
@@ -15,7 +15,7 @@ In your build.sbt, add :
 
 
 ```scala
- libraryDependencies += "io.caspercommunity" %% "casper-scala-sdk" % "1.2.1"
+ libraryDependencies += "io.caspercommunity" %% "casper-scala-sdk" % "1.2.2"
 ```
 
 ## Maven
@@ -26,11 +26,11 @@ In your maven pom file add :
 <dependency>
   <groupId>io.caspercommunity</groupId>
   <artifactId>casper-scala-sdk_${scala.version}</artifactId>
-  <version>1.2.1</version>
+  <version>1.2.2</version>
 </dependency>  
 
 ```
-scala.version is the scala version used, ex = 3
+scala.version is the scala version used, ex = 3.1.3
 
 ## Documentation:
 
