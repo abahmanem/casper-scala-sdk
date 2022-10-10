@@ -36,7 +36,7 @@ scala.version is the scala version used, ex = 3
 
 ### API
 
-* [casper-scala-sdk](https://htmlpreview.github.io/?https://github.com/abahmanem/casper-scala-sdk/blob/master/docs/api/docs/index.html)
+* [casper-scala-sdk](https://htmlpreview.github.io/?https://github.com/abahmanem/casper-scala-sdk/blob/master/docs/api/index.html)
 
 ### Serialization
 
