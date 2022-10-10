@@ -15,7 +15,7 @@ In your build.sbt, add :
 
 
 ```scala
- libraryDependencies += "io.caspercommunity" %% "casper-scala-sdk" % "1.2.2"
+ libraryDependencies += "io.caspercommunity" %% "casper-scala-sdk" % "1.2.3"
 ```
 
 ## Maven
