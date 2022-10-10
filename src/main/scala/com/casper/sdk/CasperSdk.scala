@@ -85,12 +85,7 @@ class CasperSdk(url: String) extends RPCCommand(new HttpRPCService(url)) {
     case HashBlockIdentifier(hash) => call[AuctionStateResult](Method.STATE_GET_AUCTION_INFO, Map("Hash" -> hash).asJson)
     case _ => call[AuctionStateResult](Method.STATE_GET_AUCTION_INFO, "".asJson)
   }
-    
-    
-   // call[AuctionStateResult](Method.STATE_GET_AUCTION_INFO, blockHash.asJson)
-
-
-
+  
   /**
    * getDeploy
    *
@@ -116,14 +111,7 @@ class CasperSdk(url: String) extends RPCCommand(new HttpRPCService(url)) {
    * @return :BalanceResult
    */
   def getBalance(stateRootHash: String, purse_uref: String): Try[BalanceResult] = call[BalanceResult](Method.STATE_GET_BALANCE, stateRootHash.asJson, purse_uref.asJson)
-   /*
-    URef(purse_uref) match {
-      case Some(uref) => call[BalanceResult](Method.STATE_GET_BALANCE, stateRootHash.asJson, uref.asJson)
-      case None => Failure(RPCException("state_get_balance called with invalid URef parameter",RPCError.INVALID_PARAMS))
-    }*/
-
-
-
+ 
   /**
    * getDictionaryItem
    *

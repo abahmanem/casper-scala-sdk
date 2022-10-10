@@ -16,7 +16,8 @@ CasperSdk(url : string)
 ---
 ## Get Deploy
 ```scala
-getDeploy(deployHash : String): Try[Deploy]
+
+getDeploy(deployHash : String): Try[DeployResult]
 ```
 Returns a Deploy entity 
 ### Parameters
@@ -28,24 +29,24 @@ Returns a Deploy entity
 ---
 ## Get Block by hash
 ```scala
-getBlock(blockHash: String) : Try[Block]
+getBlock(blockHash: HashBlockIdentifier) : Try[BlockResult]
 ```
 Returns a Block object 
 ### Parameters
 | Name | Type | Description | Mandatory |
 |---|---|---|---|
-| `blockHash` | `String` | Hex-encoded hash of a block | Yes |
+| `blockHash` | `HashBlockIdentifier` | Hex-encoded hash of a block | Yes |
 
 ---
 ## Get Block by height
 ```scala
-getBlockByHeight(blockHeight: BigInt) : Try[Block]
+getBlockByHeight(blockHeight: HeightBlockIdentifier) : Try[BlockResult]
 ```
 Returns a Block entity object
 ### Parameters
 | Name | Type | Description | Mandatory |
 |---|---|---|---|
-| `blockHeight` | `BigInt` | Block height | Yes |
+| `blockHeight` | `HeightBlockIdentifier` | Block height | Yes |
 
 ---
 
@@ -66,7 +67,8 @@ Returns the current Status of the node
 ---
 ## Get Auction State
 ```scala
-def getAuctionInfo(blockHash: String): Try[AuctionState]
+
+def getAuctionInfo(blockHash: String): Try[AuctionStateResult]
 ```
 Returns AuctionState  containing the bids and validators at a given block (block hash).
 if called without a parameter, it returns the  AuctionState of the most recently added block
@@ -79,7 +81,8 @@ if called without a parameter, it returns the  AuctionState of the most recently
 ---
 ## Get State_Root_Hash
 ```scala
-getStateRootHash(blockHash: String): Try[String]
+
+getStateRootHash(blockHash: String): Try[StateRootHashResult]
 ```
 Returns state root hash `String` by the given block hash or the one for the latest added block 
 ### Parameters
@@ -92,33 +95,49 @@ Returns state root hash `String` by the given block hash or the one for the late
 ---
 ## Get Account balance
 ```scala
-def getBalance(stateRootHash: String, accountUref: Option[URef]): Try[Long] 
+
+def getBalance(stateRootHash: String, uref_purse: String): Try[BalanceResult] 
 ```
 Returns Account balance 
 ### Parameters
-| Name | Type | Description | Mandatory |
-|---|---|---|---|
+| Name | Type     | Description                        | Mandatory |
+|---|----------|------------------------------------|---|
 | `stateRootHash` | `String` | Hex-encoded hash of the state root | Yes |
-| `accountUref` | `URef` | Account URef object | Yes |
+| `uref_purse` | `String` | Uref purse string                  | Yes |
 
 ---
 ---
-## Get  State Item
+## Get  Global state
 ```scala
-def getStateItem(stateRootHash: String, key: String, path: Seq[Any] = Seq.empty): Try[StoredValue]
+def queryGlobalState(stateIdentifier: StateIdentifier, key: String, path: Seq[Json] = Seq.empty): Try[GlobalStateResult]
 ```
 Returns StoredValue object entity for the given state root hash, casper-type key and path
 ### Parameters
-| Name | Type | Description | Mandatory |
-|---|---|---|---|
-| `stateRootHash` | `String` | Hex-encoded hash of the state root | Yes |
-| `key` | `String` |  Casper-type key  | Yes |
-| `path` | `Seq[Any]` | Path components  | No |
+| Name | Type              | Description                                         | Mandatory |
+|---|-------------------|-----------------------------------------------------|---|
+| `stateIdentifier` | `StateIdentifier` | State indentifier : (state root hash or block hash) | Yes |
+| `key` | `String`          | Casper-type key                                     | Yes |
+| `path` | `Seq[Json]`       | Path components                                     | No |
 
 ---
+## Get  Account Info
+```scala
+def getAccountInfo(publicKey: String, blockIdentifier: BlockIdentifier): Try[AccountResult]
+```
+Returns account info for the given publicKey and block identifier
+### Parameters
+| Name | Type        | Description                       | Mandatory |
+|---|-------------|-----------------------------------|---|
+| `publicKey` | `String`    | Hex-encoded publick key           | Yes |
+| `blockIdentifier` | `BlockIdentifier`    | Block identifier : Hash or Height | Yes |
+
+---
+
+
+
 ## Get Block transfers
 ```scala
-def getBlockTransfers(blockHash: String): Try[Seq[Transfer]] 
+def getBlockTransfers(blockHash: String): Try[TransferResult] 
 ```
 Returns a sequence of Transfer objects for the block 
 ### Parameters
@@ -129,7 +148,7 @@ Returns a sequence of Transfer objects for the block
 ---
 ## Get Era Summary by Switch Block Hash
 ```scala
-def getEraInfoBySwitchBlock(blockHash: String): Try[EraSummary] 
+def getEraInfoBySwitchBlock(blockHash: String): Try[EraSummaryResult] 
 ```
 Returns an EraSummary object for the given block hash
 ### Parameters
@@ -140,7 +159,7 @@ Returns an EraSummary object for the given block hash
 ---
 ## Get Dictionary Item
 ```scala
-def getDictionaryItem(stateRootHash: String, itemKey: String, uref: String): Try[StoredValue]  
+def getDictionaryItem(stateRootHash: String, itemKey: String, uref: String): Try[DictionaryItemResult]  
 ```
 Returns an item from a Dictionary as StoredValue object.
 
