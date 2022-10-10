@@ -40,31 +40,31 @@ scala.version is the scala version used, ex = 3
 
 ### Serialization
 
-* [Serialization standards](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/Serialization.md#serialization)
-* [Examples](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/Serialization.md#example)
+* [Serialization standards](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/Serialization.md#serialization)
+* [Examples](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/Serialization.md#example)
 
 ### Key Management
 
-* [CLPublicKey](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/Keys.md#working-with-public-keys)
-* [KeyPair](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/Keys.md#Working-with-key-pairs)
+* [CLPublicKey](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/Keys.md#working-with-public-keys)
+* [KeyPair](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/Keys.md#Working-with-key-pairs)
 
 
 ### Casper-Scala-Sdk RPC
 
-* [getPeers](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-peers)
-* [getStateRootHash](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-state_root_hash)
-* [getBlock by hash](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-block-by-hash)
-* [getBlock by height](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-block-by-height)
-* [getStatus](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-status)
-* [getBlockTransfers](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-block-transfers)
-* [getAuctionInfo](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-auction-state)
-* [getDeploy](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-deploy)
+* [getPeers](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-peers)
+* [getStateRootHash](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-state_root_hash)
+* [getBlock by hash](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-block-by-hash)
+* [getBlock by height](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-block-by-height)
+* [getStatus](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-status)
+* [getBlockTransfers](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-block-transfers)
+* [getAuctionInfo](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-auction-state)
+* [getDeploy](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-deploy)
 * [getEraInfoBySwitchBlock](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-era-summary-by-switch-block-hash)
-* [queryGlobalState](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#query--global-state)
-* [getAccountInfo](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get--account-info)
-* [getBalance](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-account-balance)
-* [getDictionaryItem](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-dictionary-item)
-* [putDeploy](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#put-deploy)
+* [queryGlobalState](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#query--global-state)
+* [getAccountInfo](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get--account-info)
+* [getBalance](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-account-balance)
+* [getDictionaryItem](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-dictionary-item)
+* [putDeploy](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#put-deploy)
 
 
 
@@ -153,7 +153,7 @@ call parameters :
 - block hash
 
 ```scala
-val tryBlock:Try[Block] = client.getBlock("74dce8911A3EDf0f872dC11F0a63Ca9fE1b55b7188a9Feaaf431518bF9c508B4")
+val tryBlock:Try[BlockResult] = client.getBlock( HashBlockIdentifier("74dce8911A3EDf0f872dC11F0a63Ca9fE1b55b7188a9Feaaf431518bF9c508B4"))
 ```
 
    #### using block height :
@@ -163,7 +163,7 @@ call parameters :
 
 
 ```scala
-val tryBlock:Try[Block] = client.getBlockByHeight(371608)
+val tryBlock:Try[BlockResult] = client.getBlockByHeight(HeightBlockIdentifier(371608L))
 ```
 
 ### Get Deploy
@@ -174,7 +174,7 @@ call parameters :
 - deploy hash
 
 ```scala
-val tryDeploy:Try[Deploy] = getDeploy("5545207665f6837F44a6BCC274319280B73a6f0997F957A993e60f878A736678")
+val tryDeploy:Try[DeployResult] = getDeploy("5545207665f6837F44a6BCC274319280B73a6f0997F957A993e60f878A736678")
 ```
 
 ###  Get Node Status
