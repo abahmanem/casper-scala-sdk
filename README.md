@@ -91,7 +91,7 @@ Linux : https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
 ### Clone the project
 
 ```scala
-git clone https://github.com/caspercommunityio/casper-scala-sdk
+git clone https://github.com/abahmanem/casper-scala-sdk
 ```
 
 ### Run the unit tests :
