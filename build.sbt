@@ -1,6 +1,6 @@
 name := "casper-scala-sdk"
 
-version := "1.2.2"
+version := "1.2.3"
 
 scalaVersion := "3.1.3"
 
@@ -43,7 +43,7 @@ scalacOptions ++= Seq("-Xmax-inlines", "10000")
 
 //publish
 
-
+/*
 ThisBuild / organization := "io.caspercommunity"
 ThisBuild / organizationName := "caspercommunity"
 ThisBuild / organizationHomepage := Some(url("https://caspercommunity.io/"))
@@ -79,7 +79,7 @@ ThisBuild / publishTo := {
   else Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 ThisBuild / publishMavenStyle := true
-
+*/
 
 
 
