@@ -11,8 +11,6 @@ CasperSdk(url : string)
 |---|---|---|---|
 | `url` | `String` | Full node url string | Yes |
 
-
-
 ---
 ## Get Deploy
 ```scala
