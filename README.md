@@ -130,8 +130,8 @@ val client = new CasperSdk("http://node_ip_address:7777/rpc")
 Retrieves  the list of connected peers.
 
 ```scala
-val tryPeers:Try[Seq[Peer]] = client.getPeers()
-val listOfPeers = tryPeers.getOrElse(List.empty[Peer])
+val tryPeers:Try[PeerResult] = client.getPeers()
+val listOfPeers = tryPeers.getOrElse(List.empty)
 
 ```
 
@@ -140,7 +140,7 @@ val listOfPeers = tryPeers.getOrElse(List.empty[Peer])
 Retrieves  the state root hash String.
 
 ```scala
- val tryStateRootHash:Try[String] = client.getStateRootHash("")
+ val tryStateRootHash:Try[StateRootHashResult] = client.getStateRootHash("")
 ```
 
 ### Get Block
