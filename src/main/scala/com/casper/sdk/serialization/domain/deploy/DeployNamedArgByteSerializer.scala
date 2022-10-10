@@ -15,7 +15,7 @@ import scala.util.{Failure, Success, Try}
 class DeployNamedArgByteSerializer extends BytesSerializable[DeployNamedArg] {
   def toBytes(value: DeployNamedArg): Option[Array[Byte]] = Try {
     val builder = new ArrayBuilder.ofByte
-    builder.addAll( CLValue.getBytes(CLValue.U32(value.name.getBytes().length))) //.map(v=>v.bytes).getOrElse(Array.emptyByteArray))
+    builder.addAll( CLValue.getBytes(CLValue.U32(value.name.getBytes().length))) 
       .addAll(value.name.getBytes())
       .addAll(new CLValueByteSerializer().toBytes(value.value.getOrElse(CLValue.Unit().get)).getOrElse(Array.emptyByteArray))
     builder.result()

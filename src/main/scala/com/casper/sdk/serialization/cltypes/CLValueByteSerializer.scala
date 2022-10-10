@@ -14,14 +14,13 @@ import scala.util.{Failure, Success, Try}
 class CLValueByteSerializer extends BytesSerializable[CLValue] {
 
   def toBytes(value: CLValue): Option[Array[Byte]] =
-   Try{
-    val builder = new ArrayBuilder.ofByte
-     //if(CLValue.U32(value.bytes.length).isDefined)
-     builder.addAll(CLValue.getBytes(CLValue.U32(value.bytes.length)))//.get.bytes)
-     builder.addAll(value.bytes)
-    CLTypesToBytes(builder, value.cl_infoType)
-    builder.result()
-}.toOption
+    Try {
+      val builder = new ArrayBuilder.ofByte
+      builder.addAll(CLValue.getBytes(CLValue.U32(value.bytes.length)))
+      builder.addAll(value.bytes)
+      CLTypesToBytes(builder, value.cl_infoType)
+      builder.result()
+    }.toOption
 
   /**
    * Serialization for CLType
@@ -51,8 +50,8 @@ class CLValueByteSerializer extends BytesSerializable[CLValue] {
       }
       case bytearray: CLByteArrayTypeInfo => {
         builder.addOne(innerType.cl_Type.clType.toByte)
-        if(CLValue.U32(bytearray.size).isDefined)
-        builder.addAll(CLValue.getBytes(CLValue.U32(bytearray.size)))
+        if (CLValue.U32(bytearray.size).isDefined)
+          builder.addAll(CLValue.getBytes(CLValue.U32(bytearray.size)))
       }
       case list: CLListTypeInfo => {
         builder.addOne(innerType.cl_Type.clType.toByte)

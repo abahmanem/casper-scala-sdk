@@ -21,7 +21,7 @@ class DeployByteSerializer extends BytesSerializable[Deploy] {
       builder.addAll(value.hash.map(h=>h.hash).getOrElse(Array.emptyByteArray))
         .addAll(deployExecutableByteSerializer.toBytes(value.payment).getOrElse(Array.emptyByteArray))
         .addAll(deployExecutableByteSerializer.toBytes(value.session).getOrElse(Array.emptyByteArray))
-        .addAll( CLValue.getBytes( CLValue.U32(value.approvals.size)))//.map(v=>v.bytes).getOrElse(Array.emptyByteArray))
+        .addAll( CLValue.getBytes( CLValue.U32(value.approvals.size)))
       for (approuval <- value.approvals) builder.addAll(approvalByteSerializer.toBytes(approuval).getOrElse(Array.emptyByteArray))
       builder.result()
     }.toOption

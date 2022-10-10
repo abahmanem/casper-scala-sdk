@@ -9,6 +9,5 @@ import scala.util.{Failure, Success, Try}
  * CLPublicKeySerializer
  */
 class CLPublicKeyByteSerializer extends BytesSerializable[CLPublicKey] {
-  //def toBytes(value: CLPublicKey): Option[Array[Byte]] = Try(value.bytes).toOption
  def toBytes(value: CLPublicKey): Option[Array[Byte]] = Try(value.formatAsByteAccount).toOption
 }
