@@ -4,13 +4,11 @@ version := "1.2.3"
 
 scalaVersion := "3.1.3"
 
-
 //scalaTest framework
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.10"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.10" % "test"
 libraryDependencies += "org.scalatest" %% "scalatest-funspec" % "3.2.10" % "test"
 libraryDependencies += "org.scalatest" %% "scalatest-flatspec" % "3.2.10" % "test"
-
 
 //bouncycastle crypto library
 libraryDependencies += "org.bouncycastle" % "bcprov-jdk15on" % "1.69"
@@ -37,7 +35,6 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-generic",
   "io.circe" %% "circe-parser"
 ).map(_ % circeVersion)
-
 
 scalacOptions ++= Seq("-Xmax-inlines", "10000")
 
