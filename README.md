@@ -60,7 +60,7 @@ scala.version is the scala version used, ex = 3
 * [getAuctionInfo](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-auction-state)
 * [getDeploy](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-deploy)
 * [getEraInfoBySwitchBlock](https://github.com/caspercommunityio/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-era-summary-by-switch-block-hash)
-* [queryGlobalState](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#query--global-state)
+* [queryGlobalState](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get--global-state)
 * [getAccountInfo](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get--account-info)
 * [getBalance](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-account-balance)
 * [getDictionaryItem](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-dictionary-item)
