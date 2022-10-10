@@ -1,18 +1,16 @@
 package com.casper.sdk.types.cltypes
 
-import com.casper.sdk.json.deserialize.URefDeserializer
+
 import com.casper.sdk.util.HexUtils
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import scala.util.{Try, Success, Failure}
 /**
  * Unforgeatable Reference
  *
  * @param bytes
  */
-@JsonDeserialize(`using` = classOf[URefDeserializer])
-class URef(
-            val bytes: Array[Byte],
-            val accessRights: AccessRight
+case class URef(
+             main_purse:String,
+             accessRights: AccessRight
           ) extends Tag {
 
   /**
@@ -20,7 +18,7 @@ class URef(
    *
    * @return
    */
-  def format: String = String.format(URef.UREF_PREFIX + "-%s-%03d", HexUtils.toHex(bytes).get, accessRights.bits)
+  def format: String =  String.format(URef.UREF_PREFIX + "-%s-%03d", main_purse, accessRights.bits)
   override def tag = 2
 }
 
@@ -28,6 +26,17 @@ class URef(
  * Companion object
  */
 object URef {
+
+  import io.circe.{Decoder, Encoder}
+  implicit val decoder: Decoder[Option[URef]] = Decoder.decodeString.emapTry {
+    str => Try(URef(str))
+  }
+
+  implicit val encoder: Encoder[URef] = (uref: URef) =>    Encoder.encodeString(uref.format)
+
+  /**
+   * prefix
+   */
   val UREF_PREFIX = "uref"
 
   /**
@@ -35,18 +44,10 @@ object URef {
    * @param uref
    * @return
    */
-  def apply(uref: String): Option[URef] =  {
-    Try {
-     Option(new URef(URef.parseUref(uref).get, URef.getAccessRight(uref)))
-    } match {
-      case Success(x) => x
-      case Failure(err) =>        None
+  def apply(uref: String): Option[URef] =  parseUref(uref) match {
+      case Some(x) => Some(new URef(uref.split("-")(1), getAccessRight(uref)))
+      case None => None
     }
-
-
-
-
-  }
 
   /**
    * extract AccessRight from Uref String
@@ -54,51 +55,32 @@ object URef {
    * @param uref
    * @return
    */
-  private def getAccessRight(uref: String): AccessRight = {
-    AccessRight.values.find(_.bits == Integer.parseInt(uref.charAt(uref.length - 1).toString)) match {
+  def getAccessRight(uref: String): AccessRight = try {
+    val opt = uref.split("-")
+    AccessRight.values.find(_.bits == Integer.parseInt(opt(2).charAt(opt(2).length - 1).toString)) match {
       case None => AccessRight.ACCESS_NONE
       case Some(a) => a
     }
+  } catch {
+    case ex => AccessRight.ACCESS_NONE
   }
-
   /**
    * parse a Uref String into A byte array
    *
    * @param uref
    * @return
    */
-  private def parseUref(uref: String): Option[Array[Byte]] = {
-    require(uref!=null)
-    Try {
-
-      val opt = uref.split("-")
-      opt(0) match {
-        case UREF_PREFIX => Option(HexUtils.fromHex(opt(1)).get)
-        case _ => None
-      }
-
-    } match {
-      case Success(x) => x
-      case Failure(err) => {
-
-        None
-
-      }
-    }
-
-
-
-
-
-
-
-/*
-    opt(0) match {
-      case UREF_PREFIX => Option(HexUtils.fromHex(opt(1)).get)
-      case _ => None //throw new IllegalArgumentException(uref + " is not a valid uref")
-    }
- */
-  }
+   def parseUref(uref: String): Option[Array[Byte]] =
+     try {
+       val opt = uref.split("-")
+         opt (0) match {
+       case UREF_PREFIX => HexUtils.fromHex (opt (1) )
+       case _ => None
+       }
+     }
+     catch {
+       case ex => None
+     }
 
 }
 

@@ -12,9 +12,17 @@ import com.casper.sdk.types.cltypes.CLType
  * @param inactive
  */
 case class BidInfo(
-                    bonding_purse: URef,
+                    bonding_purse:Option[URef],
                     staked_amount: String,
                     delegation_rate: Int,
-                    delegators: Seq[Delegator],
+                    delegators: List[DelegatorInfo],
                     inactive: Boolean
                   )
+
+object BidInfo{
+  import io.circe.syntax._
+  import io.circe.{Decoder, Encoder}
+  import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+  implicit val decoder:Decoder[BidInfo] = deriveDecoder[BidInfo]
+  implicit val encoder:Encoder[BidInfo] = deriveEncoder[BidInfo]
+}

@@ -21,7 +21,7 @@ import scala.util.{Success, Try}
  * @param privateKey private key (java.security.PrivateKey)
  * @param publicKey  CLPublicKey
  */
-case class KeyPair(privateKey: PrivateKey, publicKey: Option[CLPublicKey]) {
+case class KeyPair(privateKey: PrivateKey, publicKey: CLPublicKey) {
 
   /**
    *
@@ -33,13 +33,18 @@ case class KeyPair(privateKey: PrivateKey, publicKey: Option[CLPublicKey]) {
    *
    * @return
    */
-  def publicToPem: Option[String] = Try {
-    Crypto.toPem(Crypto.fromCLPublicKey(publicKey.get).get)
-  }
-  match {
-    case Success(x) => x
-    case _ => None
-  }
+  def publicToPem: Option[String] =Crypto.fromCLPublicKey(publicKey).flatMap(p=>Crypto.toPem(p))
+
+  //Crypto.fromCLPublicKey(publicKey).flatMap()
+   /*
+    {
+      val clpublic = Crypto.fromCLPublicKey(publicKey)//.map(p=>Crypto.toPem(p))
+      if(clpublic.isDefined) Crypto.toPem(clpublic.get) else None
+
+    }
+*/
+
+
 
   /**
    * sign a message
@@ -47,25 +52,16 @@ case class KeyPair(privateKey: PrivateKey, publicKey: Option[CLPublicKey]) {
    * @param msg : message to sign
    * @return byte array
    */
-  def sign(msg: Array[Byte]): Array[Byte] = {
-    require(msg != null)
-    Try {
-      publicKey.get.keyAlgorithm match {
+  def sign(msg: Array[Byte]): Either[Throwable, Array[Byte]] = publicKey.keyAlgorithm match {
         case KeyAlgorithm.SECP256K1 => SECP256K1.sign(msg, this)
-        case KeyAlgorithm.ED25519 => {
+        case KeyAlgorithm.ED25519 => Try{
           val sig = Signature.getInstance(privateKey.getAlgorithm, BouncyCastleProvider.PROVIDER_NAME)
           sig.initSign(privateKey)
           sig.update(msg)
           sig.sign()
-        }
-      }
-    }
-    match {
-      case Success(x) => x
-      case _ => null
-    }
+        }.toEither
+     }
   }
-}
 
 /**
  * companion object
@@ -80,27 +76,21 @@ object KeyPair {
    * @return KeyPair instance
    */
   def loadFromPem(path: String): Option[KeyPair] = {
-    require(path != null)
+
     Option(new PEMParser(new FileReader(path)).readObject()) match {
       case Some(obj) => obj match {
         case pvkeyInfo: PrivateKeyInfo => Try {
           val privKey = Crypto.converter.getPrivateKey(pvkeyInfo)
           val privkeyparam = PrivateKeyFactory.createKey(pvkeyInfo)
           val pubkeyparam = privkeyparam.asInstanceOf[Ed25519PrivateKeyParameters].generatePublicKey()
-          new KeyPair(privKey, Some(new CLPublicKey(pubkeyparam.getEncoded, KeyAlgorithm.ED25519)))
-        }
-        match {
-          case Success(x) => Some(x)
-          case _ => None
-        }
+          new KeyPair(privKey, new CLPublicKey(pubkeyparam.getEncoded, KeyAlgorithm.ED25519))
+        }.toOption
+
         case pemKeyPair: org.bouncycastle.openssl.PEMKeyPair => Try {
           val keypair = Crypto.converter.getKeyPair(pemKeyPair.asInstanceOf[PEMKeyPair])
-          new KeyPair(keypair.getPrivate, Crypto.toCLPublicKey(keypair.getPublic))
-        }
-        match {
-          case Success(x) => Some(x)
-          case _ => None
-        }
+          val clpublic = Crypto.toCLPublicKey(keypair.getPublic)
+          if (clpublic.isDefined) new KeyPair(keypair.getPrivate, clpublic.get) else null
+        }.toOption
         case _ => None
       }
       case None => None
@@ -114,24 +104,32 @@ object KeyPair {
    */
 
   def create(algo: KeyAlgorithm): Option[KeyPair] = {
-    require(algo != null)
+
     algo match {
-      case KeyAlgorithm.ED25519 => Try {
-        val keyPair = Crypto.newKeyPair(algo.toString.toLowerCase(), algo.toString.toLowerCase()).get
-        new KeyPair(keyPair.getPrivate, Crypto.toCLPublicKey(keyPair.getPublic))
+      case KeyAlgorithm.ED25519 => {
+        val pair: Option[java.security.KeyPair] = Crypto.newKeyPair(algo.toString.toLowerCase(), algo.toString.toLowerCase())
+        if (pair.isDefined) {
+          val clpublic = Crypto.toCLPublicKey(pair.get.getPublic)
+          if (clpublic.isDefined) {
+           Some(new KeyPair(pair.get.getPrivate, clpublic.get))
+          }
+          else None
+        }
+        else None
       }
-      match {
-        case Success(x) => Some(x)
-        case _ => None
+
+      case KeyAlgorithm.SECP256K1 =>  {
+        val pair = Crypto.newKeyPair("ECDSA", "secp256k1") //.get
+        if(pair.isDefined) {
+          val clpublic = Crypto.toCLPublicKey(pair.get.getPublic)
+          if (clpublic.isDefined) {
+            Some(new KeyPair(pair.get.getPrivate, clpublic.get))
+          }
+          else None
+        }
+        else None
+
       }
-      case KeyAlgorithm.SECP256K1 => Try {
-        val keyPair = Crypto.newKeyPair("ECDSA", "secp256k1").get
-        new KeyPair(keyPair.getPrivate, Crypto.toCLPublicKey(keyPair.getPublic))
       }
-      match {
-        case Success(x) => Some(x)
-        case _ => None
-      }
-    }
   }
 }

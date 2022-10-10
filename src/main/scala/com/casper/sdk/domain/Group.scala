@@ -9,5 +9,14 @@ import com.casper.sdk.types.cltypes.URef
  */
 case class Group(
                   group : String,
-                  keys: Seq[URef]
+                  keys: Seq[Option[URef]]
                 )
+
+object Group{
+
+  import io.circe.{Decoder, Encoder}
+  import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+
+  implicit val decoder:Decoder[Group] = deriveDecoder[Group]
+  implicit val encoder:Encoder[Group] = deriveEncoder[Group]
+}

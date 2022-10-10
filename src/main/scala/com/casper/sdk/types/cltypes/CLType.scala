@@ -1,15 +1,11 @@
 package com.casper.sdk.types.cltypes
 
-import com.casper.sdk.json.deserialize.CLTypeDeserialiser
-import com.casper.sdk.json.serialize.CLTypeInfoSerializer
 import com.casper.sdk.types.cltypes
-import com.fasterxml.jackson.databind.annotation.{JsonDeserialize, JsonSerialize}
-
 /**
  * Enum of CLType with data bytes array
  */
 
-@JsonDeserialize(`using` = classOf[CLTypeDeserialiser])
+
 enum CLType(val clType: Int) {
 
   case Bool extends CLType(0)
@@ -92,4 +88,19 @@ object CLType{
       case _ => false
     }
   }
+
+
+  import io.circe.{Decoder, Encoder, HCursor, Json}
+  implicit val encoderCLType: Encoder[CLType] = (cltype: CLType) =>  Encoder.encodeString(cltype.toString)
+
+  implicit def decoderCLType: Decoder[CLType] = (c: HCursor) =>
+     for {
+       cltype <- c.as[HCursor]
+     }
+     yield {
+       cltype.value.name match {
+         case "String" => CLType.valueOf(cltype.value.asString.getOrElse(""))
+         case "Object" =>  CLType.valueOf(cltype.value.asObject.get.keys.toList(0))      //there is always something in keys.toList
+       }
+     }
 }

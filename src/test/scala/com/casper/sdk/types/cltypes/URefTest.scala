@@ -3,6 +3,8 @@ import com.casper.sdk.util.HexUtils
 import org.scalatest.funsuite.AnyFunSuite
 
 class URefTest extends AnyFunSuite {
+
+
   val ref = "uref-bC3c71eA5246EFA149CA653E6F63192e7c59C652Ab830eC59b234B99bfA0B109-007"
   val uref = URef(ref)
 
@@ -11,7 +13,7 @@ class URefTest extends AnyFunSuite {
   }
 
   test("Test Uref decode ") {
-    assert(HexUtils.toHex(uref.get.bytes).get.toLowerCase == "bC3c71eA5246EFA149CA653E6F63192e7c59C652Ab830eC59b234B99bfA0B109".toLowerCase)
+    assert(HexUtils.toHex(URef.parseUref(ref).get).get.toLowerCase == "bC3c71eA5246EFA149CA653E6F63192e7c59C652Ab830eC59b234B99bfA0B109".toLowerCase)
   }
 
   test("Test format Uref  ") {

@@ -1,5 +1,6 @@
 package com.casper.sdk.domain
 
+
 import com.casper.sdk.types.cltypes.CLPublicKey
 
 /**
@@ -24,7 +25,16 @@ case class NodeStatus(
                        last_added_block_info: BlockInfo,
                        our_public_signing_key: Option[CLPublicKey],
                        round_length: String,
-                       next_upgrade: NextUpgrade,
+                       next_upgrade: Option[String],
                        build_version: String,
                        uptime: String
                      )
+
+
+object NodeStatus{
+  import io.circe.syntax._
+  import io.circe.{Decoder, Encoder}
+  import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+  implicit val decoder:Decoder[NodeStatus] = deriveDecoder[NodeStatus]
+  implicit val encoder:Encoder[NodeStatus] = deriveEncoder[NodeStatus]
+}

@@ -9,7 +9,14 @@ package com.casper.sdk.domain
  */
 case class AuctionState(
                          state_root_hash: String,
-                         block_height: String,
-                         era_validators: Seq[EraValidator],
-                         bids: Seq[Bid]
+                         block_height: Int,
+                         era_validators: List[EraValidator],
+                         bids: List[Bid]
                        )
+object AuctionState{
+  import io.circe.syntax._
+  import io.circe.{Decoder, Encoder}
+  import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+  implicit val decoder:Decoder[AuctionState] = deriveDecoder[AuctionState]
+  implicit val encoder:Encoder[AuctionState] = deriveEncoder[AuctionState]
+}

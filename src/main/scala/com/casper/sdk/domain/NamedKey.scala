@@ -6,6 +6,16 @@ package com.casper.sdk.domain
  * @param key
  */
 case class NamedKey(
-                   val name:String,
-                   val key: String
+                    name:String,
+                    key: String
                    )
+
+object NamedKey{
+
+  import io.circe.{Decoder, Encoder}
+  import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+
+  implicit val decoder:Decoder[NamedKey] = deriveDecoder[NamedKey]
+
+  implicit val encoder:Encoder[NamedKey] = deriveEncoder[NamedKey]
+}

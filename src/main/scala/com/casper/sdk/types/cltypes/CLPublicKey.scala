@@ -3,12 +3,10 @@ package com.casper.sdk.types.cltypes
 import com.casper.sdk.crypto.KeyPair
 import com.casper.sdk.crypto.hash.Blake2b256
 import com.casper.sdk.crypto.util.{Crypto, SECP256K1}
-import com.casper.sdk.json.deserialize.CLPublicKeyDeserializer
-import com.casper.sdk.json.serialize.CLPublicKeySerializer
+
 import com.casper.sdk.types.cltypes.CLPublicKey
 import com.casper.sdk.types.cltypes.KeyAlgorithm
 import com.casper.sdk.util.{ByteUtils, HexUtils}
-import com.fasterxml.jackson.databind.annotation.{JsonDeserialize, JsonSerialize}
 import org.bouncycastle.asn1.edec.EdECObjectIdentifiers
 import org.bouncycastle.asn1.x509.{AlgorithmIdentifier, SubjectPublicKeyInfo}
 import org.bouncycastle.crypto.params.{ECDomainParameters, ECKeyGenerationParameters, ECPublicKeyParameters, Ed25519PublicKeyParameters}
@@ -27,31 +25,27 @@ import java.nio.file.{FileSystems, Files, Paths}
 import java.security.{KeyFactory, PublicKey, SecureRandom, Signature}
 
 import scala.util.{Failure, Success, Try}
+import io.circe._
+import io.circe.{Decoder, Encoder}
+import io.circe.generic.semiauto.deriveEncoder
+import io.circe.generic.semiauto.deriveDecoder
 
 /**
  * CLPublicKey : Casper system public key
  *
  * @param bytes
  */
-@JsonSerialize(`using` = classOf[CLPublicKeySerializer])
-@JsonDeserialize(`using` = classOf[CLPublicKeyDeserializer])
-class CLPublicKey(
-                   val bytes: Array[Byte],
-                   val keyAlgorithm: KeyAlgorithm
-                 ) extends Tag {
+case class CLPublicKey(
+                        bytes: Array[Byte],
+                        keyAlgorithm: KeyAlgorithm
+                      ) extends Tag {
 
   /**
    * format to Hex account , ie : 0106cA7c39cD272DbF21a86EeB3B36B7c26E2e9b94af64292419f7862936bcA2cA, 01 being tag bytes
    *
    * @return
    */
-  def formatAsHexAccount: Option[String] = {
-    try {
-      Some(HexUtils.toHex(formatAsByteAccount).get)
-    } catch {
-      case _: Exception => None
-    }
-  }
+  def formatAsHexAccount: Option[String] = Try(HexUtils.toHex(formatAsByteAccount).getOrElse("")).toOption
 
   /**
    * format to Byte array with algorithm
@@ -89,31 +83,29 @@ class CLPublicKey(
    * @param signature signature of the signed message
    * @return true if the signature is valid and false if not
    */
-  def verifySignature(msg: Array[Byte], signature: Array[Byte]): Boolean = {
-    require(msg != null && signature != null)
-    keyAlgorithm match {
-      case KeyAlgorithm.ED25519 => {
-        Ed25519.verify(signature, 0, bytes, 0, msg, 0, msg.length)
-      }
-      case KeyAlgorithm.SECP256K1 => SECP256K1.verify(msg, signature, bytes)
-    }
+  def verifySignature(msg: Array[Byte], signature: Array[Byte]): Either[Throwable, Boolean] = keyAlgorithm match {
+    case KeyAlgorithm.ED25519 => Try(Ed25519.verify(signature, 0, bytes, 0, msg, 0, msg.length)).toEither
+    case KeyAlgorithm.SECP256K1 => SECP256K1.verify(msg, signature, bytes)
   }
+
 
   /**
    * tag =1
    *
    * @return
    */
-  def tag = 1
+  override def tag = 1
 
   /**
    * hashCode
+   *
    * @return Int
    */
   override def hashCode(): Int = 31 * java.util.Objects.hash(keyAlgorithm) + java.util.Arrays.hashCode(bytes)
 
   /**
    * equals
+   *
    * @param obj
    * @return Boolean
    */
@@ -123,10 +115,11 @@ class CLPublicKey(
   }
 
   /**
-   *  toString
+   * toString
+   *
    * @return String
    */
-  override def toString: String = formatAsHexAccount.get
+  // override def toString: String = formatAsHexAccount.getOrElse("")
 }
 
 /**
@@ -134,21 +127,17 @@ class CLPublicKey(
  */
 object CLPublicKey {
 
+  implicit val decoder: Decoder[Option[CLPublicKey]] = Decoder.decodeString.emapTry {
+    str => Try(CLPublicKey(str))
+  }
+  implicit val encoder: Encoder[CLPublicKey] = (pubkey: CLPublicKey) => Encoder.encodeString(pubkey.formatAsHexAccount.getOrElse(""))
+
   /**
    *
-   * @param uref
+   * @param hex
    * @return CLPublicKey
    */
-  def apply(hex: String): Option[CLPublicKey] = {
-    Try {
-      new CLPublicKey(dropAlgorithmBytes(HexUtils.fromHex(hex).get), KeyAlgorithm.fromId(hex.charAt(1).asDigit).get)
-    }
-    match {
-      case Success(x) =>Some(x)
-      case _ => None
-      }
-    }
-
+  def apply(hex: String): Option[CLPublicKey] = Try(new CLPublicKey(dropAlgorithmBytes(HexUtils.fromHex(hex).get), KeyAlgorithm.fromId(hex.charAt(1).asDigit).getOrElse(KeyAlgorithm.ED25519))).toOption
 
   /**
    * remove algorithm tag bytes
@@ -157,7 +146,6 @@ object CLPublicKey {
    * @return
    */
   def dropAlgorithmBytes(key: Array[Byte]): Array[Byte] = {
-    require(key != null)
     key.drop(1)
   }
 
@@ -167,41 +155,27 @@ object CLPublicKey {
    * @param publicKey
    * @return
    */
-  def accountHash(publicKey: CLPublicKey): Option[String] = {
-    Try {
-      KeyType.Account.prefix + HexUtils.toHex(Blake2b256.CLPublicKeyToAccountHash(publicKey))
-    }
-    match {
-      case Success(x) =>Some(x)
-      case _ => None
-    }
-  }
+  def accountHash(publicKey: CLPublicKey): Option[String] = Try(
+    KeyType.Account.prefix + HexUtils.toHex(Blake2b256.CLPublicKeyToAccountHash(publicKey))
+  ).toOption
+
+
   /**
    * load CLPublic key from pem file
    *
    * @param path
    * @return
    */
-  def fromPemFile(path: String): Option[CLPublicKey] = {
-    require(path != null)
+  def fromPemFile(path: String): Option[CLPublicKey] = Try {
     val converter = new JcaPEMKeyConverter().setProvider(new BouncyCastleProvider());
     Option(new PEMParser(new FileReader(path)).readObject()) match {
       case Some(obj) => obj match {
-        case pubkeyInfo: SubjectPublicKeyInfo => {
-          val pkey = converter.getPublicKey(pubkeyInfo)
-          pkey match {
-            case ed: BCEdDSAPublicKey => {
-             Option(new CLPublicKey(ed.getPointEncoding(), KeyAlgorithm.ED25519))
-            }
-            case ec: BCECPublicKey => {
-              Option(new CLPublicKey(ec.getQ().getEncoded(true), KeyAlgorithm.SECP256K1))
-            }
-          }
+        case pubkeyInfo: SubjectPublicKeyInfo => converter.getPublicKey(pubkeyInfo) match {
+          case ed: BCEdDSAPublicKey => new CLPublicKey(ed.getPointEncoding(), KeyAlgorithm.ED25519)
+          case ec: BCECPublicKey => new CLPublicKey(ec.getQ().getEncoded(true), KeyAlgorithm.SECP256K1)
         }
-        case _ => None
       }
-      case None => None
+      case _ => null
     }
-  }
-
+  }.toOption
 }

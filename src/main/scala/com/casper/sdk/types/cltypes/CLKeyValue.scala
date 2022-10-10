@@ -1,10 +1,10 @@
 package com.casper.sdk.types.cltypes
 
 
-import com.casper.sdk.types.cltypes._
-import com.casper.sdk.util.{ByteUtils, HexUtils, JsonConverter}
-import com.fasterxml.jackson.databind.ObjectMapper
-
+import com.casper.sdk.types.cltypes.*
+import com.casper.sdk.util.{ByteUtils, HexUtils}
+import scala.util.Try
+import io.circe.Json
 /**
  * A key in global state
  */
@@ -35,18 +35,18 @@ object CLKeyValue {
    * @return CLKeyValue
    */
   def apply(hexBytes: Array[Byte]): Option[CLKeyValue] = {
-    assert(hexBytes != null)
+
     hexBytes(0) match {
       case 0x00 => CLKeyValue(HexUtils.toHex(hexBytes.drop(0)).get, KeyType.Account)
       case 0x01 => CLKeyValue(HexUtils.toHex(hexBytes.drop(0)).get, KeyType.Hash)
-      case 0x02 => CLKeyValue(HexUtils.toHex(hexBytes.drop(0)).get, KeyType.Uref)
+      case 0x02 => CLKeyValue(HexUtils.toHex(hexBytes.drop(0)).get, KeyType.URef)
       case 0x03 => CLKeyValue(HexUtils.toHex(hexBytes.drop(0)).get, KeyType.Transfer)
       case 0x04 => CLKeyValue(HexUtils.toHex(hexBytes.drop(0)).get, KeyType.DeployInfo)
       case 0x05 => CLKeyValue(HexUtils.toHex(hexBytes.drop(0)).get, KeyType.EraInfo)
       case 0x06 => CLKeyValue(HexUtils.toHex(hexBytes.drop(0)).get, KeyType.Balance)
       case 0x07 => CLKeyValue(HexUtils.toHex(hexBytes.drop(0)).get, KeyType.Bid)
       case 0x08 => CLKeyValue(HexUtils.toHex(hexBytes.drop(0)).get, KeyType.Withdraw)
-      case _ => throw IllegalArgumentException("Invalid Key " + hexBytes(0))
+      case _ => None
     }
   }
 
@@ -65,14 +65,8 @@ object CLKeyValue {
    * @param key
    * @return CLKeyValue
    */
-  def apply(key: String): Option[CLKeyValue] = {
-    require(key != null)
-    try {
-      Option(new CLKeyValue(HexUtils.fromHex(key.substring(key.lastIndexOf("-") + 1)).get, KeyType.getByPrefix(key.substring(0, key.lastIndexOf("-"))).get, parsedValue(key)))
-    } catch {
-      case _: Exception => None
-    }
-  }
+  def apply(key: String): Option[CLKeyValue] =  Try(new CLKeyValue(HexUtils.fromHex(key.substring(key.lastIndexOf("-") + 1)).get, KeyType.getByPrefix(key.substring(0, key.lastIndexOf("-"))).get, parsedValue(key))
+   ).toOption
 
   /**
    * compute parsed value from string key
@@ -80,17 +74,14 @@ object CLKeyValue {
    * @param key
    * @return Any
    */
-  def parsedValue(key: String): Any = {
-    require(key != null)
-    try {
+  def parsedValue(key: String): Any = try {
       val keyType = KeyType.getByPrefix(key.substring(0, key.lastIndexOf("-"))).get
       val json = new StringBuilder("")
       json.append("{").append("\"").append(keyType).append("\"").append(":").append("\"").append(key).append("\"").append("}")
-      val parsed = new ObjectMapper().readTree(json.toString())
-      parsed
-    }
+      Json.fromString(json.toString())
+     }
     catch {
-      case _: Exception => null
+      case _: Exception => Json.Null
     }
-  }
+
 }

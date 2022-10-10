@@ -15,10 +15,20 @@ import  com.casper.sdk.domain._
 case class Account(
                     account_hash :Option[AccountHash],
                     named_keys : Seq[NamedKey],
-                    main_purse: URef,
+                    main_purse: Option[URef],
                     associated_keys : Seq[AssociatedKey],
                     action_thresholds:ActionThresholds
                   )
+
+object Account{
+
+  import io.circe.{Decoder, Encoder}
+  import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+
+  implicit val decoder:Decoder[Account] = deriveDecoder[Account]
+  implicit val encoder:Encoder[Account] = deriveEncoder[Account]
+}
+
 
 
 

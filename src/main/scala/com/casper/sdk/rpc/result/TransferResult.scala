@@ -1,0 +1,13 @@
+package com.casper.sdk.rpc.result
+import com.casper.sdk.domain.BlockTransfer
+
+case class TransferResult(api_version: String, block_hash:String, transfers: List[BlockTransfer])
+
+object TransferResult{
+  import io.circe.syntax._
+  import io.circe.{Decoder, Encoder}
+  import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+  implicit val decoder:Decoder[TransferResult] = deriveDecoder[TransferResult]
+  implicit val encoder:Encoder[TransferResult] = deriveEncoder[TransferResult]
+}
+

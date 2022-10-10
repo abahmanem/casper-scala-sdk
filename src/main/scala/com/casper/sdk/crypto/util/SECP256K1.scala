@@ -1,7 +1,6 @@
 package com.casper.sdk.crypto.util
 
 import com.casper.sdk.crypto.KeyPair
-import com.casper.sdk.domain.DeployHash
 import com.casper.sdk.util.HexUtils
 import org.bouncycastle.asn1.x9.{X9ECParameters, X9IntegerConverter}
 import org.bouncycastle.crypto.digests.SHA256Digest
@@ -14,6 +13,7 @@ import org.bouncycastle.math.ec.custom.sec.SecP256K1Curve
 
 import java.math.BigInteger
 import java.security.{MessageDigest, SecureRandom}
+import scala.util.Try
 
 /**
  * SECP256K1 keys object utility
@@ -30,15 +30,22 @@ object SECP256K1 {
    * @param keyPair : keypair
    * @return  signature byte array
    */
-  def sign(msg: Array[Byte], keyPair: KeyPair): Array[Byte] = {
-    require(msg!=null &&  keyPair!=null)
+  def sign(msg: Array[Byte], keyPair: KeyPair):  Either[Throwable, Array[Byte]] =
+
+  /*if (msg.size != 32)
+    return Left(
+      s"message must be 32 bytes, not ${ms.size}"
+    )
+*/
+
+   Try{
     val signer = new DSADigestSigner(new ECDSASigner(), new SHA256Digest(), PlainDSAEncoding.INSTANCE)
     val pivk = keyPair.privateKey.asInstanceOf[BCECPrivateKey].getD
     val param = new ParametersWithRandom(new ECPrivateKeyParameters(pivk, CURVE), new SecureRandom())
     signer.init(true, param)
     signer.update(msg, 0, msg.length)
     signer.generateSignature()
-  }
+  }.toEither
 
   /**
    * verify signature
@@ -47,13 +54,12 @@ object SECP256K1 {
    * @param publickey public key
    * @return true if the signature is verified or false
    */
-  def verify(msg: Array[Byte], signature: Array[Byte], publickey: Array[Byte]): Boolean = {
-    require(msg!=null &&  signature!=null &&  publickey!=null)
+  def verify(msg: Array[Byte], signature: Array[Byte], publickey: Array[Byte]): Either[Throwable, Boolean] =  Try{
     val ecPoint = CURVE.getCurve.decodePoint(publickey)
     val ecPkparam = new ECPublicKeyParameters(ecPoint, CURVE)
     val signer = new DSADigestSigner(new ECDSASigner(), new SHA256Digest(), PlainDSAEncoding.INSTANCE)
     signer.init(false, ecPkparam)
     signer.update(msg, 0, msg.length)
     signer.verifySignature(signature)
-  }
+  }.toEither
 }

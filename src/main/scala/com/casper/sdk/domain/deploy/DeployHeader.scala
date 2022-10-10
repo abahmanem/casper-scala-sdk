@@ -2,14 +2,8 @@ package com.casper.sdk.domain.deploy
 
 import com.casper.sdk.crypto.hash.{Blake2b256, Hash}
 import com.casper.sdk.types.cltypes.CLPublicKey
-import com.casper.sdk.json.deserialize.TimeStampDeSerializer
-import com.casper.sdk.json.deserialize.TTLDeserializer
-import com.casper.sdk.json.serialize.TimeStampSerializer
-import com.casper.sdk.json.serialize.TTLSerializer
 import com.casper.sdk.serialization.domain.deploy.DeployHeaderByteSerializer
 import com.casper.sdk.util.HexUtils
-import com.fasterxml.jackson.databind.annotation.{JsonDeserialize, JsonSerialize}
-
 import scala.collection.mutable.ArrayBuilder
 /**
  * DeployHeader Entity class
@@ -23,15 +17,19 @@ import scala.collection.mutable.ArrayBuilder
  */
 case class DeployHeader(
                          account: Option[CLPublicKey],
-                         @JsonSerialize(converter = classOf[TimeStampSerializer])
-                         @JsonDeserialize(converter = classOf[TimeStampDeSerializer])
-                         timestamp: Option[Long],
-                         @JsonSerialize(converter =  classOf[TTLSerializer])
-                         @JsonDeserialize(converter =  classOf[TTLDeserializer])
-                         ttl: Option[Long],
+                         timestamp: String,
+                         ttl: String,
                          gas_price: Int,
-                         body_hash: Option[Hash]=None,
+                         body_hash: Option[Hash],
                          var dependencies: Seq[Hash],
                          chain_name: String
                        )
 
+object DeployHeader {
+  import io.circe.syntax._
+  import io.circe.{Decoder, Encoder}
+  import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+
+  implicit val decoder: Decoder[DeployHeader] = deriveDecoder[DeployHeader]
+  implicit val encoder:Encoder[Deploy] = deriveEncoder[Deploy]
+}

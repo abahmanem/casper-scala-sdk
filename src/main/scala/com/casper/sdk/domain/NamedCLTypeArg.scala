@@ -8,6 +8,16 @@ import  com.casper.sdk.types.cltypes.CLValue
  * @param cl_type
  */
 case class NamedCLTypeArg(
-                          val name : String,
-                          val cl_type : CLType
+                           name : String,
+                           cl_type : CLType
                          )
+
+object NamedCLTypeArg{
+
+  import io.circe.{Decoder, Encoder}
+  import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+
+
+  implicit val decoder:Decoder[NamedCLTypeArg] = deriveDecoder[NamedCLTypeArg]
+  implicit val encoder:Encoder[NamedCLTypeArg] = deriveEncoder[NamedCLTypeArg]
+}

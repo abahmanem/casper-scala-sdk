@@ -9,3 +9,12 @@ case class ActionThresholds(
                              deployment: Int,
                              key_management:Int
                            )
+
+object ActionThresholds{
+
+  import io.circe.{Decoder, Encoder}
+  import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+
+  implicit val decoder:Decoder[ActionThresholds] = deriveDecoder[ActionThresholds]
+  implicit val encoder:Encoder[ActionThresholds] = deriveEncoder[ActionThresholds]
+}

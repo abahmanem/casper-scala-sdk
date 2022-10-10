@@ -5,7 +5,7 @@ import com.casper.sdk.types.cltypes._
 import com.casper.sdk.util.{ByteUtils, HexUtils}
 
 import scala.collection.mutable.ArrayBuilder
-
+import scala.util.{Failure, Success, Try}
 
 /**
  * CLValueByteSerializer 
@@ -13,15 +13,15 @@ import scala.collection.mutable.ArrayBuilder
 
 class CLValueByteSerializer extends BytesSerializable[CLValue] {
 
-  def toBytes(value: CLValue): Array[Byte] = {
-    require(value != null)
+  def toBytes(value: CLValue): Option[Array[Byte]] =
+   Try{
     val builder = new ArrayBuilder.ofByte
-
-    builder.addAll(CLValue.U32(value.bytes.length).bytes)
-      .addAll(value.bytes)
+     //if(CLValue.U32(value.bytes.length).isDefined)
+     builder.addAll(CLValue.getBytes(CLValue.U32(value.bytes.length)))//.get.bytes)
+     builder.addAll(value.bytes)
     CLTypesToBytes(builder, value.cl_infoType)
     builder.result()
-  }
+}.toOption
 
   /**
    * Serialization for CLType
@@ -51,7 +51,8 @@ class CLValueByteSerializer extends BytesSerializable[CLValue] {
       }
       case bytearray: CLByteArrayTypeInfo => {
         builder.addOne(innerType.cl_Type.clType.toByte)
-        builder.addAll(CLValue.U32(bytearray.size).bytes)
+        if(CLValue.U32(bytearray.size).isDefined)
+        builder.addAll(CLValue.getBytes(CLValue.U32(bytearray.size)))
       }
       case list: CLListTypeInfo => {
         builder.addOne(innerType.cl_Type.clType.toByte)
@@ -73,8 +74,6 @@ class CLValueByteSerializer extends BytesSerializable[CLValue] {
         CLTypesToBytes(builder, tuple3.typeinfo2)
         CLTypesToBytes(builder, tuple3.typeinfo3)
       }
-      //Map
-      case _ => throw IllegalArgumentException("unknow type")
     }
   }
 }

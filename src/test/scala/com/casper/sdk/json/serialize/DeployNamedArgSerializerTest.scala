@@ -2,7 +2,7 @@ package com.casper.sdk.json.serialize
 
 import com.casper.sdk.domain.deploy.DeployNamedArg
 import com.casper.sdk.types.cltypes.CLValue
-import com.casper.sdk.util.JsonConverter
+import com.casper.sdk.util.{CirceConverter}
 import org.scalatest.funsuite.AnyFunSuite
 /**
  * DeployNamedArg Custom Json serializer
@@ -21,12 +21,11 @@ class DeployNamedArgSerializerTest extends AnyFunSuite {
                  |]""".stripMargin
 
     val arg1 =  new DeployNamedArg("amount", CLValue.I32(1000) )
-    assert(JsonConverter.toJson(arg1).get==json)
+    assert(CirceConverter.toJson(arg1).get==json.split("\\s+").mkString)
   }
 
   test("DeployNamedArgSerializerTest with a list of DeployNamedArg"){
     val json = """[
-                 |  [
                  |    [
                  |      "amount",
                  |      {
@@ -43,12 +42,11 @@ class DeployNamedArgSerializerTest extends AnyFunSuite {
                  |        "parsed" : "test"
                  |      }
                  |    ]
-                 |  ]
                  |]""".stripMargin
 
     val arg1 =  new DeployNamedArg("amount", CLValue.I32(1000) )
     val arg2 =  new DeployNamedArg("amount", CLValue.String("test") )
-    assert(JsonConverter.toJson(Seq(Seq(arg1,arg2))).get==json)
+    assert(CirceConverter.toJson(Seq(arg1,arg2)).get==json.split("\\s+").mkString)
   }
 
 

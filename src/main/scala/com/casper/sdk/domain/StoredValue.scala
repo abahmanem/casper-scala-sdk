@@ -16,12 +16,18 @@ import com.casper.sdk.types.cltypes.*
  * @param CLValue
  */
 case class StoredValue(
-                   val eraInfo : EraInfo,
-                   val deployInfo : DeployInfo,
-                   val transfer: Transfer,
-                   val contractPackage : ContractPackage,
-                   val Contract :  Contract,
-                   val contractWASM :  String,
-                   val Account :  Account,
-                   val CLValue : CLValue
+                    EraInfo : Option[EraInfo],
+                    DeployInfo : Option[DeployInfo],
+                    transfer: Option[BlockTransfer],
+                    contractPackage : Option[ContractPackage],
+                    Contract :  Option[Contract],
+                    contractWASM :  Option[String],
+                    Account :  Option[Account],
+                    CLValue : Option[CLValue]
                  )
+object StoredValue{
+  import io.circe.{Decoder, Encoder}
+  import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+  implicit val decoder:Decoder[StoredValue] = deriveDecoder[StoredValue]
+
+}

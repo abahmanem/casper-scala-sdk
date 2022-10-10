@@ -1,6 +1,6 @@
 package com.casper.sdk.json.deserialize
 import com.casper.sdk.types.cltypes.CLType
-import com.casper.sdk.util.JsonConverter
+import com.casper.sdk.util.CirceConverter
 import org.scalatest.funsuite.AnyFunSuite
 
 /**
@@ -14,7 +14,7 @@ class CLTypeDeserialiserTest  extends AnyFunSuite {
 
   test("Deserialize  U512 CLType") {
      val u512 = """"U512""""
-     val cltype = JsonConverter.fromJson[CLType](u512).get
+     val cltype = CirceConverter.convertToObj[CLType](u512).get
      assert(cltype == CLType.U512)
    }
 
@@ -26,7 +26,7 @@ class CLTypeDeserialiserTest  extends AnyFunSuite {
     val byteArray = """{
                       |                               "ByteArray": 32
                       |                                }""".stripMargin
-    val cltype = JsonConverter.fromJson[CLType](byteArray).get
+    val cltype = CirceConverter.convertToObj[CLType](byteArray).get
     assert(cltype == CLType.ByteArray)
   }
 
@@ -38,7 +38,7 @@ class CLTypeDeserialiserTest  extends AnyFunSuite {
     val option = """{
                       |                               "Option": "U64"
                       |                                }""".stripMargin
-    val cltype = JsonConverter.fromJson[CLType](option).get
+    val cltype = CirceConverter.convertToObj[CLType](option).get
     assert(cltype == CLType.Option)
   }
 

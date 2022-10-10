@@ -18,3 +18,13 @@ case class BlockInfo(
                       state_root_hash: String,
                       creator: String
                     )
+
+
+object BlockInfo{
+  import io.circe.{Decoder, Encoder}
+  import io.circe.generic.semiauto.deriveEncoder
+  import io.circe.generic.semiauto.deriveDecoder
+
+  implicit val decoder:Decoder[BlockInfo] = deriveDecoder[BlockInfo]
+  implicit val encoder:Encoder[BlockInfo] = deriveEncoder[BlockInfo]
+}

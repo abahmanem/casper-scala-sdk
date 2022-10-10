@@ -2,10 +2,10 @@ package com.casper.sdk.domain.deploy
 
 import com.casper.sdk.crypto.KeyPair
 import com.casper.sdk.crypto.hash.{Blake2b256, Hash}
-import com.casper.sdk.domain.deploy._
+import com.casper.sdk.domain.deploy.DeployExecutable
 import com.casper.sdk.serialization.domain.deploy.{DeployExecutableByteSerializer, DeployHeaderByteSerializer}
 import com.casper.sdk.types.cltypes.{AccountHash, CLPublicKey, Signature}
-import com.casper.sdk.util.HexUtils
+import com.casper.sdk.util.{HexUtils, TimeUtil}
 
 import scala.collection.mutable.ArrayBuilder
 import scala.util.{Failure, Success, Try}
@@ -21,10 +21,10 @@ import scala.util.{Failure, Success, Try}
  */
 
 case class Deploy(
-                   val hash: Option[Hash],
-                   val header: DeployHeader,
-                   val payment: DeployExecutable,
-                   val session: DeployExecutable,
+                   hash: Option[Hash],
+                   header: DeployHeader,
+                   payment: DeployExecutable,
+                   session: DeployExecutable,
                    var approvals: Seq[DeployApproval]
                  ) {
 
@@ -46,16 +46,22 @@ case class Deploy(
  */
 object Deploy {
 
+  import io.circe.syntax._
+  import io.circe.{Decoder, Encoder}
+  import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+
+  implicit val decoder: Decoder[Deploy] = deriveDecoder[Deploy]
+  implicit val encoder: Encoder[Deploy] = deriveEncoder[Deploy]
+
   /**
    * compute header hash
    *
    * @return header hash
    */
-  def deployHeaderHash(header: DeployHeader): Array[Byte] = {
-    require(header!=null)
+  def deployHeaderHash(header: DeployHeader): Option[Array[Byte]] = Try {
     val serializer = new DeployHeaderByteSerializer()
-    Blake2b256.hash(serializer.toBytes(header))
-  }
+    Blake2b256.hash(serializer.toBytes(header).getOrElse(Array.empty[Byte]))
+  }.toOption
 
 
   /**
@@ -67,10 +73,10 @@ object Deploy {
    * @return unsigned Deploy
    */
   def createUnsignedDeploy(header: DeployHeader, payment: DeployExecutable, session: DeployExecutable): Deploy = {
-    require(header!=null)
+
     val deployHeader = DeployHeader(header.account, header.timestamp, header.ttl, header.gas_price,
-      Some(Hash(deployBodyHash(payment, session))), header.dependencies, header.chain_name)
-    new Deploy(Some(Hash(deployHeaderHash(deployHeader))), deployHeader, payment, session, Seq.empty)
+      Option(new Hash(deployBodyHash(payment, session).getOrElse(Array.emptyByteArray))), header.dependencies, header.chain_name)
+    new Deploy(Option(Hash(deployHeaderHash(deployHeader).getOrElse(Array.emptyByteArray))), deployHeader, payment, session, Seq.empty)
   }
 
   /**
@@ -78,13 +84,12 @@ object Deploy {
    *
    * @return Array[Byte]
    */
-  def deployBodyHash(payment: DeployExecutable, session: DeployExecutable): Array[Byte] = {
-    require(payment != null && session != null)
+  def deployBodyHash(payment: DeployExecutable, session: DeployExecutable): Option[Array[Byte]] = Try {
     val serializer = DeployExecutableByteSerializer()
     val builder = new ArrayBuilder.ofByte
-    builder.addAll(serializer.toBytes(payment)).addAll(serializer.toBytes(session))
+    builder.addAll(serializer.toBytes(payment).getOrElse(Array.emptyByteArray)).addAll(serializer.toBytes(session).getOrElse(Array.emptyByteArray))
     Blake2b256.hash(builder.result())
-  }
+  }.toOption
 
   /**
    * Sign a Deploy
@@ -95,15 +100,11 @@ object Deploy {
    */
 
   def signDeploy(deploy: Deploy, keyPair: KeyPair): Option[Deploy] = {
-    require(keyPair != null)
     Try {
-      val signature = keyPair.sign(deploy.hash.get.hash)
-      deploy.addApproval(new DeployApproval(keyPair.publicKey, Some(new Signature(signature, keyPair.publicKey.get.keyAlgorithm))))
+      val signature = keyPair.sign(deploy.hash.map(h => h.hash).get).getOrElse(Array.emptyByteArray)
+      deploy.addApproval(new DeployApproval(Option(keyPair.publicKey), Option(new Signature(signature, keyPair.publicKey.keyAlgorithm))))
       deploy
-    } match {
-      case Success(x) => Some(x)
-      case Failure(err) => None
-    }
+    }.toOption
   }
 
 
@@ -120,9 +121,9 @@ object Deploy {
    * @param ttl    deploy time to live
    * @return a  Unsigne dDeploy
    */
-  def transfer(from: CLPublicKey, to: CLPublicKey, amount: Long, fees: BigInt, chaine: String, id: BigInt, gas: Int = 1, ttl: Long = 1800000): Deploy = {
-    val header = new DeployHeader(Some(from), Option(System.currentTimeMillis()), Option(ttl), gas, None, Seq.empty, chaine)
-    createUnsignedDeploy(header, ModuleBytes(fees), DeployTransfer(amount, new AccountHash(to.bytes), id))
+  def transfer(from: Option[CLPublicKey], to: Option[CLPublicKey], amount: Long, fees: BigInt, chaine: String, id: BigInt, gas: Int = 1, ttl: String = "1800000"): Deploy = {
+    val header = new DeployHeader(from, TimeUtil.timeStampString(System.currentTimeMillis()).getOrElse(""), ttl, gas, None, Seq.empty, chaine)
+    createUnsignedDeploy(header, ModuleBytes(fees), Transfer(amount, new AccountHash(to.get.bytes), id))
   }
 
 
@@ -138,8 +139,8 @@ object Deploy {
    * @param ttl    TTL
    * @return an  Unsigned Deploy
    */
-  def contract(wasm: Array[Byte], from: CLPublicKey, fees: BigInt, chaine: String, gas: Int = 1, ttl: Long = 1800000): Deploy = {
-    val header = new DeployHeader(Some(from), Option(System.currentTimeMillis()), Option(ttl), gas, None, Seq.empty, chaine)
+  def contract(wasm: Array[Byte], from: Option[CLPublicKey], fees: BigInt, chaine: String, gas: Int = 1, ttl: String = "1800000"): Deploy = {
+    val header = new DeployHeader(from, TimeUtil.timeStampString(System.currentTimeMillis()).getOrElse(""), ttl, gas, None, Seq.empty, chaine)
     createUnsignedDeploy(header, ModuleBytes(fees), new ModuleBytes(wasm, Seq.empty))
   }
 
@@ -157,9 +158,10 @@ object Deploy {
    * @return an  Unsigned Deploy
    */
 
-  def contractByNameCall(name: String, entryPoint: String, args: Seq[DeployNamedArg], from: CLPublicKey, fees: BigInt, chaine: String, gas: Int = 1, ttl: Long = 1800000): Deploy = {
-    val header = new DeployHeader(Some(from), Option(System.currentTimeMillis()), Option(ttl), gas, None, Seq.empty, chaine)
-    createUnsignedDeploy(header, ModuleBytes(fees), new StoredContractByName(name, entryPoint, Seq(args)))
+  def contractByNameCall(name: String, entryPoint: String, args: Seq[DeployNamedArg], from: Option[CLPublicKey], fees: BigInt, chaine: String, gas: Int = 1,
+                         ttl: String = "1800000"): Deploy = {
+    val header = new DeployHeader(from, TimeUtil.timeStampString(System.currentTimeMillis()).getOrElse(""), ttl, gas, None, Seq.empty, chaine)
+    createUnsignedDeploy(header, ModuleBytes(fees), new StoredContractByName(name, entryPoint, args))
   }
 
   /**
@@ -176,9 +178,10 @@ object Deploy {
    * @return an  Unsigned Deploy
    */
 
-  def contractByHashCall(hash: Option[Hash], entryPoint: String, args: Seq[DeployNamedArg], from: CLPublicKey, fees: BigInt, chaine: String, gas: Int = 1, ttl: Long = 1800000): Deploy = {
-    val header = new DeployHeader(Some(from), Option(System.currentTimeMillis()), Option(ttl), gas, None, Seq.empty, chaine)
-    createUnsignedDeploy(header, ModuleBytes(fees), new StoredContractByHash(hash, entryPoint, Seq(args)))
+  def contractByHashCall(hash: Hash, entryPoint: String, args: Seq[DeployNamedArg], from: Option[CLPublicKey], fees: BigInt, chaine: String, gas: Int = 1,
+                         ttl: String = "1800000"): Deploy = {
+    val header = new DeployHeader(from, TimeUtil.timeStampString(System.currentTimeMillis()).getOrElse(""), ttl, gas, None, Seq.empty, chaine)
+    createUnsignedDeploy(header, ModuleBytes(fees), new StoredContractByHash(hash, entryPoint, args))
   }
 
 
@@ -196,9 +199,10 @@ object Deploy {
    * @param ttl        TTL
    * @return an  Unsigned Deploy
    */
-  def versionnedContractByNameCall(name: String, entryPoint: String, version: Int, args: Seq[DeployNamedArg], from: CLPublicKey, fees: BigInt, chaine: String, gas: Int = 1, ttl: Long = 1800000): Deploy = {
-    val header = new DeployHeader(Some(from), Option(System.currentTimeMillis()), Option(ttl), gas, None, Seq.empty, chaine)
-    createUnsignedDeploy(header, ModuleBytes(fees), new StoredVersionedContractByName(name, Some(version), entryPoint, Seq(args)))
+  def versionnedContractByNameCall(name: String, entryPoint: String, version: Int, args: Seq[DeployNamedArg], from: Option[CLPublicKey], fees: BigInt, chaine: String,
+                                   gas: Int = 1, ttl: String = "1800000"): Deploy = {
+    val header = new DeployHeader(from, TimeUtil.timeStampString(System.currentTimeMillis()).getOrElse(""), ttl, gas, None, Seq.empty, chaine)
+    createUnsignedDeploy(header, ModuleBytes(fees), new StoredVersionedContractByName(name, version, entryPoint, args))
   }
 
 
@@ -216,9 +220,10 @@ object Deploy {
    * @param ttl        TTL
    * @return an  Unsigned Deploy
    */
-  def versionnedContractByHashCall(hash: Option[Hash], entryPoint: String, version: Int, args: Seq[DeployNamedArg], from: CLPublicKey, fees: BigInt, chaine: String, gas: Int = 1, ttl: Long = 1800000): Deploy = {
-    val header = new DeployHeader(Some(from), Option(System.currentTimeMillis()), Option(ttl), gas, None, Seq.empty, chaine)
-    createUnsignedDeploy(header, ModuleBytes(fees), new StoredVersionedContractByHash(hash, Some(version), entryPoint, Seq(args)))
+  def versionnedContractByHashCall(hash: Hash, entryPoint: String, version: Int, args: Seq[DeployNamedArg], from: Option[CLPublicKey], fees: BigInt, chaine:
+  String, gas: Int = 1, ttl: String = "1800000"): Deploy = {
+    val header = new DeployHeader(from, TimeUtil.timeStampString(System.currentTimeMillis()).getOrElse(""), ttl, gas, None, Seq.empty, chaine)
+    createUnsignedDeploy(header, ModuleBytes(fees), new StoredVersionedContractByHash(hash, version, entryPoint, args))
   }
 }
 

@@ -1,7 +1,8 @@
 package com.casper.sdk.domain
 
-import com.fasterxml.jackson.annotation.JsonProperty
-
+import io.circe.generic.semiauto.deriveEncoder
+import io.circe.generic.semiauto.deriveDecoder
+import io.circe.{Decoder, Encoder}
 /**
  * Block entity class
  * @param hash
@@ -15,5 +16,9 @@ case class Block(
                   header: BlockHeader,
                   body: BlockBody,
                   proofs: Seq[BlockProof]
-                ) 
+                )
 
+object Block{
+  implicit val decoder:Decoder[Block] = deriveDecoder[Block]
+  implicit val encoder:Encoder[Block] = deriveEncoder[Block]
+}

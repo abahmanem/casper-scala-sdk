@@ -13,8 +13,7 @@ object ByteUtils {
    * @return
    */
   def join(parts: Array[Byte]*): Array[Byte] = {
-    require(parts != null)
-    parts.toArray.flatten
+      parts.toArray.flatten
   }
 
   /**
@@ -26,7 +25,6 @@ object ByteUtils {
    * @return Array[Byte]
    */
   def serializeArbitraryWidthNumber(value: BigInt, maxBytes: Int): Array[Byte] = {
-    require(value != null && value.toByteArray.length <= maxBytes)
     var bytes = value.toByteArray
     //remove leading zeros
     if (bytes.length > 1 && bytes(0) == 0) {
@@ -48,7 +46,6 @@ object ByteUtils {
    */
 
   def serializeFixedWidthNumber(value: BigInt, maxBytes: Int): Array[Byte] = {
-    require(value != null && value.toByteArray.length <= maxBytes)
     val bytes = value.toByteArray
     var res = new Array[Byte](maxBytes)
     if (bytes.length < maxBytes) {

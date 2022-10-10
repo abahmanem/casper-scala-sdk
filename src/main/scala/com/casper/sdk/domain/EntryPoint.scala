@@ -1,7 +1,6 @@
 package com.casper.sdk.domain
 
 import com.casper.sdk.types.cltypes.CLType
-import com.fasterxml.jackson.module.scala.JsonScalaEnumeration
 
 /**
  * EntryPoint entity class
@@ -12,9 +11,18 @@ import com.fasterxml.jackson.module.scala.JsonScalaEnumeration
  * @param args
  */
 case class EntryPoint(
-                     val name:String,
-                     val entry_point_type : String,
-                     val access :String,
-                     val ret: CLType,
-                     val args: Seq[NamedCLTypeArg]
+                      name:String,
+                      entry_point_type : String,
+                      access :String,
+                      ret: CLType,
+                      args: Seq[NamedCLTypeArg]
                      )
+object EntryPoint{
+
+  import io.circe.{Decoder, Encoder}
+  import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+
+
+  implicit val decoder:Decoder[EntryPoint] = deriveDecoder[EntryPoint]
+  implicit val encoder:Encoder[EntryPoint] = deriveEncoder[EntryPoint]
+}

@@ -16,7 +16,6 @@ object Blake2b256 {
    * @return  hash array   array
    */
   def hash(input: Array[Byte]): Array[Byte] = {
-    require(input != null)
     val digest = new Blake2bDigest(256)
     synchronized {
       digest.update(input, 0, input.length)
@@ -34,7 +33,6 @@ object Blake2b256 {
    */
 
   def CLPublicKeyToAccountHash(cLPublicKey: CLPublicKey): Array[Byte] = {
-    require(cLPublicKey != null)
     val digest = new Blake2bDigest(256)
     val algorithm = cLPublicKey.keyAlgorithm.toString.toLowerCase
     digest.update(algorithm.getBytes(StandardCharsets.UTF_8), 0, algorithm.length)

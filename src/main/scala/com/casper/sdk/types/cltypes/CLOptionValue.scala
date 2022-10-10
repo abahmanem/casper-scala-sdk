@@ -22,5 +22,5 @@ class CLOptionValue(
    * @param clTypeOption
    * @param parsed
    */
-  def this(hexBytes: String, clTypeOption: CLTypeInfo, parsed: Any) = this(HexUtils.fromHex(hexBytes).get, clTypeOption, parsed)
+  def this(hexBytes: String, clTypeOption: CLTypeInfo, parsed: Any) = this(HexUtils.fromHex(hexBytes).getOrElse(Array.emptyByteArray), clTypeOption, parsed)
 }

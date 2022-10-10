@@ -1,66 +1,74 @@
 package com.casper.sdk.serialization.domain.deploy
 
-import com.casper.sdk.domain.deploy._
+import com.casper.sdk.domain.deploy.*
 import com.casper.sdk.serialization.BytesSerializable
-import com.casper.sdk.types.cltypes
-import com.casper.sdk.types.cltypes.CLValue
-import com.casper.sdk.util.{HexUtils, JsonConverter}
+import com.casper.sdk.types.cltypes.*
+import com.casper.sdk.types.cltypes.{CLTypeInfo, CLValue}
+import com.casper.sdk.util.HexUtils
 
 import java.nio.charset.StandardCharsets
 import scala.collection.mutable.ArrayBuilder
-
+import scala.util.{Failure, Success, Try}
 /**
  * DeployExecutableByteSerializer
  */
 class DeployExecutableByteSerializer extends BytesSerializable[DeployExecutable] {
 
-  def toBytes(value: DeployExecutable): Array[Byte] = {
-
-    require(value != null)
+  def toBytes(value: DeployExecutable): Option[Array[Byte]] = Try {
     val builder = new ArrayBuilder.ofByte
     //tag
     builder.addOne(value.tag.toByte)
 
     value match {
-      case modulesbytes: ModuleBytes => {
-        if (modulesbytes.modules_bytes == null || modulesbytes.modules_bytes.length == 0)
-          builder.addAll(CLValue.U32(0).bytes)
-        else
-          builder.addAll(CLValue.U32(modulesbytes.modules_bytes.length).bytes).addAll(modulesbytes.modules_bytes)
-      }
+      case modulesbytes: ModuleBytes => builder.addAll(CLValue.getBytes(CLValue.U32(modulesbytes.module_bytes.length))).addAll(modulesbytes.module_bytes)
+
 
       case storedContractByName: StoredContractByName => {
-        builder.addAll(CLValue.String(storedContractByName.name).bytes)
-        builder.addAll(CLValue.String(storedContractByName.entry_point).bytes)
+        builder.addAll( CLValue.getBytes(CLValue.String(storedContractByName.name)))// .map(v=>v.bytes).getOrElse(Array.emptyByteArray))
+        .addAll(CLValue.getBytes(CLValue.String(storedContractByName.entry_point)))//.map(v=>v.bytes).getOrElse(Array.emptyByteArray))
       }
 
       case storedContractByHash: StoredContractByHash => {
 
-        if(storedContractByHash.hash.isDefined) builder.addAll(storedContractByHash.hash.get.hash)
-        builder.addAll(CLValue.U32(storedContractByHash.entry_point.getBytes(StandardCharsets.UTF_8).length).bytes)
+        //if(storedContractByHash.hash.isDefined)
+          builder.addAll(storedContractByHash.hash.hash)
+          .addAll(CLValue.getBytes( CLValue.U32(storedContractByHash.entry_point.getBytes(StandardCharsets.UTF_8).length)))//.map(v=>v.bytes).getOrElse(Array.emptyByteArray))
           .addAll(storedContractByHash.entry_point.getBytes(StandardCharsets.UTF_8))
       }
       case storedVersionedContractByHash: StoredVersionedContractByHash => {
 
-        if(storedVersionedContractByHash.hash.isDefined)
-        builder.addAll(storedVersionedContractByHash.hash.get.hash)
-        storedVersionedContractByHash.version match {
+       // if(storedVersionedContractByHash.hash.isDefined)
+        builder.addAll(storedVersionedContractByHash.hash.hash)
+          //.addOne(0x01.toByte)
+
+          if(storedVersionedContractByHash.version==0)
+            builder  .addAll(CLValue.getBytes( CLValue.OptionNone(CLTypeInfo(CLType.U32))))//.map(v=>v.bytes).getOrElse(Array.emptyByteArray))
+          else
+            builder  .addAll(CLValue.getBytes(CLValue.Option(CLValue.U32(storedVersionedContractByHash.version))))//.map(v=>v.bytes).getOrElse(Array.emptyByteArray))
+              //.U32(storedVersionedContractByHash.version).get.bytes)
+       /* storedVersionedContractByHash.version match {
           case None => builder.addOne(0x00.toByte)
-          case Some(a) => builder.addOne(0x01.toByte).addAll(CLValue.U32(storedVersionedContractByHash.version.get).bytes)
-        }
+          case Some(a) => builder.addOne(0x01.toByte).addAll(CLValue.U32(storedVersionedContractByHash.version).get.bytes)
+        }*/
       }
       case storedVersionedContractByName: StoredVersionedContractByName => {
-        builder.addAll(CLValue.String(storedVersionedContractByName.name).bytes)
-        storedVersionedContractByName.version match {
+        builder.addAll(CLValue.getBytes( CLValue.String(storedVersionedContractByName.name)))//.map(v=>v.bytes).getOrElse(Array.emptyByteArray))
+        //.addOne(0x01.toByte).addAll(CLValue.U32(storedVersionedContractByName.version).map(v=>v.bytes).getOrElse(Array.emptyByteArray))
+
+        if (storedVersionedContractByName.version == 0)
+          builder.addAll(CLValue.getBytes(CLValue.OptionNone(CLTypeInfo(CLType.U32))))//.map(v=>v.bytes).getOrElse(Array.emptyByteArray))
+        else
+          builder.addAll(CLValue.getBytes(CLValue.Option(CLValue.U32(storedVersionedContractByName.version))))//.map(v=>v.bytes).getOrElse(Array.emptyByteArray))
+       /* storedVersionedContractByName.version match {
           case None => builder.addOne(0x00.toByte)
-          case Some(a) => builder.addOne(0x01.toByte).addAll(CLValue.U32(storedVersionedContractByName.version.get).bytes)
-        }
+          case Some(a) => builder.addOne(0x01.toByte).addAll(CLValue.U32(storedVersionedContractByName.version).get.bytes)
+        }*/
       }
-      case transfer: DeployTransfer =>
+      case transfer: Transfer =>
     }
-    builder.addAll(argsToBytes(value.args))
+    builder.addAll(argsToBytes(value.args).get)
     builder.result()
-  }
+  }.toOption
 
   /**
    * bytes serialization of args field
@@ -68,16 +76,14 @@ class DeployExecutableByteSerializer extends BytesSerializable[DeployExecutable]
    * @param list
    * @return
    */
-  def argsToBytes(list: Seq[Seq[DeployNamedArg]]): Array[Byte] = {
-    require(list != null && !list.isEmpty)
+  def argsToBytes(list: Seq[DeployNamedArg]): Option[Array[Byte]] = Try {
     val builder = new ArrayBuilder.ofByte
-    builder.addAll(CLValue.U32(list(0).size).bytes)
+    builder.addAll( CLValue.getBytes(CLValue.U32(list.size))) //.map(v=>v.bytes).getOrElse(Array.emptyByteArray)   )
     val argSerializer = new DeployNamedArgByteSerializer()
-    val seq = list(0)
-    for (i <- 0 to seq.size - 1) {
-      val subArg = seq(i)
-      builder.addAll(argSerializer.toBytes(subArg))
+    for (i <- 0 to list.size - 1) {
+      val subArg = list(i)
+      builder.addAll(argSerializer.toBytes(subArg).getOrElse(Array.emptyByteArray))
     }
     builder.result()
-  }
+  }.toOption
 }

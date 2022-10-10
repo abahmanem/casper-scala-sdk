@@ -1,7 +1,5 @@
 package com.casper.sdk.util
 
-import com.casper.sdk.rpc.exceptions.RPCIOException
-
 import java.time.format.{DateTimeFormatter, DateTimeParseException}
 import java.time.{Instant, OffsetDateTime, ZoneId}
 import java.util.concurrent.TimeUnit

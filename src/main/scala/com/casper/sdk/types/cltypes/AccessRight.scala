@@ -1,7 +1,5 @@
 package com.casper.sdk.types.cltypes
 
-import com.casper.sdk.rpc.Method
-
 /**
  * Uref Access rights Enum
  */
@@ -25,6 +23,19 @@ enum AccessRight(val bits:Byte) extends App{
 
   def  get(bits: Byte) : AccessRight ={
     AccessRight.values.find(_.bits == bits).get
+  }
+  
+}
+
+object AccessRight{
+
+  object AccessRight{
+    import io.circe.{Decoder, Encoder}
+    import io.circe.generic.semiauto.deriveEncoder
+    import io.circe.generic.semiauto.deriveDecoder
+
+    implicit val decoder:Decoder[AccessRight] = deriveDecoder[AccessRight]
+    implicit val encoder:Encoder[AccessRight] = deriveEncoder[AccessRight]
   }
 
 }

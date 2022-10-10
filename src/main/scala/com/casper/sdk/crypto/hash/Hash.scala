@@ -1,28 +1,42 @@
 package com.casper.sdk.crypto.hash
 
-import com.casper.sdk.json.deserialize.HashDeserializer
-import com.casper.sdk.json.serialize.HashSerializer
+
 import com.casper.sdk.util.HexUtils
-import com.fasterxml.jackson.databind.annotation.{JsonDeserialize, JsonSerialize}
+import scala.util.Try
 
 /**
  * Hash class
  *
  * @param hash
  */
-@JsonSerialize(`using` = classOf[HashSerializer])
-@JsonDeserialize(`using` = classOf[HashDeserializer])
 case class Hash(
                  hash: Array[Byte]
                ) {
-  require(hash.length == 32)
-
   /**
    * constructor with hex string
    *
    * @param stringHash
    */
-  def this(stringHash: String) = this(HexUtils.fromHex(stringHash).get)
+    def formatAsHexString: Option[String] = Try(HexUtils.toHex(hash).get).toOption
+}
 
-  override def toString: String = HexUtils.toHex(hash).get
+object Hash{
+
+  /**
+   *
+   * @param hex
+   * @return CLPublicKey
+   */
+  def apply(hex: String): Option[Hash] = HexUtils.fromHex(hex).map(bytes => Hash(bytes))
+  import io.circe.{Decoder, Encoder}
+
+  implicit val decoderOption: Decoder[Option[Hash]] = Decoder.decodeString.emapTry {
+    str => Try(Hash(str))
+  }
+
+  implicit val decoder: Decoder[Hash] = Decoder.decodeString.emapTry {
+    str => Try(Hash(HexUtils.fromHex(str).get))
+  }
+  implicit val encoder: Encoder[Hash] = (hash: Hash) =>    Encoder.encodeString(HexUtils.toHex(hash.hash).getOrElse(""))
+  
 }

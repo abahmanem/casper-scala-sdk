@@ -6,5 +6,5 @@ package com.casper.sdk.serialization
  * @tparam T : Casper object Type
  */
 trait BytesSerializable[T] {
-  def toBytes(value: T): Array[Byte]
+  def toBytes(value: T): Option[Array[Byte]]
 }

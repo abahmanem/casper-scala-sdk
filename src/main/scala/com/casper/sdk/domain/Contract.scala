@@ -20,9 +20,18 @@ package com.casper.sdk.domain
  * @param named_keys
  */
 case class Contract (
-                val contract_package_hash : String,
-                val contract_wasm_hash : String,
-                val protocol_version : String,
-                val entry_points : Seq[EntryPoint],
-                val named_keys : Seq[NamedKey]
+                 contract_package_hash : String,
+                 contract_wasm_hash : String,
+                 protocol_version : String,
+                 entry_points : Seq[EntryPoint],
+                 named_keys : Seq[NamedKey]
                )
+
+object Contract{
+
+  import io.circe.{Decoder, Encoder}
+  import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+
+  implicit val decoder:Decoder[Contract] = deriveDecoder[Contract]
+  implicit val encoder:Encoder[Contract] = deriveEncoder[Contract]
+}

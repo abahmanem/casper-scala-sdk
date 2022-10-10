@@ -15,3 +15,13 @@ case class ContractPackage(
                             disabledVersions : Seq[String],
                             groups:Seq[Group]
                           )
+
+object ContractPackage{
+
+  import io.circe.{Decoder, Encoder}
+  import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+
+  implicit val decoder:Decoder[ContractPackage] = deriveDecoder[ContractPackage]
+  implicit val encoder:Encoder[ContractPackage] = deriveEncoder[ContractPackage]
+}
+

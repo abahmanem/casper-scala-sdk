@@ -3,18 +3,15 @@ package com.casper.sdk.crypto
 import com.casper.sdk.domain.Peer
 import com.casper.sdk.rpc.RPCResult
 import com.casper.sdk.types.cltypes.{CLPublicKey, KeyAlgorithm}
-import com.casper.sdk.util.{HexUtils, JsonConverter}
+import com.casper.sdk.util.HexUtils
 import org.scalatest.funsuite.AnyFunSuite
 
 import scala.io.Source
-
 
 class KeyPairTest extends AnyFunSuite {
 
   test("Test Load keyPair from ed25519 private pem file") {
 
-   
-    
     val keyPair = KeyPair.loadFromPem(getClass.getResource("/crypto/ed25519/secret.pem").getPath)
     info("assert publickey is not null")
     assert(keyPair.get.publicKey != null)
@@ -30,10 +27,10 @@ class KeyPairTest extends AnyFunSuite {
     assert(keyPair.get.publicKey != null)
 
     info("assert Algorithm is  ED25519")
-    assert(keyPair.get.publicKey.get .keyAlgorithm == KeyAlgorithm.ED25519)
+    assert(keyPair.get.publicKey .keyAlgorithm == KeyAlgorithm.ED25519)
 
     info("assert  cLPublicKey hex = 0127a89db4e0806e568a5b0646594bd5d0abe0cf695a63357bd066f412e92bd68e")
-    assert(keyPair.get.publicKey.get.formatAsHexAccount.get.toLowerCase == "0127a89db4e0806e568a5b0646594bd5d0abe0cf695a63357bd066f412e92bd68e")
+    assert(keyPair.get.publicKey.formatAsHexAccount.get.toLowerCase == "0127a89db4e0806e568a5b0646594bd5d0abe0cf695a63357bd066f412e92bd68e")
 
   }
 
@@ -54,13 +51,13 @@ class KeyPairTest extends AnyFunSuite {
     assert(keyPair.get.publicKey != null)
 
     info("assert Algorithm is  SECP256K1")
-    assert(keyPair.get.publicKey.get.keyAlgorithm == KeyAlgorithm.SECP256K1)
+    assert(keyPair.get.publicKey.keyAlgorithm == KeyAlgorithm.SECP256K1)
 
     info("assert SECP256K1 key length is  33")
-    assert(keyPair.get.publicKey.get.bytes.length ==33)
+    assert(keyPair.get.publicKey.bytes.length ==33)
 
     info("assert  cLPublicKey hex = 0127a89db4e0806e568a5b0646594bd5d0abe0cf695a63357bd066f412e92bd68e")
-    assert(keyPair.get.publicKey.get.formatAsHexAccount.get.toLowerCase == "0202ba7f1ec7b61e8b79cdd669f0dbf73d40dc08133019f3eba95e43798601cd82ba")
+    assert(keyPair.get.publicKey.formatAsHexAccount.get.toLowerCase == "0202ba7f1ec7b61e8b79cdd669f0dbf73d40dc08133019f3eba95e43798601cd82ba")
   }
 
 
@@ -135,9 +132,9 @@ class KeyPairTest extends AnyFunSuite {
     val keyPair = KeyPair.create(KeyAlgorithm.ED25519)
     val b = keyPair.get.sign(msg)
     info("assert ED25519 signature length is 64  ")
-    assert(b.length==64)
+    assert(b.toOption.get.length==64)
     info("assert verifySignature  ED25519 publickey= true  ")
-    assert(keyPair.get.publicKey.get.verifySignature(msg, b))
+    assert(keyPair.get.publicKey.verifySignature(msg,  b.toOption.get).toOption.get)
 
   }
 
@@ -146,7 +143,7 @@ class KeyPairTest extends AnyFunSuite {
     val keyPair = KeyPair.create(KeyAlgorithm.SECP256K1)
     val b = keyPair.get.sign(msg)
     info("assert verifySignature with SECP256K1 publickey = true  ")
-    assert(keyPair.get.publicKey.get.verifySignature(msg, b))
+    assert(keyPair.get.publicKey.verifySignature(msg, b.toOption.get).toOption.get)
   }
 
   test("Test verifiy signature with ed25519 keyPair gives false ") {
@@ -155,7 +152,7 @@ class KeyPairTest extends AnyFunSuite {
     val keyPair = KeyPair.create(KeyAlgorithm.ED25519)
     val b = keyPair.get.sign(msg)
     info("assert verifySignature on a différent message with ed25519 publickey = false  ")
-    assert(!keyPair.get.publicKey.get.verifySignature(msg1, b))
+    assert(!keyPair.get.publicKey.verifySignature(msg1,  b.toOption.get).toOption.get)
 
   }
 
@@ -165,7 +162,7 @@ class KeyPairTest extends AnyFunSuite {
     val keyPair = KeyPair.create(KeyAlgorithm.SECP256K1)
     val b = keyPair.get.sign(msg)
     info("assert verifySignature on a différent message with SECP256K1 publickey = false  ")
-    assert(!keyPair.get.publicKey.get.verifySignature(msg1, b))
+    assert(!keyPair.get.publicKey.verifySignature(msg1,  b.toOption.get).toOption.get)
   }
 
 }

@@ -58,7 +58,7 @@ class CLPublicKeyTest extends AnyFunSuite {
 
 
   test("Test ED25519 CLPublicKey toPem String   ") {
-    //  assert( keyED25519.toPemString().toLowerCase == ed25519Pem.toLowerCase)
+  //    assert( keyED25519.toPemString().get.toLowerCase == ed25519Pem.toLowerCase)
   }
 
   test("Test SECP256K1 CLPublicKey toPem String   ") {

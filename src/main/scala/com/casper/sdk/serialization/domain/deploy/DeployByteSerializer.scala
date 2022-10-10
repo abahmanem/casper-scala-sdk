@@ -6,26 +6,23 @@ import com.casper.sdk.types.cltypes.CLValue
 import com.casper.sdk.util.HexUtils
 
 import scala.collection.mutable.ArrayBuilder
+import scala.util.Try
 
 /**
  * DeployByteSerializer
  */
 class DeployByteSerializer extends BytesSerializable[Deploy] {
-
-  def toBytes(value: Deploy): Array[Byte] = {
-    require(value != null)
-    val builder = new ArrayBuilder.ofByte
-    val deployExecutableByteSerializer = new DeployExecutableByteSerializer()
-    val approvalByteSerializer = new DeployApprovalByteSerializer()
-    val deployHeaderByteSerializer = new DeployHeaderByteSerializer()
-
-    builder.addAll(deployHeaderByteSerializer.toBytes(value.header))
-    if (value.hash.isDefined)
-      builder.addAll(value.hash.get.hash)
-    builder.addAll(deployExecutableByteSerializer.toBytes(value.payment))
-      .addAll(deployExecutableByteSerializer.toBytes(value.session))
-      .addAll(CLValue.U32(value.approvals.size).bytes)
-    for (approuval <- value.approvals) builder.addAll(approvalByteSerializer.toBytes(approuval))
-    builder.result()
-  }
+  def toBytes(value: Deploy): Option[Array[Byte]] =Try{
+      val builder = new ArrayBuilder.ofByte
+      val deployExecutableByteSerializer = new DeployExecutableByteSerializer()
+      val approvalByteSerializer = new DeployApprovalByteSerializer()
+      val deployHeaderByteSerializer = new DeployHeaderByteSerializer()
+      builder.addAll(deployHeaderByteSerializer.toBytes(value.header).getOrElse(Array.emptyByteArray))
+      builder.addAll(value.hash.map(h=>h.hash).getOrElse(Array.emptyByteArray))
+        .addAll(deployExecutableByteSerializer.toBytes(value.payment).getOrElse(Array.emptyByteArray))
+        .addAll(deployExecutableByteSerializer.toBytes(value.session).getOrElse(Array.emptyByteArray))
+        .addAll( CLValue.getBytes( CLValue.U32(value.approvals.size)))//.map(v=>v.bytes).getOrElse(Array.emptyByteArray))
+      for (approuval <- value.approvals) builder.addAll(approvalByteSerializer.toBytes(approuval).getOrElse(Array.emptyByteArray))
+      builder.result()
+    }.toOption
 }

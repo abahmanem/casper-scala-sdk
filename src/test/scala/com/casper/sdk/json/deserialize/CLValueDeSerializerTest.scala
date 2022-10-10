@@ -1,7 +1,7 @@
 package com.casper.sdk.json.deserialize
 
-import com.casper.sdk.types.cltypes.{CLPublicKey, CLType, CLValue,CLOptionTypeInfo}
-import com.casper.sdk.util.{HexUtils, JsonConverter}
+import com.casper.sdk.types.cltypes.{CLOptionTypeInfo, CLPublicKey, CLType, CLValue}
+import com.casper.sdk.util.{CirceConverter, HexUtils}
 import org.scalatest.funsuite.AnyFunSuite
 
 /**
@@ -21,7 +21,7 @@ class CLValueDeSerializerTest extends AnyFunSuite {
         |                                "parsed": "1000000000"
         |                            }""".stripMargin
 
-    val value = JsonConverter.fromJson[CLValue](u512).get
+    val value = CirceConverter.convertToObj[CLValue](u512).get
     info("value is not null")
     assert(value != null)
     info("parsed value = 1000000000 ")
@@ -44,7 +44,7 @@ class CLValueDeSerializerTest extends AnyFunSuite {
         |                            }""".stripMargin
 
 
-    val value = JsonConverter.fromJson[CLValue](pubKey).get
+    val value = CirceConverter.convertToObj[CLValue](pubKey).get
     info("value is not null")
     assert(value != null)
     info("parsed value = 017d96B9A63abCB61c870A4F55187a0a7AC24096bdB5fc585C12A686a4D892009e ")
@@ -68,7 +68,7 @@ class CLValueDeSerializerTest extends AnyFunSuite {
         |                                "bytes": "2fe0d35b6a92e17ee8f3ee3693452d6141df5c8db8e17a1c0985572842e13385",
         |                                "parsed": "2fe0d35b6a92e17ee8f3ee3693452d6141df5c8db8e17a1c0985572842e13385"
         |                            }""".stripMargin
-    val value = JsonConverter.fromJson[CLValue](byteArray32).get
+    val value = CirceConverter.convertToObj[CLValue](byteArray32).get
     info("value is not null")
     assert(value != null)
     info("parsed value = 2fe0d35b6a92e17ee8f3ee3693452d6141df5c8db8e17a1c0985572842e13385 ")
@@ -92,7 +92,7 @@ class CLValueDeSerializerTest extends AnyFunSuite {
         |                                "bytes": "00",
         |                                "parsed": null
         |                            }""".stripMargin
-    val value = JsonConverter.fromJson[CLValue](option).get
+    val value = CirceConverter.convertToObj[CLValue](option).get
     info("value is not null")
     assert(value != null)
     info("parsed value = null")
@@ -119,7 +119,7 @@ class CLValueDeSerializerTest extends AnyFunSuite {
         |                                "parsed": "https://caspercommunity.io"
         |                            }""".stripMargin
 
-    val value = JsonConverter.fromJson[CLValue](str).get
+    val value = CirceConverter.convertToObj[CLValue](str).get
     info("value is not null")
     assert(value != null)
     info("parsed value = https://caspercommunity.io")

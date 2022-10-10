@@ -12,3 +12,14 @@ case class AssociatedKey(
                           account_hash: Option[AccountHash],
                           weight:Int
                         )
+
+object AssociatedKey{
+
+  import io.circe.{Decoder, Encoder}
+  import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+
+
+  implicit val decoder:Decoder[AssociatedKey] = deriveDecoder[AssociatedKey]
+  implicit val encoder:Encoder[AssociatedKey] = deriveEncoder[AssociatedKey]
+}
+
