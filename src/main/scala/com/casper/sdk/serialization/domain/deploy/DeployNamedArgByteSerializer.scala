@@ -17,7 +17,7 @@ class DeployNamedArgByteSerializer extends BytesSerializable[DeployNamedArg] {
     val builder = new ArrayBuilder.ofByte
     builder.addAll( CLValue.getBytes(CLValue.U32(value.name.getBytes().length))) 
       .addAll(value.name.getBytes())
-      .addAll(new CLValueByteSerializer().toBytes(value.value.getOrElse(CLValue.Unit().get)).getOrElse(Array.emptyByteArray))
+      .addAll(new CLValueByteSerializer().toBytes(value.value.get).get)
     builder.result()
   }.toOption
 }

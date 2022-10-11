@@ -17,7 +17,7 @@ import scala.util.{Failure, Success, Try}
 class DeployHeaderByteSerializer extends BytesSerializable[DeployHeader] {
   def toBytes(value: DeployHeader): Option[Array[Byte]] = Try {
     val builder = new ArrayBuilder.ofByte
-    builder.addAll(new CLPublicKeyByteSerializer().toBytes(value.account.get).getOrElse(Array.emptyByteArray))
+    builder.addAll(new CLPublicKeyByteSerializer().toBytes(value.account.get).get)
     builder.addAll(CLValue.getBytes(CLValue.U64(TimeUtil.ToEpochMs(value.timestamp).getOrElse(0L))))
     builder.addAll(CLValue.getBytes(CLValue.U64(TimeUtil.ttlToMillis(value.ttl).getOrElse(0L)))).addAll(CLValue.getBytes(CLValue.U64(value.gas_price)))
       .addAll(value.body_hash.get.hash)

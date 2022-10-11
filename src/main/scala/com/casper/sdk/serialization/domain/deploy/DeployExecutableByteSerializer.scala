@@ -61,7 +61,7 @@ class DeployExecutableByteSerializer extends BytesSerializable[DeployExecutable]
     val argSerializer = new DeployNamedArgByteSerializer()
     for (i <- 0 to list.size - 1) {
       val subArg = list(i)
-      builder.addAll(argSerializer.toBytes(subArg).getOrElse(Array.emptyByteArray))
+      builder.addAll(argSerializer.toBytes(subArg).get)
     }
     builder.result()
   }.toOption

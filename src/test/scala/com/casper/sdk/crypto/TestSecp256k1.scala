@@ -61,7 +61,7 @@ object TestSecp256k1 extends App {
   val deploy = Deploy.createUnsignedDeploy(header, payment, session)
 
   //sign it
-  val signedDeploy = Deploy.signDeploy(deploy, secp256k1Keys.get)
+  val signedDeploy = Deploy.signDeploy(deploy.get, secp256k1Keys.get)
 
   println(CirceConverter.toJson[Deploy](signedDeploy.get))
 

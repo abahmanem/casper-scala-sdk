@@ -399,7 +399,7 @@ class CasperSdkTest extends AnyFlatSpec with Matchers with TryValues {
     //sign_put_deploys_secret.pem
     val keyPair = com.casper.sdk.crypto.KeyPair.loadFromPem(getClass.getResource("/crypto/sign_put_deploys_secret.pem").getPath)
     val deploy = Deploy.createUnsignedDeploy(header, payment, session)
-    val signedDeploy = Deploy.signDeploy(deploy, keyPair.get)
+    val signedDeploy = Deploy.signDeploy(deploy.get, keyPair.get)
     val hashReult = client.putDeploy(signedDeploy.get)
     assert(hashReult.success.value.deploy_hash.hash.sameElements(signedDeploy.get.hash.get.hash))
   }

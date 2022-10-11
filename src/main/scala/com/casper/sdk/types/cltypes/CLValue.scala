@@ -50,9 +50,8 @@ case class CLValue(
 object CLValue {
 
 
-  def getBytes(cLValueOption: Option[CLValue]): Array[Byte] = {
-    cLValueOption.map(v => v.bytes).getOrElse(Array.emptyByteArray)
-  }
+  def getBytes(cLValueOption: Option[CLValue]): Array[Byte] = cLValueOption.map(v => v.bytes).getOrElse(Array.emptyByteArray)
+
 
   /**
    * Circe decoding-encoding

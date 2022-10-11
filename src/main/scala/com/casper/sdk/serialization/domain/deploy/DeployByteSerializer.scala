@@ -17,12 +17,12 @@ class DeployByteSerializer extends BytesSerializable[Deploy] {
       val deployExecutableByteSerializer = new DeployExecutableByteSerializer()
       val approvalByteSerializer = new DeployApprovalByteSerializer()
       val deployHeaderByteSerializer = new DeployHeaderByteSerializer()
-      builder.addAll(deployHeaderByteSerializer.toBytes(value.header).getOrElse(Array.emptyByteArray))
-      builder.addAll(value.hash.map(h=>h.hash).getOrElse(Array.emptyByteArray))
-        .addAll(deployExecutableByteSerializer.toBytes(value.payment).getOrElse(Array.emptyByteArray))
-        .addAll(deployExecutableByteSerializer.toBytes(value.session).getOrElse(Array.emptyByteArray))
+      builder.addAll(deployHeaderByteSerializer.toBytes(value.header).get)
+      builder.addAll(value.hash.map(h=>h.hash).get)
+        .addAll(deployExecutableByteSerializer.toBytes(value.payment).get)
+        .addAll(deployExecutableByteSerializer.toBytes(value.session).get)
         .addAll( CLValue.getBytes( CLValue.U32(value.approvals.size)))
-      for (approuval <- value.approvals) builder.addAll(approvalByteSerializer.toBytes(approuval).getOrElse(Array.emptyByteArray))
+      for (approuval <- value.approvals) builder.addAll(approvalByteSerializer.toBytes(approuval).get)
       builder.result()
     }.toOption
 }

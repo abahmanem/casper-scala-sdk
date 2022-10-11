@@ -156,7 +156,7 @@ object CLPublicKey {
    * @return
    */
   def accountHash(publicKey: CLPublicKey): Option[String] = Try(
-    KeyType.Account.prefix + HexUtils.toHex(Blake2b256.CLPublicKeyToAccountHash(publicKey))
+    KeyType.Account.prefix + HexUtils.toHex(Blake2b256.CLPublicKeyToAccountHash(publicKey).get)
   ).toOption
 
 

@@ -14,8 +14,8 @@ import scala.util.{Failure, Success, Try}
 class DeployApprovalByteSerializer extends BytesSerializable[DeployApproval] {
   def toBytes(value: DeployApproval): Option[Array[Byte]] = Try {
     val builder = new ArrayBuilder.ofByte
-    builder.addAll(new CLPublicKeyByteSerializer().toBytes(value.signer.get).getOrElse(Array.emptyByteArray))
-      .addAll(value.signature.map(s => s.formatAsByteAccount).getOrElse(Array.emptyByteArray)).result()
+    builder.addAll(new CLPublicKeyByteSerializer().toBytes(value.signer.get).get)
+      .addAll(value.signature.map(s => s.formatAsByteAccount).get).result()
   }.toOption
 }
 
