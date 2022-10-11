@@ -8,12 +8,10 @@ import com.casper.sdk.rpc.exceptions.RPCException
 import com.casper.sdk.rpc.http.HttpRPCService
 import com.casper.sdk.rpc.params.{BlockIdentifier, StateIdentifier, StateRootHashIdentifier}
 import com.casper.sdk.rpc.result.{AccountResult, AuctionStateResult, BalanceResult, BlockResult, DeployHashResult, DeployResult, DictionaryItemResult, EraSummaryResult, GlobalStateResult, PeerResult, RPCSchemaResult, StateItemResult, StateRootHashResult, TransferResult}
-import com.casper.sdk.rpc.{Method, RPCCommand, RPCError}
-import com.casper.sdk.types.cltypes.URef
+import com.casper.sdk.rpc.{Method, RPCCommand}
 import io.circe.*
 import io.circe.syntax.*
-
-import scala.util.{Failure, Success, Try}
+import scala.util.Try
 
 /**
  * Casper SDK main class
@@ -71,7 +69,6 @@ class CasperSdk(url: String) extends RPCCommand(new HttpRPCService(url)) {
    */
   def getBlockTransfers(blockHash: String): Try[TransferResult] = call[TransferResult](Method.CHAIN_GET_BLOCK_TRANSFERS, Map("Hash" -> blockHash).asJson)
 
-
   /**
    * getAuctionInfo
    *
@@ -92,7 +89,6 @@ class CasperSdk(url: String) extends RPCCommand(new HttpRPCService(url)) {
    */
   def getDeploy(deployHash: String): Try[DeployResult] = call[DeployResult](Method.INFO_GET_DEPLOY, deployHash.asJson)
 
-
   /**
    * getEraInfoBySwitchBlock
    *
@@ -100,7 +96,6 @@ class CasperSdk(url: String) extends RPCCommand(new HttpRPCService(url)) {
    * @return : EraSummaryResult
    */
   def getEraInfoBySwitchBlock(blockHash: String): Try[EraSummaryResult] = call[EraSummaryResult](Method.CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK, Map("Hash" -> blockHash).asJson)
-
 
   /**
    * getBalance
@@ -119,8 +114,6 @@ class CasperSdk(url: String) extends RPCCommand(new HttpRPCService(url)) {
    * @return DictionaryItemResult
    */
   def getDictionaryItem(stateRootHash: String, itemKey: String, uref: String): Try[DictionaryItemResult] = call[DictionaryItemResult](Method.STATE_GET_DICTIONARY_ITEM, stateRootHash.asJson, Map("URef" -> Map("dictionary_item_key" -> itemKey, "seed_uref" -> uref)).asJson)
-
-
   /**
    * state_get_account_info
    *
@@ -131,7 +124,6 @@ class CasperSdk(url: String) extends RPCCommand(new HttpRPCService(url)) {
     case HashBlockIdentifier(hash) => call[AccountResult](Method.STATE_GET_ACCOUNT_INFO, publicKey.asJson, Map("Hash" -> hash).asJson)
   }
 
-
   /**
    * query_global_state
    *
@@ -141,7 +133,6 @@ class CasperSdk(url: String) extends RPCCommand(new HttpRPCService(url)) {
     case StateRootHashIdentifier(stateRootHash) => call[GlobalStateResult](Method.QUERY_GLOBAL_STATE, Map("StateRootHash" -> stateRootHash).asJson, key.asJson, path.asJson)
     case HashBlockIdentifier(hash) => call[GlobalStateResult](Method.QUERY_GLOBAL_STATE, Map("BlockHash" -> hash).asJson, key.asJson, path.asJson)
   }
-
 
   /**
    * getRpcSchema
@@ -158,5 +149,4 @@ class CasperSdk(url: String) extends RPCCommand(new HttpRPCService(url)) {
    * @return DeployHashResult
    */
   def putDeploy(deploy: Deploy): Try[DeployHashResult] = call[DeployHashResult](Method.ACCOUNT_PUT_DEPLOY, deploy.asJson)
-
 }

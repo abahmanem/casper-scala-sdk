@@ -15,8 +15,6 @@ import io.circe._, io.circe.syntax._
  *
  */
 class RPCCommand(rpcService: RPCService) {
-
-
   /**
    * Performs the RPC call
    *
@@ -55,8 +53,7 @@ class RPCCommand(rpcService: RPCService) {
    * @tparam T
    * @return Try[T]
    */
-  def result[T: ClassTag](res: Try[RPCResult[T]], method: Method, params: Any*): Try[T] = {
-    res match {
+  def result[T: ClassTag](res: Try[RPCResult[T]], method: Method, params: Any*): Try[T] = res match {
       case Success(x) => x.error match {
         case None =>
           x.result match {
@@ -68,5 +65,4 @@ class RPCCommand(rpcService: RPCService) {
       // propagate the error to the caller
       case Failure(err) => Failure(err)
     }
-  }
-}
+ }
