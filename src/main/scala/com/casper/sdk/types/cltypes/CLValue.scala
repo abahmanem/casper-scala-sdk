@@ -136,7 +136,7 @@ object CLValue {
   def cLTypeInfo(typeNode: HCursor): CLTypeInfo = {
     val cl_Type = clType(typeNode)
     cl_Type match {
-      case CLType.ByteArray =>  new CLByteArrayTypeInfo(typeNode.downField(CLType.ByteArray.toString).as[Int].getOrElse(0))
+      case CLType.ByteArray => new CLByteArrayTypeInfo(typeNode.downField(CLType.ByteArray.toString).as[Int].getOrElse(0))
       case CLType.Option => {
         val optionNode = typeNode.downField(CLType.Option.toString).asInstanceOf[HCursor]
         val interType = cLTypeInfo(optionNode)
@@ -224,70 +224,45 @@ object CLValue {
   }.toOption
 
   //Unit
-  def Unit(): Option[CLValue] = Try {
-    new CLValue(Array.empty[Byte], CLTypeInfo(CLType.Unit), null);
-  }.toOption
+  def Unit(): Option[CLValue] = Try(new CLValue(Array.empty[Byte], CLTypeInfo(CLType.Unit), null)).toOption
 
   //U8
-  def U8(value: Byte): Option[CLValue] = Try {
-    new CLValue(new Array[Byte](value), CLTypeInfo(CLType.U8), value);
-  }.toOption
+  def U8(value: Byte): Option[CLValue] = Try(new CLValue(new Array[Byte](value), CLTypeInfo(CLType.U8), value)).toOption
 
   //I32
-  def I32(value: BigInt): Option[CLValue] = Try {
-    new CLValue(ByteUtils.serializeFixedWidthNumber(value, 4), CLTypeInfo(CLType.I32), value)
-  }.toOption
+  def I32(value: BigInt): Option[CLValue] = Try(new CLValue(ByteUtils.serializeFixedWidthNumber(value, 4).get, CLTypeInfo(CLType.I32), value)).toOption
 
   //U32
-  def U32(value: BigInt): Option[CLValue] = Try {
-    new CLValue(ByteUtils.serializeFixedWidthNumber(value, 4), CLTypeInfo(CLType.U32), value)
-  }.toOption
+  def U32(value: BigInt): Option[CLValue] = Try(new CLValue(ByteUtils.serializeFixedWidthNumber(value, 4).get, CLTypeInfo(CLType.U32), value)).toOption
 
   //U64
-  def U64(value: BigInt): Option[CLValue] = Try {
-    new CLValue(ByteUtils.serializeFixedWidthNumber(value, 8), CLTypeInfo(CLType.U64), value)
-  }.toOption
+  def U64(value: BigInt): Option[CLValue] = Try(new CLValue(ByteUtils.serializeFixedWidthNumber(value, 8).get, CLTypeInfo(CLType.U64), value)).toOption
 
   //I64
-  def I64(value: BigInt): Option[CLValue] = Try {
-    new CLValue(ByteUtils.serializeFixedWidthNumber(value, 8), CLTypeInfo(CLType.I64), value)
-  }.toOption
+  def I64(value: BigInt): Option[CLValue] = Try(new CLValue(ByteUtils.serializeFixedWidthNumber(value, 8).get, CLTypeInfo(CLType.I64), value)).toOption
 
   //U128
-  def U128(value: BigInt): Option[CLValue] = Try {
-    new CLValue(ByteUtils.serializeArbitraryWidthNumber(value, 16), CLTypeInfo(CLType.U128), value)
-  }.toOption
+  def U128(value: BigInt): Option[CLValue] = Try(new CLValue(ByteUtils.serializeArbitraryWidthNumber(value, 16).get, CLTypeInfo(CLType.U128), value)).toOption
 
   //U128
-  def U256(value: BigInt): Option[CLValue] = Try {
-    new CLValue(ByteUtils.serializeArbitraryWidthNumber(value, 32), CLTypeInfo(CLType.U256), value)
-  }.toOption
+  def U256(value: BigInt): Option[CLValue] = Try(new CLValue(ByteUtils.serializeArbitraryWidthNumber(value, 32).get, CLTypeInfo(CLType.U256), value)).toOption
 
   //U512
-  def U512(value: BigInt): Option[CLValue] = Try {
-    new CLValue(ByteUtils.serializeArbitraryWidthNumber(value, 64), CLTypeInfo(CLType.U512), value)
-  }.toOption
+  def U512(value: BigInt): Option[CLValue] = Try(new CLValue(ByteUtils.serializeArbitraryWidthNumber(value, 64).get, CLTypeInfo(CLType.U512), value)).toOption
 
   //String
-  def String(value: String): Option[CLValue] = Try {
-    new CLValue(ByteUtils.join(U32(value.getBytes(StandardCharsets.UTF_8).length).get.bytes,
-      value.getBytes(StandardCharsets.UTF_8)), CLTypeInfo(CLType.String), value)
-  }.toOption
+  def String(value: String): Option[CLValue] = Try(new CLValue(ByteUtils.join(U32(value.getBytes(StandardCharsets.UTF_8).length).get.bytes,
+    value.getBytes(StandardCharsets.UTF_8)), CLTypeInfo(CLType.String), value)
+  ).toOption
 
   //ByteArray
-  def ByteArray(bytes: Array[Byte]): Option[CLValue] = Try {
-    new CLValue(bytes, CLByteArrayTypeInfo(bytes.length), HexUtils.toHex(bytes).get)
-  }.toOption
+  def ByteArray(bytes: Array[Byte]): Option[CLValue] = Try(new CLValue(bytes, CLByteArrayTypeInfo(bytes.length), HexUtils.toHex(bytes).get)).toOption
 
 
   //PublicKey
-  def PublicKey(value: CLPublicKey): Option[CLValue] = Try {
-    new CLValue(value.formatAsByteAccount, CLTypeInfo(CLType.PublicKey), value.formatAsHexAccount.get)
-  }.toOption
+  def PublicKey(value: CLPublicKey): Option[CLValue] = Try(new CLValue(value.formatAsByteAccount, CLTypeInfo(CLType.PublicKey), value.formatAsHexAccount.get)).toOption
 
-  def PublicKey(value: String): Option[CLValue] = {
-    PublicKey(CLPublicKey(value).get)
-  }
+  def PublicKey(value: String): Option[CLValue] = PublicKey(CLPublicKey(value).get) //get is called inside Try
 
 
   //URef
@@ -295,7 +270,7 @@ object CLValue {
     val bytes = new Array[Byte](33)
     val urefBytes = HexUtils.fromHex(value.format).getOrElse(Array.empty[Byte])
     Array.copy(urefBytes, 0, bytes, 1, urefBytes.length)
-    bytes(32) = value.accessRights.bits 
+    bytes(32) = value.accessRights.bits
     new CLValue(bytes, CLTypeInfo(CLType.URef), value.format)
   }.toOption
 
@@ -306,19 +281,11 @@ object CLValue {
 
 
   //Key
-  def Key(value: CLKeyValue): Option[CLValue] = Try {
-    new CLValue(value.getBytes, new CLKeyInfo(value.keyType), value.parsed)
-  }.toOption
+  def Key(value: CLKeyValue): Option[CLValue] = Try(new CLValue(value.getBytes, new CLKeyInfo(value.keyType), value.parsed)).toOption
 
 
   //Key
-  def Key(value: String): Option[CLValue] = {
-    if (CLKeyValue(value).isDefined)
-      Key(CLKeyValue(value).get)
-    else
-      None
-  }
-
+  def Key(value: String): Option[CLValue] = Key(CLKeyValue(value).get)
 
   //Option
   def Option(value: Option[CLValue]): Option[CLValue] = Try {

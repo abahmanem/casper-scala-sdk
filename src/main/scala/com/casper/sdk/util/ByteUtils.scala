@@ -1,6 +1,7 @@
 package com.casper.sdk.util
 
 import math.BigInt.int2bigInt
+import scala.util.Try
 
 /**
  * Bytes utility object
@@ -13,7 +14,7 @@ object ByteUtils {
    * @return
    */
   def join(parts: Array[Byte]*): Array[Byte] = {
-      parts.toArray.flatten
+    parts.toArray.flatten
   }
 
   /**
@@ -24,18 +25,18 @@ object ByteUtils {
    * @param maxBytes
    * @return Array[Byte]
    */
-  def serializeArbitraryWidthNumber(value: BigInt, maxBytes: Int): Array[Byte] = {
+  def serializeArbitraryWidthNumber(value: BigInt, maxBytes: Int): Option[Array[Byte]] = Try {
     var bytes = value.toByteArray
     //remove leading zeros
     if (bytes.length > 1 && bytes(0) == 0) {
-      val dest :  Array[Byte] =  new Array[Byte](bytes.length-1)
+      val dest: Array[Byte] = new Array[Byte](bytes.length - 1)
       Array.copy(bytes, 1, dest, 0, bytes.length - 1)
       bytes = dest
     }
     //Little-Endian byte order
     bytes = bytes.reverse
     ByteUtils.join(bytes.length.toByteArray, bytes)
-  }
+  }.toOption
 
   /**
    * Serialize U32,I32,I62 and U64 casper types
@@ -45,7 +46,7 @@ object ByteUtils {
    * @return Array[Byte]
    */
 
-  def serializeFixedWidthNumber(value: BigInt, maxBytes: Int): Array[Byte] = {
+  def serializeFixedWidthNumber(value: BigInt, maxBytes: Int): Option[Array[Byte]] = Try {
     val bytes = value.toByteArray
     var res = new Array[Byte](maxBytes)
     if (bytes.length < maxBytes) {
@@ -59,5 +60,5 @@ object ByteUtils {
     else if (bytes.length == maxBytes + 1 && bytes(0) == 0) Array.copy(bytes, 1, res, 0, maxBytes)
     //Little-Endian byte order
     res.reverse
-  }
+  }.toOption
 }
