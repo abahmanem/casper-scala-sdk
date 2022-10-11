@@ -136,10 +136,8 @@ object CLValue {
   def cLTypeInfo(typeNode: HCursor): CLTypeInfo = {
     val cl_Type = clType(typeNode)
     cl_Type match {
-      case CLType.ByteArray => {
-        val sizeNode = typeNode.downField(CLType.ByteArray.toString)
-        new CLByteArrayTypeInfo(if (sizeNode.isInstanceOf[Int]) sizeNode.asInstanceOf[Int] else 0)
-      }
+      case CLType.ByteArray =>  new CLByteArrayTypeInfo(typeNode.downField(CLType.ByteArray.toString).as[Int].getOrElse(0))
+
       case CLType.Option => {
         val optionNode = typeNode.downField(CLType.Option.toString).asInstanceOf[HCursor]
         val interType = cLTypeInfo(optionNode)
@@ -151,10 +149,7 @@ object CLValue {
         val interType = cLTypeInfo(listNode)
         new CLListTypeInfo(interType)
       }
-
-
       case _ => CLTypeInfo(cl_Type)
-
     }
   }
 
@@ -213,13 +208,13 @@ object CLValue {
    * @param clTypeInfo
    * @return
    */
-  def decodeParsedArray(array: Json, clTypeInfo: CLTypeInfo): Any =     clTypeInfo match {
-      case clList: CLListTypeInfo => clList.cltypeInfo.cl_Type match {
-        case CLType.Map => array.as[Seq[Seq[Map[String, Json]]]].getOrElse(Seq.empty)
-        case _ => array.as[Seq[String]].getOrElse(Seq.empty)
-      }
-    case _ => Json.Null
+  def decodeParsedArray(array: Json, clTypeInfo: CLTypeInfo): Any = clTypeInfo match {
+    case clList: CLListTypeInfo => clList.cltypeInfo.cl_Type match {
+      case CLType.Map => array.as[Seq[Seq[Map[String, Json]]]].getOrElse(Seq.empty)
+      case _ => array.as[Seq[String]].getOrElse(Seq.empty)
     }
+    case _ => Json.Null
+  }
 
   /*Factory methods*/
 

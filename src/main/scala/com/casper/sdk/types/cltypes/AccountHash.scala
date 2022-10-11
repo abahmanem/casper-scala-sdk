@@ -24,12 +24,8 @@ case class AccountHash(bytes: Array[Byte]) {
  */
 object AccountHash {
 
-
-  //import io.circe._
-
-  import io.circe.{Decoder, Encoder}
-
-  implicit val decoder: Decoder[Option[AccountHash]] = Decoder.decodeString.emapTry {
+ import io.circe.{Decoder, Encoder}
+ implicit val decoder: Decoder[Option[AccountHash]] = Decoder.decodeString.emapTry {
     str => Try(AccountHash(str))
   }
   implicit val encoder: Encoder[AccountHash] = (account: AccountHash) => Encoder.encodeString(account.format)

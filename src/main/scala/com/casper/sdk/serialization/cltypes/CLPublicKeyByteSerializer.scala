@@ -5,9 +5,10 @@ import com.casper.sdk.types.cltypes.CLPublicKey
 
 import scala.collection.mutable.ArrayBuilder
 import scala.util.{Failure, Success, Try}
+
 /**
  * CLPublicKeySerializer
  */
 class CLPublicKeyByteSerializer extends BytesSerializable[CLPublicKey] {
- def toBytes(value: CLPublicKey): Option[Array[Byte]] = Try(value.formatAsByteAccount).toOption
+  def toBytes(value: CLPublicKey): Option[Array[Byte]] = Try(value.formatAsByteAccount).toOption
 }

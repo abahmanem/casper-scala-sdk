@@ -5,6 +5,7 @@ import com.casper.sdk.types.cltypes.*
 import com.casper.sdk.util.{ByteUtils, HexUtils}
 import scala.util.Try
 import io.circe.Json
+
 /**
  * A key in global state
  */
@@ -65,8 +66,8 @@ object CLKeyValue {
    * @param key
    * @return CLKeyValue
    */
-  def apply(key: String): Option[CLKeyValue] =  Try(new CLKeyValue(HexUtils.fromHex(key.substring(key.lastIndexOf("-") + 1)).get, KeyType.getByPrefix(key.substring(0, key.lastIndexOf("-"))).get, parsedValue(key))
-   ).toOption
+  def apply(key: String): Option[CLKeyValue] = Try(new CLKeyValue(HexUtils.fromHex(key.substring(key.lastIndexOf("-") + 1)).get, KeyType.getByPrefix(key.substring(0, key.lastIndexOf("-"))).get, parsedValue(key))
+  ).toOption
 
   /**
    * compute parsed value from string key
@@ -75,13 +76,13 @@ object CLKeyValue {
    * @return Any
    */
   def parsedValue(key: String): Any = try {
-      val keyType = KeyType.getByPrefix(key.substring(0, key.lastIndexOf("-"))).get
-      val json = new StringBuilder("")
-      json.append("{").append("\"").append(keyType).append("\"").append(":").append("\"").append(key).append("\"").append("}")
-      Json.fromString(json.toString())
-     }
-    catch {
-      case _: Exception => Json.Null
-    }
+    val keyType = KeyType.getByPrefix(key.substring(0, key.lastIndexOf("-"))).get
+    val json = new StringBuilder("")
+    json.append("{").append("\"").append(keyType).append("\"").append(":").append("\"").append(key).append("\"").append("}")
+    Json.fromString(json.toString())
+  }
+  catch {
+    case _: Exception => Json.Null
+  }
 
 }

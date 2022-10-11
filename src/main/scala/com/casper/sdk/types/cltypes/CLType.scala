@@ -1,6 +1,7 @@
 package com.casper.sdk.types.cltypes
 
 import com.casper.sdk.types.cltypes
+
 /**
  * Enum of CLType with data bytes array
  */
@@ -76,13 +77,15 @@ enum CLType(val clType: Int) {
   /** Public key */
   case PublicKey extends CLType(22)
 }
-object CLType{
+
+object CLType {
   /**
    * checks if CLType is numeric
+   *
    * @param cltype
    * @return
    */
-  def isNumeric(cltype : CLType) : Boolean = {
+  def isNumeric(cltype: CLType): Boolean = {
     cltype match {
       case I32 | I64 | U8 | U32 | U64 | U128 | U512 | U256 => true
       case _ => false
@@ -91,16 +94,17 @@ object CLType{
 
 
   import io.circe.{Decoder, Encoder, HCursor, Json}
-  implicit val encoderCLType: Encoder[CLType] = (cltype: CLType) =>  Encoder.encodeString(cltype.toString)
+
+  implicit val encoderCLType: Encoder[CLType] = (cltype: CLType) => Encoder.encodeString(cltype.toString)
 
   implicit def decoderCLType: Decoder[CLType] = (c: HCursor) =>
-     for {
-       cltype <- c.as[HCursor]
-     }
-     yield {
-       cltype.value.name match {
-         case "String" => CLType.valueOf(cltype.value.asString.getOrElse(""))
-         case "Object" =>  CLType.valueOf(cltype.value.asObject.get.keys.toList(0))      //there is always something in keys.toList
-       }
-     }
+    for {
+      cltype <- c.as[HCursor]
+    }
+    yield {
+      cltype.value.name match {
+        case "String" => CLType.valueOf(cltype.value.asString.getOrElse(""))
+        case "Object" => CLType.valueOf(cltype.value.asObject.get.keys.toList(0)) //there is always something in keys.toList
+      }
+    }
 }

@@ -18,18 +18,16 @@ object KeyAlgorithm {
    * @param hexAccountKey
    * @return
    */
-  def fromHexAccount(hexAccountKey: String): Option[KeyAlgorithm] = {
-    hexAccountKey.substring(0, 2) match {
+  def fromHexAccount(hexAccountKey: String): Option[KeyAlgorithm] = hexAccountKey.substring(0, 2) match {
       case "01" => Some(KeyAlgorithm.ED25519)
       case "02" => Some(KeyAlgorithm.SECP256K1)
-      case _ => None//throw new IllegalArgumentException(hexAccountKey + " is not a valid  byte tag in casper public key system")
+      case _ => None
     }
-  }
   /**
    * get KeyAlgorithm from an id
    *
    * @param id
    * @return
    */
-  def fromId(id: Int): Option[KeyAlgorithm] =   KeyAlgorithm .values.find(_.bits == id)
+  def fromId(id: Int): Option[KeyAlgorithm] =   KeyAlgorithm.values.find(_.bits == id)
 }

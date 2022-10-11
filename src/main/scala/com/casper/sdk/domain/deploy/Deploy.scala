@@ -59,9 +59,8 @@ object Deploy {
    * @return header hash
    */
   def deployHeaderHash(header: DeployHeader): Option[Array[Byte]] = //{
-    //val serializer = new DeployHeaderByteSerializer()
-    new DeployHeaderByteSerializer().toBytes(header).flatMap(arr=>Blake2b256.hash(arr))
-
+  //val serializer = new DeployHeaderByteSerializer()
+    new DeployHeaderByteSerializer().toBytes(header).flatMap(arr => Blake2b256.hash(arr))
 
 
   /**
@@ -72,7 +71,7 @@ object Deploy {
    * @param session session DeployExecutable
    * @return unsigned Deploy
    */
-  def createUnsignedDeploy(header: DeployHeader, payment: DeployExecutable, session: DeployExecutable):Option[Deploy] = Try {
+  def createUnsignedDeploy(header: DeployHeader, payment: DeployExecutable, session: DeployExecutable): Option[Deploy] = Try {
 
     val deployHeader = DeployHeader(header.account, header.timestamp, header.ttl, header.gas_price,
       Option(new Hash(deployBodyHash(payment, session).get)), header.dependencies, header.chain_name)
@@ -89,7 +88,7 @@ object Deploy {
     val builder = new ArrayBuilder.ofByte
     //Try(builder.addAll(serializer.toBytes(payment).get).addAll(serializer.toBytes(session).get)).toOption.get
     Blake2b256.hash(Try(builder.addAll(serializer.toBytes(payment).get).addAll(serializer.toBytes(session).get)).toOption.get.result())
- // }.toOption
+  // }.toOption
 
   /**
    * Sign a Deploy
@@ -100,11 +99,10 @@ object Deploy {
    */
 
   def signDeploy(deploy: Deploy, keyPair: KeyPair): Option[Deploy] = Try {
-      val signature = keyPair.sign(deploy.hash.map(h => h.hash).get).toOption
-      deploy.addApproval(new DeployApproval(Option(keyPair.publicKey), Option(new Signature(signature.get, keyPair.publicKey.keyAlgorithm))))
-      deploy
-    }.toOption
-  
+    val signature = keyPair.sign(deploy.hash.map(h => h.hash).get).toOption
+    deploy.addApproval(new DeployApproval(Option(keyPair.publicKey), Option(new Signature(signature.get, keyPair.publicKey.keyAlgorithm))))
+    deploy
+  }.toOption
 
 
   /**

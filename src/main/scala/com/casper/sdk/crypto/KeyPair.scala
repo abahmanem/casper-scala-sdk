@@ -33,7 +33,7 @@ case class KeyPair(privateKey: PrivateKey, publicKey: CLPublicKey) {
    *
    * @return
    */
-  def publicToPem: Option[String] =Crypto.fromCLPublicKey(publicKey).flatMap(p=>Crypto.toPem(p))
+  def publicToPem: Option[String] = Crypto.fromCLPublicKey(publicKey).flatMap(p => Crypto.toPem(p))
 
   /**
    * sign a message
@@ -42,15 +42,15 @@ case class KeyPair(privateKey: PrivateKey, publicKey: CLPublicKey) {
    * @return byte array
    */
   def sign(msg: Array[Byte]): Either[Throwable, Array[Byte]] = publicKey.keyAlgorithm match {
-        case KeyAlgorithm.SECP256K1 => SECP256K1.sign(msg, this)
-        case KeyAlgorithm.ED25519 => Try{
-          val sig = Signature.getInstance(privateKey.getAlgorithm, BouncyCastleProvider.PROVIDER_NAME)
-          sig.initSign(privateKey)
-          sig.update(msg)
-          sig.sign()
-        }.toEither
-     }
+    case KeyAlgorithm.SECP256K1 => SECP256K1.sign(msg, this)
+    case KeyAlgorithm.ED25519 => Try {
+      val sig = Signature.getInstance(privateKey.getAlgorithm, BouncyCastleProvider.PROVIDER_NAME)
+      sig.initSign(privateKey)
+      sig.update(msg)
+      sig.sign()
+    }.toEither
   }
+}
 
 /**
  * companion object
@@ -88,8 +88,9 @@ object KeyPair {
 
   /**
    * create a new KeyPair from a given algoritm
+   *
    * @param algo
-   * @return  Option[KeyPair]
+   * @return Option[KeyPair]
    */
 
   def create(algo: KeyAlgorithm): Option[KeyPair] = {
@@ -100,16 +101,16 @@ object KeyPair {
         if (pair.isDefined) {
           val clpublic = Crypto.toCLPublicKey(pair.get.getPublic)
           if (clpublic.isDefined) {
-           Some(new KeyPair(pair.get.getPrivate, clpublic.get))
+            Some(new KeyPair(pair.get.getPrivate, clpublic.get))
           }
           else None
         }
         else None
       }
 
-      case KeyAlgorithm.SECP256K1 =>  {
+      case KeyAlgorithm.SECP256K1 => {
         val pair = Crypto.newKeyPair("ECDSA", "secp256k1") //.get
-        if(pair.isDefined) {
+        if (pair.isDefined) {
           val clpublic = Crypto.toCLPublicKey(pair.get.getPublic)
           if (clpublic.isDefined) {
             Some(new KeyPair(pair.get.getPrivate, clpublic.get))
@@ -118,6 +119,6 @@ object KeyPair {
         }
         else None
       }
-      }
+    }
   }
 }

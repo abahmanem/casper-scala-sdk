@@ -26,28 +26,29 @@ object SECP256K1 {
 
   /**
    * sign a message
-   * @param msg : message to sign
+   *
+   * @param msg     : message to sign
    * @param keyPair : keypair
-   * @return  signature byte array
+   * @return signature byte array
    */
-  def sign(msg: Array[Byte], keyPair: KeyPair):  Either[Throwable, Array[Byte]] =
-   Try{
-    val signer = new   DSADigestSigner(new ECDSASigner(), new SHA256Digest(), PlainDSAEncoding.INSTANCE)
+  def sign(msg: Array[Byte], keyPair: KeyPair): Either[Throwable, Array[Byte]] = Try {
+    val signer = new DSADigestSigner(new ECDSASigner(), new SHA256Digest(), PlainDSAEncoding.INSTANCE)
     val pivatekey = keyPair.privateKey.asInstanceOf[BCECPrivateKey].getD
     val param = new ParametersWithRandom(new ECPrivateKeyParameters(pivatekey, CURVE), new SecureRandom())
     signer.init(true, param)
     signer.update(msg, 0, msg.length)
     signer.generateSignature()
-      }.toEither
+  }.toEither
 
   /**
    * verify signature
-   * @param msg msg
+   *
+   * @param msg       msg
    * @param signature signature
    * @param publickey public key
    * @return true if the signature is verified or false
    */
-  def verify(msg: Array[Byte], signature: Array[Byte], publickey: Array[Byte]): Either[Throwable, Boolean] =  Try{
+  def verify(msg: Array[Byte], signature: Array[Byte], publickey: Array[Byte]): Either[Throwable, Boolean] = Try {
     val ecPoint = CURVE.getCurve.decodePoint(publickey)
     val ecPkparam = new ECPublicKeyParameters(ecPoint, CURVE)
     val signer = new DSADigestSigner(new ECDSASigner(), new SHA256Digest(), PlainDSAEncoding.INSTANCE)

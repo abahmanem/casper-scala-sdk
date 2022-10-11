@@ -9,13 +9,14 @@ import com.casper.sdk.util.{ByteUtils, HexUtils}
 import java.nio.charset.StandardCharsets
 import scala.collection.mutable.ArrayBuilder
 import scala.util.{Failure, Success, Try}
+
 /**
  * DeployNamedArg bytes serializer
  */
 class DeployNamedArgByteSerializer extends BytesSerializable[DeployNamedArg] {
   def toBytes(value: DeployNamedArg): Option[Array[Byte]] = Try {
     val builder = new ArrayBuilder.ofByte
-    builder.addAll( CLValue.getBytes(CLValue.U32(value.name.getBytes().length))) 
+    builder.addAll(CLValue.getBytes(CLValue.U32(value.name.getBytes().length)))
       .addAll(value.name.getBytes())
       .addAll(new CLValueByteSerializer().toBytes(value.value.get).get)
     builder.result()

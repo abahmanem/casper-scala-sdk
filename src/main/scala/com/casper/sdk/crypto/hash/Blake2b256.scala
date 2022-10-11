@@ -14,9 +14,9 @@ object Blake2b256 {
    * gives a byte hashed array from a byte array
    *
    * @param input : Array[Byte]
-   * @return  hash array   array
+   * @return hash array   array
    */
-  def hash(input: Array[Byte]): Option[Array[Byte]] = Try{
+  def hash(input: Array[Byte]): Option[Array[Byte]] = Try {
     val digest = new Blake2bDigest(256)
     synchronized {
       digest.update(input, 0, input.length)
@@ -33,7 +33,7 @@ object Blake2b256 {
    * @return Array[Byte]
    */
 
-  def CLPublicKeyToAccountHash(cLPublicKey: CLPublicKey): Option[Array[Byte]]  = Try{
+  def CLPublicKeyToAccountHash(cLPublicKey: CLPublicKey): Option[Array[Byte]] = Try {
     val digest = new Blake2bDigest(256)
     val algorithm = cLPublicKey.keyAlgorithm.toString.toLowerCase
     digest.update(algorithm.getBytes(StandardCharsets.UTF_8), 0, algorithm.length)
