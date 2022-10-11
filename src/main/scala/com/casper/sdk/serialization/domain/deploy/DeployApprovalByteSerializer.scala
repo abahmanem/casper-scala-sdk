@@ -6,7 +6,7 @@ import com.casper.sdk.serialization.BytesSerializable
 import com.casper.sdk.serialization.cltypes.CLPublicKeyByteSerializer
 
 import scala.collection.mutable.ArrayBuilder
-import scala.util.{Failure, Success, Try}
+import scala.util.Try
 
 /**
  * ByteSerializer for DeployApproval object

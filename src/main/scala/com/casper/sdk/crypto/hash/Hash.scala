@@ -38,5 +38,4 @@ object Hash{
     str => Try(Hash(HexUtils.fromHex(str).get))
   }
   implicit val encoder: Encoder[Hash] = (hash: Hash) =>    Encoder.encodeString(HexUtils.toHex(hash.hash).getOrElse(""))
-  
 }

@@ -9,10 +9,9 @@ import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters
 import org.bouncycastle.crypto.util.PrivateKeyFactory
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.openssl.{PEMKeyPair, PEMParser}
-
 import java.io.{FileReader, IOException}
 import java.security._
-import scala.util.{Success, Try}
+import scala.util.Try
 
 
 /**

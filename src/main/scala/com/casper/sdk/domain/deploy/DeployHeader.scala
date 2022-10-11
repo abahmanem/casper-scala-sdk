@@ -1,10 +1,8 @@
 package com.casper.sdk.domain.deploy
 
-import com.casper.sdk.crypto.hash.{Blake2b256, Hash}
+import com.casper.sdk.crypto.hash.Hash
 import com.casper.sdk.types.cltypes.CLPublicKey
-import com.casper.sdk.serialization.domain.deploy.DeployHeaderByteSerializer
-import com.casper.sdk.util.HexUtils
-import scala.collection.mutable.ArrayBuilder
+
 /**
  * DeployHeader Entity class
  * @param account

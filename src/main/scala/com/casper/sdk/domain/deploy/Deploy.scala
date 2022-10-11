@@ -58,9 +58,7 @@ object Deploy {
    *
    * @return header hash
    */
-  def deployHeaderHash(header: DeployHeader): Option[Array[Byte]] = //{
-  //val serializer = new DeployHeaderByteSerializer()
-    new DeployHeaderByteSerializer().toBytes(header).flatMap(arr => Blake2b256.hash(arr))
+  def deployHeaderHash(header: DeployHeader): Option[Array[Byte]] = new DeployHeaderByteSerializer().toBytes(header).flatMap(arr => Blake2b256.hash(arr))
 
 
   /**
@@ -72,7 +70,6 @@ object Deploy {
    * @return unsigned Deploy
    */
   def createUnsignedDeploy(header: DeployHeader, payment: DeployExecutable, session: DeployExecutable): Option[Deploy] = Try {
-
     val deployHeader = DeployHeader(header.account, header.timestamp, header.ttl, header.gas_price,
       Option(new Hash(deployBodyHash(payment, session).get)), header.dependencies, header.chain_name)
     new Deploy(Option(Hash(deployHeaderHash(deployHeader).get)), deployHeader, payment, session, Seq.empty)
@@ -83,12 +80,11 @@ object Deploy {
    *
    * @return Array[Byte]
    */
-  def deployBodyHash(payment: DeployExecutable, session: DeployExecutable): Option[Array[Byte]] = //Try {
+  def deployBodyHash(payment: DeployExecutable, session: DeployExecutable): Option[Array[Byte]] = {
     val serializer = DeployExecutableByteSerializer()
     val builder = new ArrayBuilder.ofByte
-    //Try(builder.addAll(serializer.toBytes(payment).get).addAll(serializer.toBytes(session).get)).toOption.get
     Blake2b256.hash(Try(builder.addAll(serializer.toBytes(payment).get).addAll(serializer.toBytes(session).get)).toOption.get.result())
-  // }.toOption
+  }
 
   /**
    * Sign a Deploy

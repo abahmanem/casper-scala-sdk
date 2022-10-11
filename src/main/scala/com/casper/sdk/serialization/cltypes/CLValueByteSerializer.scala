@@ -29,9 +29,7 @@ class CLValueByteSerializer extends BytesSerializable[CLValue] {
    * @param innerType
    * @return Array[Byte]
    */
-  def CLTypesToBytes(builder: ArrayBuilder.ofByte, innerType: CLTypeInfo): Unit = {
-    //builder.addOne(innerType.cl_Type.clType.toByte)
-    innerType match {
+  def CLTypesToBytes(builder: ArrayBuilder.ofByte, innerType: CLTypeInfo): Unit =  innerType match {
 
       case CLTypeInfo(CLType.Bool) | CLTypeInfo(CLType.I32) | CLTypeInfo(CLType.I64)
            | CLTypeInfo(CLType.U8) | CLTypeInfo(CLType.U32) | CLTypeInfo(CLType.U64)
@@ -74,5 +72,4 @@ class CLValueByteSerializer extends BytesSerializable[CLValue] {
         CLTypesToBytes(builder, tuple3.typeinfo3)
       }
     }
-  }
 }

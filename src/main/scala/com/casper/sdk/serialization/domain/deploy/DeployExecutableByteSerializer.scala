@@ -8,7 +8,7 @@ import com.casper.sdk.util.HexUtils
 
 import java.nio.charset.StandardCharsets
 import scala.collection.mutable.ArrayBuilder
-import scala.util.{Failure, Success, Try}
+import scala.util.Try
 
 /**
  * DeployExecutableByteSerializer
