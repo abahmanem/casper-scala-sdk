@@ -99,13 +99,12 @@ object Deploy {
    * @return Option[Deploy]
    */
 
-  def signDeploy(deploy: Deploy, keyPair: KeyPair): Option[Deploy] = {
-    Try {
+  def signDeploy(deploy: Deploy, keyPair: KeyPair): Option[Deploy] = Try {
       val signature = keyPair.sign(deploy.hash.map(h => h.hash).get).toOption
       deploy.addApproval(new DeployApproval(Option(keyPair.publicKey), Option(new Signature(signature.get, keyPair.publicKey.keyAlgorithm))))
       deploy
     }.toOption
-  }
+  
 
 
   /**

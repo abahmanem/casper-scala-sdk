@@ -31,21 +31,14 @@ object SECP256K1 {
    * @return  signature byte array
    */
   def sign(msg: Array[Byte], keyPair: KeyPair):  Either[Throwable, Array[Byte]] =
-
-  /*if (msg.size != 32)
-    return Left(
-      s"message must be 32 bytes, not ${ms.size}"
-    )
-*/
-
    Try{
-    val signer = new DSADigestSigner(new ECDSASigner(), new SHA256Digest(), PlainDSAEncoding.INSTANCE)
-    val pivk = keyPair.privateKey.asInstanceOf[BCECPrivateKey].getD
-    val param = new ParametersWithRandom(new ECPrivateKeyParameters(pivk, CURVE), new SecureRandom())
+    val signer = new   DSADigestSigner(new ECDSASigner(), new SHA256Digest(), PlainDSAEncoding.INSTANCE)
+    val pivatekey = keyPair.privateKey.asInstanceOf[BCECPrivateKey].getD
+    val param = new ParametersWithRandom(new ECPrivateKeyParameters(pivatekey, CURVE), new SecureRandom())
     signer.init(true, param)
     signer.update(msg, 0, msg.length)
     signer.generateSignature()
-  }.toEither
+      }.toEither
 
   /**
    * verify signature

@@ -35,17 +35,6 @@ case class KeyPair(privateKey: PrivateKey, publicKey: CLPublicKey) {
    */
   def publicToPem: Option[String] =Crypto.fromCLPublicKey(publicKey).flatMap(p=>Crypto.toPem(p))
 
-  //Crypto.fromCLPublicKey(publicKey).flatMap()
-   /*
-    {
-      val clpublic = Crypto.fromCLPublicKey(publicKey)//.map(p=>Crypto.toPem(p))
-      if(clpublic.isDefined) Crypto.toPem(clpublic.get) else None
-
-    }
-*/
-
-
-
   /**
    * sign a message
    *
@@ -128,7 +117,6 @@ object KeyPair {
           else None
         }
         else None
-
       }
       }
   }
