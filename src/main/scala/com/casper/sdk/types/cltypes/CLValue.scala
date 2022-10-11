@@ -137,13 +137,11 @@ object CLValue {
     val cl_Type = clType(typeNode)
     cl_Type match {
       case CLType.ByteArray =>  new CLByteArrayTypeInfo(typeNode.downField(CLType.ByteArray.toString).as[Int].getOrElse(0))
-
       case CLType.Option => {
         val optionNode = typeNode.downField(CLType.Option.toString).asInstanceOf[HCursor]
         val interType = cLTypeInfo(optionNode)
         new CLOptionTypeInfo(interType)
       }
-
       case CLType.List => {
         val listNode = typeNode.downField(CLType.List.toString).asInstanceOf[HCursor]
         val interType = cLTypeInfo(listNode)
@@ -297,7 +295,7 @@ object CLValue {
     val bytes = new Array[Byte](33)
     val urefBytes = HexUtils.fromHex(value.format).getOrElse(Array.empty[Byte])
     Array.copy(urefBytes, 0, bytes, 1, urefBytes.length)
-    bytes(32) = value.accessRights.bits //if (value.accessRights.isEmpty)    0.toByte else value.accessRights.get.bits
+    bytes(32) = value.accessRights.bits 
     new CLValue(bytes, CLTypeInfo(CLType.URef), value.format)
   }.toOption
 
@@ -408,5 +406,4 @@ object CLValue {
     parsed = parsed.:+(value1.parsed).:+(value2.parsed).:+(value3.parsed)
     new CLValue(builder.result(), new CLTuple3TypeInfo(value1.cl_infoType, value2.cl_infoType, value3.cl_infoType), parsed)
   }.toOption
-
 }

@@ -2,7 +2,6 @@ package com.casper.sdk.rpc.exceptions
 
 import com.casper.sdk.rpc.RPCError
 
-
 /**
  * RPC Exception Class
  * @param message

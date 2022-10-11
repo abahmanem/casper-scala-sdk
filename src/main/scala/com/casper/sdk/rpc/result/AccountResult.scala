@@ -1,7 +1,6 @@
 package com.casper.sdk.rpc.result
 
 import com.casper.sdk.domain.Account
-
 /**
  * state_get_account RPC response
  * @param api_version
