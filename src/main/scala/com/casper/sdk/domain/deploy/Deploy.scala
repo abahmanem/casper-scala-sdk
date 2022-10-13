@@ -62,6 +62,17 @@ object Deploy {
 
 
   /**
+   * compute body hash
+   *
+   * @return Array[Byte]
+   */
+  def deployBodyHash(payment: DeployExecutable, session: DeployExecutable): Option[Array[Byte]] = {
+    val serializer = DeployExecutableByteSerializer()
+    val builder = new ArrayBuilder.ofByte
+   Blake2b256.hash(Try(builder.addAll(serializer.toBytes(payment).get).addAll(serializer.toBytes(session).get)).toOption.get.result())
+  }
+
+  /**
    * Create an unsigned deploy
    *
    * @param header  deploy header
@@ -75,16 +86,7 @@ object Deploy {
     new Deploy(Option(Hash(deployHeaderHash(deployHeader).get)), deployHeader, payment, session, Seq.empty)
   }.toOption
 
-  /**
-   * compute body hash
-   *
-   * @return Array[Byte]
-   */
-  def deployBodyHash(payment: DeployExecutable, session: DeployExecutable): Option[Array[Byte]] = {
-    val serializer = DeployExecutableByteSerializer()
-    val builder = new ArrayBuilder.ofByte
-    Blake2b256.hash(Try(builder.addAll(serializer.toBytes(payment).get).addAll(serializer.toBytes(session).get)).toOption.get.result())
-  }
+
 
   /**
    * Sign a Deploy

@@ -1,7 +1,8 @@
 package com.casper.sdk.util
 
+import java.math.BigInteger
 import math.BigInt.int2bigInt
-import scala.util.Try
+import scala.util.{Failure, Try}
 
 /**
  * Bytes utility object
@@ -60,5 +61,20 @@ object ByteUtils {
     else if (bytes.length == maxBytes + 1 && bytes(0) == 0) Array.copy(bytes, 1, res, 0, maxBytes)
     //Little-Endian byte order
     res.reverse
+  }.toOption
+
+  /**
+   * pad Bytes
+   * @param bigInteger
+   * @param length
+   * @return Option[Array[Byte]]
+   */
+  def padBytes(bigInteger: BigInteger, length: Int): Option[Array[Byte]] = Try{
+    val paddedBytes = new Array[Byte](length)
+    val bytes = bigInteger.toByteArray
+    val bytesLength = if (bytes(0) == 0)  bytes.length - 1 else bytes.length
+    val srcOffset = if (bytes(0) == 0)   1 else    0
+    Array.copy(bytes, srcOffset, paddedBytes, length - bytesLength, bytesLength)
+    paddedBytes
   }.toOption
 }

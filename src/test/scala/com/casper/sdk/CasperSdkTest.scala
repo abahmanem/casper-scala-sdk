@@ -21,7 +21,7 @@ import org.scalatest.matchers.should.*
 class CasperSdkTest extends AnyFlatSpec with Matchers with TryValues {
 
   val client = new CasperSdk("https://node-clarity-testnet.make.services/rpc")
-  /*
+
 
     "RPC Call to a non existing node (http://1.2.3.4:7777/rpc)" should "fail" in {
       val sdk = new CasperSdk("http://1.2.3.4:7777/rpc")
@@ -370,8 +370,6 @@ class CasperSdkTest extends AnyFlatSpec with Matchers with TryValues {
     }
 
 
-    */
-
   /**
    * Test PutDeploy
    */
@@ -379,7 +377,9 @@ class CasperSdkTest extends AnyFlatSpec with Matchers with TryValues {
   "PutDeploy with aStandard Transfer " should "succeed " in {
     //Header
     val header = new DeployHeader(
+
       CLPublicKey("0168688cd4db3bd37efd84b15dc5a1867465df4c429e17fe22954fea88f5b4e1fe"),
+      //CLPublicKey("02038debf99b9850210d5e5a3c3748db03cc31fc236197010931909350c32acf1689"),
       TimeUtil.timeStampString(System.currentTimeMillis()).get,
       "30m",
       1,
@@ -401,7 +401,7 @@ class CasperSdkTest extends AnyFlatSpec with Matchers with TryValues {
 
     //sign_put_deploys_secret.pem
     val keyPair = com.casper.sdk.crypto.KeyPair.loadFromPem(getClass.getResource("/crypto/sign_put_deploys_secret.pem").getPath)
-   // val keyPair = com.casper.sdk.crypto.KeyPair.loadFromPem(getClass.getResource("/crypto/secp256k1/test_secret_key.pem").getPath)
+    //val keyPair = com.casper.sdk.crypto.KeyPair.loadFromPem(getClass.getResource("/crypto/secp256k1/test_secret_key.pem").getPath)
     val deploy = Deploy.createUnsignedDeploy(header, payment, session)
     val signedDeploy = Deploy.signDeploy(deploy.get, keyPair.get)
     val hashReult = client.putDeploy(signedDeploy.get)

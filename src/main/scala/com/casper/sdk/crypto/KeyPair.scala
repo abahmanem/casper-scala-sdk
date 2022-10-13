@@ -1,15 +1,14 @@
 package com.casper.sdk.crypto
 
 import com.casper.sdk.crypto.util.{Crypto, SECP256K1}
-import com.casper.sdk.types.cltypes.{AccountHash, CLPublicKey, KeyAlgorithm}
-import com.casper.sdk.util.{ByteUtils, HexUtils}
+import com.casper.sdk.types.cltypes.{CLPublicKey, KeyAlgorithm}
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters
 import org.bouncycastle.crypto.util.PrivateKeyFactory
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.openssl.{PEMKeyPair, PEMParser}
-import java.io.{FileReader, IOException}
+import java.io.FileReader
 import java.security._
 import scala.util.Try
 

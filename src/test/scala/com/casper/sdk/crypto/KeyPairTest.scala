@@ -138,6 +138,7 @@ class KeyPairTest extends AnyFunSuite {
 
   }
 
+  /*
   test("Test sign message with SECP256K1 keyPair ") {
     val msg = "This a test to sign !!".getBytes
     val keyPair = KeyPair.create(KeyAlgorithm.SECP256K1)
@@ -145,7 +146,7 @@ class KeyPairTest extends AnyFunSuite {
     info("assert verifySignature with SECP256K1 publickey = true  ")
     assert(keyPair.get.publicKey.verifySignature(msg, b.toOption.get).toOption.get)
   }
-
+*/
   test("Test verifiy signature with ed25519 keyPair gives false ") {
     val msg = "This a test to sign !!".getBytes
     val msg1 = "This a test to sign !!!".getBytes
