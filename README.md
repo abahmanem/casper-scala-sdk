@@ -193,7 +193,7 @@ call parameters :
 - block hash
 
 ```scala
-val tryTransfers = client.getBlockTransfers("a623841478381D78C769636582305ef724f561d7314B4daED19A3EA6373Dd778")
+val tryTransfers : Try[TransferResult] = client.getBlockTransfers("a623841478381D78C769636582305ef724f561d7314B4daED19A3EA6373Dd778")
 ```
 
 ### Get current auction state
@@ -204,13 +204,13 @@ call parameters :
 - block hash
 
 ```scala
-val tryAuctionInfo = client.getAuctionInfo("3a4EfA0AA223bF713bEDB5fa8D6dEc29a008C923aec0ACB02A3e4e449b9E01a8")
+val tryAuctionInfo : Try[AuctionStateResult] = client.getAuctionInfo(new HashBlockIdentifier("3a4EfA0AA223bF713bEDB5fa8D6dEc29a008C923aec0ACB02A3e4e449b9E01a8"))
 ```
 
 can also be called without parameters :
 
 ```scala
-val auctionInfo = client.getAuctionInfo("")
+val auctionInfo : Try[AuctionStateResult] = client.getAuctionInfo("")
 ```
 
 ### Get EraInfo By Switch Block
@@ -221,10 +221,10 @@ call parameters :
 - switch block (last block within an era) hash
 
 ```scala
-val tryErasummury = client.getEraInfoBySwitchBlock("1e46B4c173dB70fDE0E867FF679ACa24e1c5Bea3C4333af94e53B4E3BC548B6B")
+val tryErasummury :  Try[EraSummaryResult] = client.getEraInfoBySwitchBlock("1e46B4c173dB70fDE0E867FF679ACa24e1c5Bea3C4333af94e53B4E3BC548B6B")
 ```
 
-### Get StateItem
+### Query Global state
 
 Retrieves a StoredValue object.
 
@@ -238,10 +238,9 @@ call parameters :
 - contract hash
 
 ````scala
-val tryStoredValue = client.getStateItem("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956","hash-4dd10a0b2a7672e8ec964144634ddabb91504fe50b8461bac23584423318887d",Seq.empty)
-var contract : Contrat = null
-if (tryStoredValue.isSuccess)
-   contract =tryStoredValue.get.Contract
+val tryStoredValue :  Try[GlobalStateResul] = client.queryGlobalState(StateRootHashIdentifier("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956"),"hash-4dd10a0b2a7672e8ec964144634ddabb91504fe50b8461bac23584423318887d",Seq.empty)
+
+ val contract  = tryStoredValue.success.value.stored_value.Contract
 ````
 
   #### An account  :
@@ -252,10 +251,8 @@ call parameters :
 - account hash
 
 ````scala
-val tryStoredValue = client.getStateItem("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956","account-hash-46dE97966cfc2F00C326e654baD000AB7a5E26bEBc316EF4D74715335cF32A88",Seq.empty)
-var account : Account = null
-if (tryStoredValue.isSuccess)
-   account =tryStoredValue.get.Account
+val tryStoredValue : Try[GlobalStateResul] = client.queryGlobalState(StateRootHashIdentifier("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956"),"account-hash-46dE97966cfc2F00C326e654baD000AB7a5E26bEBc316EF4D74715335cF32A88",Seq.empty)
+val account  = tryStoredValue.success.value.stored_value.Account
 
 ````
 
@@ -267,10 +264,8 @@ call parameters :
 - account hash
 
 ````scala
-val storedValue = client.getStateItem("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956","account-hash-46dE97966cfc2F00C326e654baD000AB7a5E26bEBc316EF4D74715335cF32A88",Seq.empty)
-var clValue : CLValue = null
-if (tryStoredValue.isSuccess)
-   clValue =tryStoredValue.get.CLValue
+val tryStoredValue :  Try[GlobalStateResul] = client.queryGlobalState(StateRootHashIdentifier("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956"),"account-hash-46dE97966cfc2F00C326e654baD000AB7a5E26bEBc316EF4D74715335cF32A88",Seq.empty)
+val clValue  = tryStoredValue.success.value.stored_value.CLValue
 ````
 
 ### Get DictionaryItem
@@ -284,11 +279,9 @@ call parameters :
 - seed uref hash
 
 ```scala
-val tryStoredVvalue = client.getDictionaryItem("8180307A39A8583a4a164154C360FB9Ab9B15A5B626295635A62DFc7A82e66a3",
+val tryStoredValue : Try[DictionaryItemResult] = client.getDictionaryItem("8180307A39A8583a4a164154C360FB9Ab9B15A5B626295635A62DFc7A82e66a3",
       "a8261377ef9cf8e741dd6858801c71e38c9322e66355586549b75ab24bdd73f2","uref-F5ea525E6493B41DC3c9b196ab372b6F3f00cA6F1EEf8fe0544e7d044E5480Ba-007")
-var clValue : CLValue = null
-if (tryStoredValue.isSuccess)
-   clValue =tryStoredValue.get.CLValue
+val clValue =  tryStoredValue.success.value.stored_value.CLValue
 ```
 
 ### Get Balance
@@ -301,7 +294,7 @@ call parameters :
 - account uref hash
 
 ```scala
- val  tryBalance = client.getBalance("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956",new URef("uref-9cC6877ft07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007"))
+ val  tryBalance :  Try[BalanceResult] = client.getBalance("30cE5146268305AeeFdCC05a5f7bE7aa6dAF187937Eed9BB55Af90e1D49B7956",new URef("uref-9cC6877ft07c211e44068D5dCc2cC28A67Cb582C3e239E83Bb0c3d067C4D0363-007"))
 
 ```
 
