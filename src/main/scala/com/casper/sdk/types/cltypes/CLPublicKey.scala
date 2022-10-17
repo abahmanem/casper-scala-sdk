@@ -137,7 +137,11 @@ object CLPublicKey {
    * @param hex
    * @return CLPublicKey
    */
-  def apply(hex: String): Option[CLPublicKey] = Try(new CLPublicKey(dropAlgorithmBytes(HexUtils.fromHex(hex).get), KeyAlgorithm.fromId(hex.charAt(1).asDigit).getOrElse(KeyAlgorithm.ED25519))).toOption
+  def apply(hex: String): Option[CLPublicKey] =Try(new CLPublicKey(dropAlgorithmBytes(HexUtils.fromHex(hex).get), KeyAlgorithm.fromId(hex.charAt(1).asDigit).getOrElse(KeyAlgorithm.ED25519)))
+        .toOption
+ //TODO : implement CEP57Checksum
+
+
 
   /**
    * remove algorithm tag bytes
@@ -145,9 +149,8 @@ object CLPublicKey {
    * @param key
    * @return
    */
-  def dropAlgorithmBytes(key: Array[Byte]): Array[Byte] = {
-    key.drop(1)
-  }
+  def dropAlgorithmBytes(key: Array[Byte]): Array[Byte] = key.drop(1)
+
 
   /**
    * Extract account hash from publicKey
