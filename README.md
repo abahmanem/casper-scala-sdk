@@ -1,5 +1,4 @@
 
-<p align="center"><a href="https://analytics.caspercommunity.io" target="_blank"><img src="https://analytics.caspercommunity.io/assets/icon/android-chrome-512x512.png" width="150"></a></p>
 
 ## About Casper Scala SDK
 
