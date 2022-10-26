@@ -174,5 +174,5 @@ val serializedDeploy = "01d9bf2148748a85c89da5aad8ee0b0fc2d105fd39d41a4c79653635
                 |    ]
                 |}""".stripMargin
 
-    assert(serializedDeploy== HexUtils.toHex(serializer.toBytes(JsonConverter.fromJson[Deploy](jsondeploy))))
+    assert(serializedDeploy== HexUtils.toHex(serializer.toBytes(CirceConverter.convertToObj[Deploy](jsondeploy))))
 ```
