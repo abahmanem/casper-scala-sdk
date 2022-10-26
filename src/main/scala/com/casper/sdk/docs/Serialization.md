@@ -11,7 +11,7 @@ More details on this implementation can be found here :
 - String
 
 ```scala
-val clValue = CLValue.String("Hello, World!")
+val clValue = CLValue.String("Hello, World!").get
 assert("0d00000048656c6c6f2c20576f726c6421" == HexUtils.toHex(clValue.bytes))
 
 ```
@@ -19,14 +19,14 @@ assert("0d00000048656c6c6f2c20576f726c6421" == HexUtils.toHex(clValue.bytes))
 - U32
 
 ```scala
-  val bytes = cLValueByteSerializer.toBytes((CLValue.U32(1024)))
+  val bytes = cLValueByteSerializer.toBytes((CLValue.U32(1024))).get
     assert("040000000004000004" == HexUtils.toHex(bytes))
 ```
 
 - Option
 
 ```scala
-    val clValue = CLValue.Option(CLValue.U32(10))
+    val clValue = CLValue.Option(CLValue.U32(10)).get
     assert("010a000000" == HexUtils.toHex(clValue.bytes))
 ```
 
@@ -36,21 +36,21 @@ assert("0d00000048656c6c6f2c20576f726c6421" == HexUtils.toHex(clValue.bytes))
 - CLValue with U512 CLType
 
 ```scala
-     val bytes = cLValueByteSerializer.toBytes((CLValue.U512(BigInt.apply("123456789101112131415"))))
+     val bytes = cLValueByteSerializer.toBytes((CLValue.U512(BigInt.apply("123456789101112131415")))).get
      assert("0a0000000957ff1ada959f4eb10608" == HexUtils.toHex(bytes))
 ```
 
 - CLValue with List of CLType
 
 ```scala
-    val bytes = cLValueByteSerializer.toBytes((CLValue.List(CLValue.U32(1), CLValue.U32(2), CLValue.U32(3))))
+    val bytes = cLValueByteSerializer.toBytes((CLValue.List(CLValue.U32(1).get, CLValue.U32(2).get, CLValue.U32(3).get)))
     assert("100000000300000001000000020000000300000004" == HexUtils.toHex(bytes))
 ```
 
 - CLValue with Tuple2  CLType
 
 ```scala
-      val clValue = CLValue.Tuple2(CLValue.U32(1), CLValue.String("Hello, World!"))
+      val clValue = CLValue.Tuple2(CLValue.U32(1).get, CLValue.String("Hello, World!").get)
       assert("010000000d00000048656c6c6f2c20576f726c6421" == HexUtils.toHex(clValue.bytes))
 ```
 
@@ -174,5 +174,5 @@ val serializedDeploy = "01d9bf2148748a85c89da5aad8ee0b0fc2d105fd39d41a4c79653635
                 |    ]
                 |}""".stripMargin
 
-    assert(serializedDeploy== HexUtils.toHex(serializer.toBytes(CirceConverter.convertToObj[Deploy](jsondeploy))))
+    assert(serializedDeploy== HexUtils.toHex(serializer.toBytes(CirceConverter.convertToObj[Deploy](jsondeploy))).get)
 ```
