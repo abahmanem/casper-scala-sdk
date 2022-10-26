@@ -38,9 +38,3 @@ libraryDependencies ++= Seq(
 
 scalacOptions ++= Seq("-Xmax-inlines", "10000")
 
-
-
-}
-
-
-
