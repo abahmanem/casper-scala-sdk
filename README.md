@@ -64,6 +64,7 @@ scala.version is the scala version used, ex = 3.1.3
 * [getBalance](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-account-balance)
 * [getDictionaryItem](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-dictionary-item)
 * [putDeploy](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#put-deploy)
+* [getErasummary](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-era-summary)
 
 
 
@@ -303,7 +304,7 @@ returns the era summary at either a specific block (by height or hash), or the m
 
 call parameters : 
 
-- BlockIdentifier (Hash or Heigh)
+- BlockIdentifier (Hash or Height)
 
 ```scala
  val  eraSummary :  Try[EraSummaryResult] = client.getEraSummary(HeightBlockIdentifier(1730137L))

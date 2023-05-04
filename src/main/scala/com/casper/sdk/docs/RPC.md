@@ -184,3 +184,14 @@ Returns a Hash object representing the deploy hash.
 |---|---|---|---|
 | `deploy` | `Deploy` | Deploy object  | Yes |
 
+
+---
+## Returns the era summary at either a specific block (by height or hash), or the most recently added block
+```scala
+def getEraSummary(blockHash: String): Try[EraSummaryResult] 
+```
+Returns an EraSummary object for the given block hash or block heigh
+### Parameters
+| Name | Type              | Description                          | Mandatory |
+|---|-------------------|--------------------------------------|---|
+| `block_identifier` | `BlockIdentifier` | block identifier (height or hash) | Yes |
