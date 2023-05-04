@@ -191,7 +191,7 @@ Returns a Hash object representing the deploy hash.
 Returns the era summary at either a specific block (by height or hash), or the most recently added block
 
 ```scala
-def getEraSummary(blockHash: String): Try[EraSummaryResult] 
+def getEraSummary(blockIdentifier: BlockIdentifier): Try[EraSummaryResult] 
 ```
 Returns an EraSummary object for the given block hash or block heigh
 ### Parameters

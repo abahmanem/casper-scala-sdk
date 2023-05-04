@@ -64,7 +64,7 @@ scala.version is the scala version used, ex = 3.1.3
 * [getBalance](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-account-balance)
 * [getDictionaryItem](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-dictionary-item)
 * [putDeploy](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#put-deploy)
-* [getEraSummary](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-era-summary)
+* [getEraSummary](https://github.com/abahmanem/casper-scala-sdk/blob/master/src/main/scala/com/casper/sdk/docs/RPC.md#get-erasummary)
 
 
 
