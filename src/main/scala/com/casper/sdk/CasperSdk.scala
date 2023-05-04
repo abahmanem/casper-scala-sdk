@@ -149,4 +149,16 @@ class CasperSdk(url: String) extends RPCCommand(new HttpRPCService(url)) {
    * @return DeployHashResult
    */
   def putDeploy(deploy: Deploy): Try[DeployHashResult] = call[DeployHashResult](Method.ACCOUNT_PUT_DEPLOY, deploy.asJson)
+
+  /**
+   * getEraSummary
+   *
+   * @param blockIdentifier : BlockIdentifier (height or hash)
+   * @return : EraSummaryResult
+   */
+  def getEraSummary(blockIdentifier: BlockIdentifier): Try[EraSummaryResult] =
+    blockIdentifier match {
+      case HeightBlockIdentifier(height) => call[EraSummaryResult](Method.CHAIN_GET_ERA_SUMMARY, Map("Height" -> height).asJson)
+      case HashBlockIdentifier(hash) => call[EraSummaryResult](Method.CHAIN_GET_ERA_SUMMARY, Map("Hash" -> hash).asJson)
+    }
 }

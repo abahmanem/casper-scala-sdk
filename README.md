@@ -298,6 +298,21 @@ call parameters :
 
 ```
 
+## Get EraSummary
+
+returns the era summary at either a specific block (by height or hash), or the most recently added block
+
+call parameters : 
+
+- BlockIdentifier (Hash or Heigh)
+
+```scala
+ val  eraSummary :  Try[EraSummaryResult] = client.getEraSummary(HeightBlockIdentifier(1730137L))
+
+```
+
+
+
 ## License
 
 The Casper Scala SDK is open-sourced software licensed under the [MIT license](https:sbt//opensource.org/licenses/MIT).

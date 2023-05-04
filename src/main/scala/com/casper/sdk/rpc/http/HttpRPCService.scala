@@ -58,7 +58,6 @@ class HttpRPCService(var url: String, var httpClient: OkHttpClient) extends RPCS
       case Failure(err) => Failure(err)
     }
 
-
   /**
    * Execute the POST request
    *

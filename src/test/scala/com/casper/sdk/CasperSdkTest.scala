@@ -20,9 +20,9 @@ import org.scalatest.matchers.should.*
 
 class CasperSdkTest extends AnyFlatSpec with Matchers with TryValues {
 
-  val client = new CasperSdk("https://node-clarity-testnet.make.services/rpc")
-
-
+  val client = new CasperSdk("http://109.236.83.153:7777/rpc")
+  val client_1_14_15 = new CasperSdk(url="http://3.138.177.248:7777/rpc")
+  val client_1_5 = new CasperSdk(url="http://3.138.177.248:7777/rpc")
     "RPC Call to a non existing node (http://1.2.3.4:7777/rpc)" should "fail" in {
       val sdk = new CasperSdk("http://1.2.3.4:7777/rpc")
       val peers = sdk.getPeers()
@@ -162,8 +162,8 @@ class CasperSdkTest extends AnyFlatSpec with Matchers with TryValues {
     "GetStatus " should " succeed " in {
       val nodeSatatus = client.getStatus()
       assert(nodeSatatus.isSuccess)
-      info("assert node pub key is : 017d96b9a63abcb61c870a4f55187a0a7ac24096bdb5fc585c12a686a4d892009e")
-      assert(nodeSatatus.success.value.our_public_signing_key.get.formatAsHexAccount.get.toLowerCase == "017d96b9a63abcb61c870a4f55187a0a7ac24096bdb5fc585c12a686a4d892009e".toLowerCase)
+      info("assert node pub key is : 017d9aa0b86413d7ff9a9169182c53f0bacaa80d34c211adab007ed4876af17077")
+      assert(nodeSatatus.success.value.our_public_signing_key.get.formatAsHexAccount.get.toLowerCase == "017d9aa0b86413d7ff9a9169182c53f0bacaa80d34c211adab007ed4876af17077".toLowerCase)
       info("assert network is : casper-test ")
       assert(nodeSatatus.success.value.chainspec_name == "casper-test")
     }
@@ -178,10 +178,10 @@ class CasperSdkTest extends AnyFlatSpec with Matchers with TryValues {
       assert(!transfers.success.value.transfers.isEmpty)
       info("assert this block contains two transfers")
       assert(transfers.success.value.transfers.size == 2)
-      info("assert first transfer deploy hash is = 277AEF49321B3b19B0EDd732Cd5CFf4F2E76c1Df0260356367711aD81f4bC8FC")
-      assert(transfers.success.value.transfers(0).deploy_hash.toLowerCase == "277AEF49321B3b19B0EDd732Cd5CFf4F2E76c1Df0260356367711aD81f4bC8FC".toLowerCase)
-      info("assert amount of first transfer is = 1000000000000 motes")
-      assert(transfers.success.value.transfers(0).amount == 1000000000000L)
+      info("assert first transfer deploy hash is = 96f2adf70d8fa9ababe63fb814d847924fc8ea642b8f1e9da2b7e9aa93b9a534")
+      assert(transfers.success.value.transfers(0).deploy_hash.toLowerCase == "96f2adf70d8fa9ababe63fb814d847924fc8ea642b8f1e9da2b7e9aa93b9a534".toLowerCase)
+      info("assert amount of first transfer is = 2999700000000 motes")
+      assert(transfers.success.value.transfers(0).amount == 2999700000000L)
     }
 
 
@@ -350,6 +350,7 @@ class CasperSdkTest extends AnyFlatSpec with Matchers with TryValues {
      */
     "getAccountInfo with Block Hash  identifier " should "succed " in {
       val accountInfo = client.getAccountInfo("017d9aa0b86413d7ff9a9169182c53f0bacaa80d34c211adab007ed4876af17077", HashBlockIdentifier("cf8d9a0fc98c68b95e031639bf7f30278bf8b6ea2fe81571d7a99a217d3ff2c6"))
+
       assert(accountInfo.isSuccess)
     }
 
@@ -410,4 +411,21 @@ class CasperSdkTest extends AnyFlatSpec with Matchers with TryValues {
     assert(hashReult.success.value.deploy_hash.hash.sameElements(signedDeploy.get.hash.get.hash))
   }
 
+  /**
+   * Test getEraSummary with  Block Hash  identifier
+   */
+  "getEraSummary with Block Hash  identifier " should "succed " in {
+    val eraSummaryResult = client_1_14_15.getEraSummary(HashBlockIdentifier("b31f0c4a50d65cc92645f9b005deef1119fd36672a0ccfaada9b329df9324e65"))
+    assert(eraSummaryResult.isSuccess)
+    assert(eraSummaryResult.get.era_summary.get.era_id==9042)
+  }
+
+  /**
+   * Test getEraSummary with  Block Height  identifier
+   */
+  "getEraSummary with Block Height  identifier " should "succed " in {
+    val eraSummaryResult = client_1_14_15.getEraSummary(HeightBlockIdentifier(1730137L))
+    assert(eraSummaryResult.isSuccess)
+    assert(eraSummaryResult.get.era_summary.get.era_id == 9039)
+  }
 }
