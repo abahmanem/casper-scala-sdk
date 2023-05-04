@@ -37,4 +37,6 @@ npm-debug.log*
 #Custom files with secret informations (API Keys, etc)
 src/test/scala/com/casper/sdk/json/project/
 src/test/scala/com/casper/sdk/json/target/
+publish.md
+/out
 
